@@ -52,23 +52,30 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
     @objc
     func insertNewObject(_ sender: Any) {
-        let context = self.fetchedResultsController.managedObjectContext
-        let newStudent = Student(context: context)
-             
+        //let context = self.fetchedResultsController.managedObjectContext
+        //let newStudent = Student(context: context)
+        let newStudent = CKRecord.init(recordType: "Student")
+        
         // If appropriate, configure the new managed object.
-        newStudent.firstName = "New"
-        newStudent.lastName = "Student"
+        newStudent.setValue("New", forKey: "firstName")
+        newStudent.setValue("Student", forKey: "lastName")
+        
+        students.append(newStudent)
+       
+        print("appended")
+        database.save(newStudent, completionHandler: {r,err in
+            if let err = err {
+                print(err.localizedDescription)
+            } else {
+                print("Student Saved")
+                DispatchQueue.main.sync {
+                    self.tableView.reloadData()
+                }
+            }
+        })
         
 
-        // Save the context.
-        do {
-            try context.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
+
     }
     
     // MARK: - Student Operations
@@ -144,17 +151,17 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let context = fetchedResultsController.managedObjectContext
-            context.delete(fetchedResultsController.object(at: indexPath))
-                
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+            let student = students[indexPath.row]
+            students.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            database.delete(withRecordID: student.recordID, completionHandler: {id,err in
+                if let err = err {
+                    print(err.localizedDescription)
+                } else {
+                    print("record deleted")
+                }
+            })
+            
         }
     }
 

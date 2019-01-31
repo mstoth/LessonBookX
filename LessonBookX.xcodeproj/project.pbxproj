@@ -37,6 +37,8 @@
 		A4C1C9622201A74900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */; };
 		A4C1C9632201A74900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */; };
 		A4C1C9642201A74900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */; };
+		A4C1C96C220284B700A88255 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C96E220284B700A88255 /* Localizable.strings */; };
+		A4C1C970220284CC00A88255 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C972220284CC00A88255 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +113,13 @@
 		A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A4C1C95D2201A74700A88255 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4C1C9652202836A00A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		A4C1C9662202837500A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		A4C1C9672202837500A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		A4C1C96D220284B700A88255 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A4C1C96F220284B900A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A4C1C971220284CC00A88255 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A4C1C973220284D000A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +213,7 @@
 				A4C1C8ED21FDA95500A88255 /* Info.plist */,
 				A4C1C8EE21FDA95500A88255 /* LessonBookX.entitlements */,
 				A4C1C8E521FDA95100A88255 /* LessonBookX.xcdatamodeld */,
+				A4C1C972220284CC00A88255 /* Localizable.strings */,
 			);
 			path = LessonBookX;
 			sourceTree = "<group>";
@@ -253,6 +263,7 @@
 				A4C1C92B21FDAD2100A88255 /* LaunchScreen.storyboard */,
 				A4C1C92E21FDAD2100A88255 /* Info.plist */,
 				A4C1C91F21FDAD1800A88255 /* LessonBook.xcdatamodeld */,
+				A4C1C96E220284B700A88255 /* Localizable.strings */,
 			);
 			path = LessonBook;
 			sourceTree = "<group>";
@@ -459,6 +470,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = A4C1C8D521FDA95100A88255;
 			productRefGroup = A4C1C8DF21FDA95100A88255 /* Products */;
@@ -481,6 +493,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4C1C8E921FDA95500A88255 /* Assets.xcassets in Resources */,
+				A4C1C970220284CC00A88255 /* Localizable.strings in Resources */,
 				A4C1C8EC21FDA95500A88255 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4C1C92D21FDAD2100A88255 /* LaunchScreen.storyboard in Resources */,
+				A4C1C96C220284B700A88255 /* Localizable.strings in Resources */,
 				A4C1C92A21FDAD2100A88255 /* Assets.xcassets in Resources */,
 				A4C1C92821FDAD1800A88255 /* Main.storyboard in Resources */,
 			);
@@ -617,6 +631,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				A4C1C8EB21FDA95500A88255 /* Base */,
+				A4C1C9652202836A00A88255 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -625,6 +640,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				A4C1C92721FDAD1800A88255 /* Base */,
+				A4C1C9662202837500A88255 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -633,8 +649,27 @@
 			isa = PBXVariantGroup;
 			children = (
 				A4C1C92C21FDAD2100A88255 /* Base */,
+				A4C1C9672202837500A88255 /* es */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A4C1C96E220284B700A88255 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4C1C96D220284B700A88255 /* en */,
+				A4C1C96F220284B900A88255 /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A4C1C972220284CC00A88255 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4C1C971220284CC00A88255 /* en */,
+				A4C1C973220284D000A88255 /* es */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -644,6 +679,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -705,6 +741,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

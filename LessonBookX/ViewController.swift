@@ -125,7 +125,14 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             if let returnVal = students[row].value(forKey: "firstName") as! String? {
                 do {
                     if let ln = students[row].value(forKey: "lastName") as! String? {
-                        return returnVal + " " + ln
+                        let s = returnVal + " " + ln
+                        if (s == "New Student") {
+                            let ls = NSLocalizedString("new-student", tableName: "Localizable.strings", bundle: Bundle.main, value: "New Student", comment: "new-student")
+                            print(ls)
+                            return NSLocalizedString("new-student", tableName: "Localizable.strings", bundle: Bundle.main, value: "New Student", comment: "new-student")
+                        } else {
+                            return returnVal + " " + ln
+                        }
                     } else {
                         return returnVal
                     }
