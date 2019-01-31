@@ -14,6 +14,29 @@
 		A4C1C8EC21FDA95500A88255 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C8EA21FDA95500A88255 /* Main.storyboard */; };
 		A4C1C8F821FDA95500A88255 /* LessonBookXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8F721FDA95500A88255 /* LessonBookXTests.swift */; };
 		A4C1C90321FDA95500A88255 /* LessonBookXUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C90221FDA95500A88255 /* LessonBookXUITests.swift */; };
+		A4C1C91221FDA97400A88255 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C91121FDA97400A88255 /* CloudKit.framework */; };
+		A4C1C91421FDA9B900A88255 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C91321FDA9B900A88255 /* StoreKit.framework */; };
+		A4C1C91621FDA9C200A88255 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C91521FDA9C200A88255 /* MapKit.framework */; };
+		A4C1C91E21FDAD1800A88255 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C91D21FDAD1800A88255 /* AppDelegate.swift */; };
+		A4C1C92121FDAD1800A88255 /* LessonBook.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C91F21FDAD1800A88255 /* LessonBook.xcdatamodeld */; };
+		A4C1C92321FDAD1800A88255 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C92221FDAD1800A88255 /* MasterViewController.swift */; };
+		A4C1C92521FDAD1800A88255 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C92421FDAD1800A88255 /* DetailViewController.swift */; };
+		A4C1C92821FDAD1800A88255 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C92621FDAD1800A88255 /* Main.storyboard */; };
+		A4C1C92A21FDAD2100A88255 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C92921FDAD2100A88255 /* Assets.xcassets */; };
+		A4C1C92D21FDAD2100A88255 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C92B21FDAD2100A88255 /* LaunchScreen.storyboard */; };
+		A4C1C93821FDAD2100A88255 /* LessonBookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C93721FDAD2100A88255 /* LessonBookTests.swift */; };
+		A4C1C94321FDAD2200A88255 /* LessonBookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C94221FDAD2200A88255 /* LessonBookUITests.swift */; };
+		A4C1C95021FDAD6000A88255 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C94F21FDAD6000A88255 /* CloudKit.framework */; };
+		A4C1C95221FDAD6800A88255 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C95121FDAD6800A88255 /* StoreKit.framework */; };
+		A4C1C95421FDAD6E00A88255 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C95321FDAD6E00A88255 /* MapKit.framework */; };
+		A4C1C95B21FDBC2900A88255 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95921FDBC2900A88255 /* Student+CoreDataClass.swift */; };
+		A4C1C95C21FDBC2900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */; };
+		A4C1C95F2201A74800A88255 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95D2201A74700A88255 /* Student+CoreDataClass.swift */; };
+		A4C1C9602201A74800A88255 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95D2201A74700A88255 /* Student+CoreDataClass.swift */; };
+		A4C1C9612201A74900A88255 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95D2201A74700A88255 /* Student+CoreDataClass.swift */; };
+		A4C1C9622201A74900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */; };
+		A4C1C9632201A74900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */; };
+		A4C1C9642201A74900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,6 +53,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A4C1C8DD21FDA95100A88255;
 			remoteInfo = LessonBookX;
+		};
+		A4C1C93421FDAD2100A88255 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4C1C8D621FDA95100A88255 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4C1C91A21FDAD1800A88255;
+			remoteInfo = LessonBook;
+		};
+		A4C1C93F21FDAD2200A88255 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4C1C8D621FDA95100A88255 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4C1C91A21FDAD1800A88255;
+			remoteInfo = LessonBook;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -48,6 +85,32 @@
 		A4C1C8FE21FDA95500A88255 /* LessonBookXUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookXUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C1C90221FDA95500A88255 /* LessonBookXUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBookXUITests.swift; sourceTree = "<group>"; };
 		A4C1C90421FDA95500A88255 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4C1C91121FDA97400A88255 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		A4C1C91321FDA9B900A88255 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		A4C1C91521FDA9C200A88255 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A4C1C91B21FDAD1800A88255 /* LessonBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4C1C91D21FDAD1800A88255 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A4C1C92021FDAD1800A88255 /* LessonBook.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LessonBook.xcdatamodel; sourceTree = "<group>"; };
+		A4C1C92221FDAD1800A88255 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		A4C1C92421FDAD1800A88255 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A4C1C92721FDAD1800A88255 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A4C1C92921FDAD2100A88255 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A4C1C92C21FDAD2100A88255 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A4C1C92E21FDAD2100A88255 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4C1C93321FDAD2100A88255 /* LessonBookTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4C1C93721FDAD2100A88255 /* LessonBookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBookTests.swift; sourceTree = "<group>"; };
+		A4C1C93921FDAD2100A88255 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4C1C93E21FDAD2100A88255 /* LessonBookUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4C1C94221FDAD2200A88255 /* LessonBookUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBookUITests.swift; sourceTree = "<group>"; };
+		A4C1C94421FDAD2200A88255 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4C1C94E21FDAD5C00A88255 /* LessonBook.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LessonBook.entitlements; sourceTree = "<group>"; };
+		A4C1C94F21FDAD6000A88255 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		A4C1C95121FDAD6800A88255 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
+		A4C1C95321FDAD6E00A88255 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
+		A4C1C95921FDBC2900A88255 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4C1C95D2201A74700A88255 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +118,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4C1C91221FDA97400A88255 /* CloudKit.framework in Frameworks */,
+				A4C1C91621FDA9C200A88255 /* MapKit.framework in Frameworks */,
+				A4C1C91421FDA9B900A88255 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +138,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A4C1C91821FDAD1800A88255 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4C1C95021FDAD6000A88255 /* CloudKit.framework in Frameworks */,
+				A4C1C95421FDAD6E00A88255 /* MapKit.framework in Frameworks */,
+				A4C1C95221FDAD6800A88255 /* StoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4C1C93021FDAD2100A88255 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4C1C93B21FDAD2100A88255 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,7 +171,11 @@
 				A4C1C8E021FDA95100A88255 /* LessonBookX */,
 				A4C1C8F621FDA95500A88255 /* LessonBookXTests */,
 				A4C1C90121FDA95500A88255 /* LessonBookXUITests */,
+				A4C1C91C21FDAD1800A88255 /* LessonBook */,
+				A4C1C93621FDAD2100A88255 /* LessonBookTests */,
+				A4C1C94121FDAD2200A88255 /* LessonBookUITests */,
 				A4C1C8DF21FDA95100A88255 /* Products */,
+				A4C1C91021FDA97400A88255 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,6 +185,9 @@
 				A4C1C8DE21FDA95100A88255 /* LessonBookX.app */,
 				A4C1C8F321FDA95500A88255 /* LessonBookXTests.xctest */,
 				A4C1C8FE21FDA95500A88255 /* LessonBookXUITests.xctest */,
+				A4C1C91B21FDAD1800A88255 /* LessonBook.app */,
+				A4C1C93321FDAD2100A88255 /* LessonBookTests.xctest */,
+				A4C1C93E21FDAD2100A88255 /* LessonBookUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -98,6 +195,8 @@
 		A4C1C8E021FDA95100A88255 /* LessonBookX */ = {
 			isa = PBXGroup;
 			children = (
+				A4C1C95921FDBC2900A88255 /* Student+CoreDataClass.swift */,
+				A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */,
 				A4C1C8E121FDA95100A88255 /* AppDelegate.swift */,
 				A4C1C8E321FDA95100A88255 /* ViewController.swift */,
 				A4C1C8E821FDA95500A88255 /* Assets.xcassets */,
@@ -125,6 +224,55 @@
 				A4C1C90421FDA95500A88255 /* Info.plist */,
 			);
 			path = LessonBookXUITests;
+			sourceTree = "<group>";
+		};
+		A4C1C91021FDA97400A88255 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A4C1C95321FDAD6E00A88255 /* MapKit.framework */,
+				A4C1C95121FDAD6800A88255 /* StoreKit.framework */,
+				A4C1C94F21FDAD6000A88255 /* CloudKit.framework */,
+				A4C1C91521FDA9C200A88255 /* MapKit.framework */,
+				A4C1C91321FDA9B900A88255 /* StoreKit.framework */,
+				A4C1C91121FDA97400A88255 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A4C1C91C21FDAD1800A88255 /* LessonBook */ = {
+			isa = PBXGroup;
+			children = (
+				A4C1C95D2201A74700A88255 /* Student+CoreDataClass.swift */,
+				A4C1C95E2201A74800A88255 /* Student+CoreDataProperties.swift */,
+				A4C1C94E21FDAD5C00A88255 /* LessonBook.entitlements */,
+				A4C1C91D21FDAD1800A88255 /* AppDelegate.swift */,
+				A4C1C92221FDAD1800A88255 /* MasterViewController.swift */,
+				A4C1C92421FDAD1800A88255 /* DetailViewController.swift */,
+				A4C1C92621FDAD1800A88255 /* Main.storyboard */,
+				A4C1C92921FDAD2100A88255 /* Assets.xcassets */,
+				A4C1C92B21FDAD2100A88255 /* LaunchScreen.storyboard */,
+				A4C1C92E21FDAD2100A88255 /* Info.plist */,
+				A4C1C91F21FDAD1800A88255 /* LessonBook.xcdatamodeld */,
+			);
+			path = LessonBook;
+			sourceTree = "<group>";
+		};
+		A4C1C93621FDAD2100A88255 /* LessonBookTests */ = {
+			isa = PBXGroup;
+			children = (
+				A4C1C93721FDAD2100A88255 /* LessonBookTests.swift */,
+				A4C1C93921FDAD2100A88255 /* Info.plist */,
+			);
+			path = LessonBookTests;
+			sourceTree = "<group>";
+		};
+		A4C1C94121FDAD2200A88255 /* LessonBookUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A4C1C94221FDAD2200A88255 /* LessonBookUITests.swift */,
+				A4C1C94421FDAD2200A88255 /* Info.plist */,
+			);
+			path = LessonBookUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +331,59 @@
 			productReference = A4C1C8FE21FDA95500A88255 /* LessonBookXUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		A4C1C91A21FDAD1800A88255 /* LessonBook */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4C1C94521FDAD2200A88255 /* Build configuration list for PBXNativeTarget "LessonBook" */;
+			buildPhases = (
+				A4C1C91721FDAD1800A88255 /* Sources */,
+				A4C1C91821FDAD1800A88255 /* Frameworks */,
+				A4C1C91921FDAD1800A88255 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LessonBook;
+			productName = LessonBook;
+			productReference = A4C1C91B21FDAD1800A88255 /* LessonBook.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A4C1C93221FDAD2100A88255 /* LessonBookTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4C1C94821FDAD2200A88255 /* Build configuration list for PBXNativeTarget "LessonBookTests" */;
+			buildPhases = (
+				A4C1C92F21FDAD2100A88255 /* Sources */,
+				A4C1C93021FDAD2100A88255 /* Frameworks */,
+				A4C1C93121FDAD2100A88255 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A4C1C93521FDAD2100A88255 /* PBXTargetDependency */,
+			);
+			name = LessonBookTests;
+			productName = LessonBookTests;
+			productReference = A4C1C93321FDAD2100A88255 /* LessonBookTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A4C1C93D21FDAD2100A88255 /* LessonBookUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4C1C94B21FDAD2200A88255 /* Build configuration list for PBXNativeTarget "LessonBookUITests" */;
+			buildPhases = (
+				A4C1C93A21FDAD2100A88255 /* Sources */,
+				A4C1C93B21FDAD2100A88255 /* Frameworks */,
+				A4C1C93C21FDAD2100A88255 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A4C1C94021FDAD2200A88255 /* PBXTargetDependency */,
+			);
+			name = LessonBookUITests;
+			productName = LessonBookUITests;
+			productReference = A4C1C93E21FDAD2100A88255 /* LessonBookUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -196,6 +397,12 @@
 					A4C1C8DD21FDA95100A88255 = {
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Maps.Mac = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -211,6 +418,37 @@
 					A4C1C8FD21FDA95500A88255 = {
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = A4C1C8DD21FDA95100A88255;
+					};
+					A4C1C91A21FDAD1800A88255 = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 1;
+							};
+							com.apple.ClassKit = {
+								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					A4C1C93221FDAD2100A88255 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = A4C1C91A21FDAD1800A88255;
+					};
+					A4C1C93D21FDAD2100A88255 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = A4C1C91A21FDAD1800A88255;
 					};
 				};
 			};
@@ -230,6 +468,9 @@
 				A4C1C8DD21FDA95100A88255 /* LessonBookX */,
 				A4C1C8F221FDA95500A88255 /* LessonBookXTests */,
 				A4C1C8FD21FDA95500A88255 /* LessonBookXUITests */,
+				A4C1C91A21FDAD1800A88255 /* LessonBook */,
+				A4C1C93221FDAD2100A88255 /* LessonBookTests */,
+				A4C1C93D21FDAD2100A88255 /* LessonBookUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,6 +499,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A4C1C91921FDAD1800A88255 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4C1C92D21FDAD2100A88255 /* LaunchScreen.storyboard in Resources */,
+				A4C1C92A21FDAD2100A88255 /* Assets.xcassets in Resources */,
+				A4C1C92821FDAD1800A88255 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4C1C93121FDAD2100A88255 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4C1C93C21FDAD2100A88255 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -266,8 +531,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */,
+				A4C1C95B21FDBC2900A88255 /* Student+CoreDataClass.swift in Sources */,
 				A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */,
 				A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */,
+				A4C1C95C21FDBC2900A88255 /* Student+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +554,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A4C1C91721FDAD1800A88255 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4C1C9622201A74900A88255 /* Student+CoreDataProperties.swift in Sources */,
+				A4C1C92121FDAD1800A88255 /* LessonBook.xcdatamodeld in Sources */,
+				A4C1C91E21FDAD1800A88255 /* AppDelegate.swift in Sources */,
+				A4C1C92321FDAD1800A88255 /* MasterViewController.swift in Sources */,
+				A4C1C92521FDAD1800A88255 /* DetailViewController.swift in Sources */,
+				A4C1C95F2201A74800A88255 /* Student+CoreDataClass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4C1C92F21FDAD2100A88255 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4C1C9632201A74900A88255 /* Student+CoreDataProperties.swift in Sources */,
+				A4C1C93821FDAD2100A88255 /* LessonBookTests.swift in Sources */,
+				A4C1C9602201A74800A88255 /* Student+CoreDataClass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A4C1C93A21FDAD2100A88255 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4C1C9642201A74900A88255 /* Student+CoreDataProperties.swift in Sources */,
+				A4C1C94321FDAD2200A88255 /* LessonBookUITests.swift in Sources */,
+				A4C1C9612201A74900A88255 /* Student+CoreDataClass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -300,6 +600,16 @@
 			target = A4C1C8DD21FDA95100A88255 /* LessonBookX */;
 			targetProxy = A4C1C8FF21FDA95500A88255 /* PBXContainerItemProxy */;
 		};
+		A4C1C93521FDAD2100A88255 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4C1C91A21FDAD1800A88255 /* LessonBook */;
+			targetProxy = A4C1C93421FDAD2100A88255 /* PBXContainerItemProxy */;
+		};
+		A4C1C94021FDAD2200A88255 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4C1C91A21FDAD1800A88255 /* LessonBook */;
+			targetProxy = A4C1C93F21FDAD2200A88255 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -309,6 +619,22 @@
 				A4C1C8EB21FDA95500A88255 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A4C1C92621FDAD1800A88255 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4C1C92721FDAD1800A88255 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A4C1C92B21FDAD2100A88255 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4C1C92C21FDAD2100A88255 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -549,6 +875,147 @@
 			};
 			name = Release;
 		};
+		A4C1C94621FDAD2200A88255 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LessonBook/LessonBook.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBook/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBook;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A4C1C94721FDAD2200A88255 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LessonBook/LessonBook.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBook/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBook;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4C1C94921FDAD2200A88255 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LessonBook.app/LessonBook";
+			};
+			name = Debug;
+		};
+		A4C1C94A21FDAD2200A88255 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LessonBook.app/LessonBook";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4C1C94C21FDAD2200A88255 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LessonBook;
+			};
+			name = Debug;
+		};
+		A4C1C94D21FDAD2200A88255 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LessonBook;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -588,6 +1055,33 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		A4C1C94521FDAD2200A88255 /* Build configuration list for PBXNativeTarget "LessonBook" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4C1C94621FDAD2200A88255 /* Debug */,
+				A4C1C94721FDAD2200A88255 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4C1C94821FDAD2200A88255 /* Build configuration list for PBXNativeTarget "LessonBookTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4C1C94921FDAD2200A88255 /* Debug */,
+				A4C1C94A21FDAD2200A88255 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4C1C94B21FDAD2200A88255 /* Build configuration list for PBXNativeTarget "LessonBookUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4C1C94C21FDAD2200A88255 /* Debug */,
+				A4C1C94D21FDAD2200A88255 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
@@ -598,6 +1092,16 @@
 			);
 			currentVersion = A4C1C8E621FDA95100A88255 /* LessonBookX.xcdatamodel */;
 			path = LessonBookX.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		A4C1C91F21FDAD1800A88255 /* LessonBook.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A4C1C92021FDAD1800A88255 /* LessonBook.xcdatamodel */,
+			);
+			currentVersion = A4C1C92021FDAD1800A88255 /* LessonBook.xcdatamodel */;
+			path = LessonBook.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
