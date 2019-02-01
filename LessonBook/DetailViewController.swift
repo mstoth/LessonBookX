@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 class DetailViewController: UIViewController {
 
@@ -21,11 +22,19 @@ class DetailViewController: UIViewController {
             }
         }
     }
+    
+    func configureStudentView() {
+        if let student = studentItem {
+            if let label = detailDescriptionLabel {
+                label.text = student.value(forKey: "firstName") as? String
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        configureView()
+        configureStudentView()
     }
 
     var detailItem: Event? {
@@ -35,6 +44,11 @@ class DetailViewController: UIViewController {
         }
     }
 
+    var studentItem: CKRecord? {
+        didSet {
+            configureStudentView()
+        }
+    }
 
 }
 
