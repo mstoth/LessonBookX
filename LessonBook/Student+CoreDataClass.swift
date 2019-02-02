@@ -47,4 +47,10 @@ public class Student: NSManagedObject {
             self.record.setValue(newValue, forKey: Student.keys.firstName)
         }
     }
+    
+    var studentItem:CKRecord? {
+        didSet {
+            
+        }
+    }
 }

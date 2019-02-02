@@ -13,13 +13,82 @@ import CloudKit
 
 class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
+    
+    
+    
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
     var students:[CKRecord] = []
     private var database = CKContainer.default().privateCloudDatabase
 
+
+    let container = CKContainer.default()
+
+    // Store these to disk so that they persist across launches
+    var createdCustomZone = false
+    var subscribedToPrivateChanges = false
+    var subscribedToSharedChanges = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let privateDB = container.privateCloudDatabase
+        let sharedDB = container.sharedCloudDatabase
+
+        // Use a consistent zone ID across the user's devices
+        // CKCurrentUserDefaultName specifies the current user's ID when creating a zone ID
+        let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
+        
+        
+        let privateSubscriptionId = "private-changes"
+        let sharedSubscriptionId = "shared-changes"
+
+        
+        let createZoneGroup = DispatchGroup()
+        
+        if !self.createdCustomZone {
+            createZoneGroup.enter()
+            
+            let customZone = CKRecordZone(zoneID: zoneID)
+            
+            let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [] )
+            
+            createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+                if (error == nil) { self.createdCustomZone = true }
+                // else custom error handling
+                createZoneGroup.leave()
+            }
+            createZoneOperation.qualityOfService = .userInitiated
+            
+            privateDB.add(createZoneOperation)
+        }
+
+        if !self.subscribedToPrivateChanges {
+            let createSubscriptionOperation = self.createDatabaseSubscriptionOperation(subscriptionId: privateSubscriptionId)
+            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+                if error == nil { self.subscribedToPrivateChanges = true }
+                // else custom error handling
+            }
+            privateDB.add(createSubscriptionOperation)
+        }
+        
+        if !self.subscribedToSharedChanges {
+            let createSubscriptionOperation = self.createDatabaseSubscriptionOperation(subscriptionId: sharedSubscriptionId)
+            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+                if error == nil { self.subscribedToSharedChanges = true }
+                // else custom error handling
+            }
+            sharedDB.add(createSubscriptionOperation)
+        }
+        
+        // Fetch any changes from the server that happened while the app wasn't running
+        createZoneGroup.notify(queue: DispatchQueue.global()) {
+            if self.createdCustomZone {
+                self.fetchChanges(in: .private) {}
+                //self.fetchChanges(in: .shared) {}
+            }
+        }
+        
         
         
         // Do any additional setup after loading the view, typically from a nib.
@@ -78,6 +147,81 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     }
     
+    
+    
+    func fetchDatabaseChanges(database: CKDatabase, databaseTokenKey: String, completion: @escaping () -> Void) {
+        var changedZoneIDs: [CKRecordZone.ID] = []
+        
+        let changeToken = UserDefaults.standard.serverChangeToken
+        // Read change token from disk
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+        
+        operation.recordZoneWithIDChangedBlock = { (zoneID) in
+            changedZoneIDs.append(zoneID)
+        }
+        
+        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+            // Write this zone deletion to memory
+        }
+        
+        operation.changeTokenUpdatedBlock = { (token) in
+            // Flush zone deletions for this database to disk
+            
+            // Write this new database change token to memory
+            UserDefaults.standard.serverChangeToken = token
+        }
+        
+        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+            if let error = error {
+                print("Error during fetch shared database changes operation", error)
+                completion()
+                return
+            }
+            // Flush zone deletions for this database to disk
+            // Write this new database change token to memory
+            
+            
+            self.fetchZoneChanges(database: database, databaseTokenKey: databaseTokenKey, zoneIDs: changedZoneIDs) {
+                // Flush in-memory database change token to disk
+                completion()
+            }
+        }
+        operation.qualityOfService = .userInitiated
+        
+        database.add(operation)
+    }
+    
+    func fetchChanges(in databaseScope: CKDatabase.Scope, completion: @escaping () -> Void) {
+        switch databaseScope {
+        case .private:
+            fetchDatabaseChanges(database: self.privateDB, databaseTokenKey: "private", completion: completion)
+        case .shared:
+            fetchDatabaseChanges(database: self.sharedDB, databaseTokenKey: "shared", completion: completion)
+        case .public:
+            fatalError()
+        }
+    }
+    
+    
+    
+    
+    func createDatabaseSubscriptionOperation(subscriptionId: String) -> CKModifySubscriptionsOperation {
+        let subscription = CKDatabaseSubscription.init(subscriptionID: subscriptionId)
+        
+        let notificationInfo = CKSubscription.NotificationInfo()
+        // send a silent notification
+        notificationInfo.shouldSendContentAvailable = true
+        subscription.notificationInfo = notificationInfo
+        
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        operation.qualityOfService = .utility
+        
+        return operation
+    }
+    
+    
+    
+    
     // MARK: - Student Operations
     func fetchStudents() {
         
@@ -93,7 +237,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 }
                 return
             }
-            self.students.removeAll(keepingCapacity: true)
+            self.students.removeAll(keepingCapacity: false)
             results?.forEach({ (record: CKRecord) in
                 self.students.append(record)
             })
@@ -281,3 +425,35 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
 }
 
+
+public extension UserDefaults {
+    
+    public var serverChangeToken: CKServerChangeToken? {
+        get {
+            guard let data = self.value(forKey: "ChangeToken") as? Data else {
+                return nil
+            }
+            
+            let token: CKServerChangeToken?
+            do {
+                token = try NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: data)
+            } catch {
+                token = nil
+            }
+            
+            return token
+        }
+        set {
+            if let token = newValue {
+                do {
+                    let data = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: false)
+                    self.set(data, forKey: "ChangeToken")
+                } catch {
+                    // handle error
+                }
+            } else {
+                self.removeObject(forKey: "ChangeToken")
+            }
+        }
+    }
+}

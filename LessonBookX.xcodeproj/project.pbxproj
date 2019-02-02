@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A450C6622205ADE100BA4047 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6612205ADE100BA4047 /* AppDelegate.swift */; };
+		A450C6652205ADE100BA4047 /* LessonBookT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */; };
+		A450C6672205ADE100BA4047 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6662205ADE100BA4047 /* MasterViewController.swift */; };
+		A450C6692205ADE100BA4047 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6682205ADE100BA4047 /* DetailViewController.swift */; };
+		A450C66C2205ADE200BA4047 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A450C66A2205ADE200BA4047 /* Main.storyboard */; };
+		A450C66E2205AE0F00BA4047 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A450C66D2205AE0F00BA4047 /* Assets.xcassets */; };
+		A450C6712205AE0F00BA4047 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A450C66F2205AE0F00BA4047 /* LaunchScreen.storyboard */; };
+		A450C67C2205AE1200BA4047 /* LessonBookTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C67B2205AE1200BA4047 /* LessonBookTTests.swift */; };
+		A450C6872205AE1200BA4047 /* LessonBookTUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6862205AE1200BA4047 /* LessonBookTUITests.swift */; };
+		A450C6932205B4CC00BA4047 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C94F21FDAD6000A88255 /* CloudKit.framework */; };
+		A450C6942205B4F000BA4047 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C95121FDAD6800A88255 /* StoreKit.framework */; };
+		A450C6962205BFE400BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
+		A450C69B22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */; };
+		A450C69C22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */; };
+		A450C69D22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */; };
+		A450C69E22063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */; };
+		A450C69F22063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */; };
+		A450C6A022063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */; };
+		A450C6A1220646BC00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
+		A450C6A2220646BD00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E121FDA95100A88255 /* AppDelegate.swift */; };
 		A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E321FDA95100A88255 /* ViewController.swift */; };
 		A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E521FDA95100A88255 /* LessonBookX.xcdatamodeld */; };
@@ -42,6 +62,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A450C6782205AE1200BA4047 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4C1C8D621FDA95100A88255 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A450C65E2205ADE000BA4047;
+			remoteInfo = LessonBookT;
+		};
+		A450C6832205AE1200BA4047 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A4C1C8D621FDA95100A88255 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A450C65E2205ADE000BA4047;
+			remoteInfo = LessonBookT;
+		};
 		A4C1C8F421FDA95500A88255 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A4C1C8D621FDA95100A88255 /* Project object */;
@@ -73,6 +107,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A450C65F2205ADE000BA4047 /* LessonBookT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A450C6612205ADE100BA4047 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A450C6642205ADE100BA4047 /* LessonBookT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LessonBookT.xcdatamodel; sourceTree = "<group>"; };
+		A450C6662205ADE100BA4047 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		A450C6682205ADE100BA4047 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A450C66B2205ADE200BA4047 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A450C66D2205AE0F00BA4047 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A450C6702205AE0F00BA4047 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A450C6722205AE0F00BA4047 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A450C6772205AE1200BA4047 /* LessonBookTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A450C67B2205AE1200BA4047 /* LessonBookTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBookTTests.swift; sourceTree = "<group>"; };
+		A450C67D2205AE1200BA4047 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A450C6822205AE1200BA4047 /* LessonBookTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A450C6862205AE1200BA4047 /* LessonBookTUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBookTUITests.swift; sourceTree = "<group>"; };
+		A450C6882205AE1200BA4047 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A450C6922205B4C500BA4047 /* LessonBookT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LessonBookT.entitlements; sourceTree = "<group>"; };
+		A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManagedObject.swift; sourceTree = "<group>"; };
+		A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A4C1C8DE21FDA95100A88255 /* LessonBookX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C1C8E121FDA95100A88255 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4C1C8E321FDA95100A88255 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +176,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A450C65C2205ADE000BA4047 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A450C6932205B4CC00BA4047 /* CloudKit.framework in Frameworks */,
+				A450C6942205B4F000BA4047 /* StoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A450C6742205AE1200BA4047 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A450C67F2205AE1200BA4047 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A4C1C8DB21FDA95100A88255 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -174,6 +250,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A450C6602205ADE100BA4047 /* LessonBookT */ = {
+			isa = PBXGroup;
+			children = (
+				A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */,
+				A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */,
+				A450C6922205B4C500BA4047 /* LessonBookT.entitlements */,
+				A450C6612205ADE100BA4047 /* AppDelegate.swift */,
+				A450C6662205ADE100BA4047 /* MasterViewController.swift */,
+				A450C6682205ADE100BA4047 /* DetailViewController.swift */,
+				A450C66A2205ADE200BA4047 /* Main.storyboard */,
+				A450C66D2205AE0F00BA4047 /* Assets.xcassets */,
+				A450C66F2205AE0F00BA4047 /* LaunchScreen.storyboard */,
+				A450C6722205AE0F00BA4047 /* Info.plist */,
+				A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */,
+				A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */,
+			);
+			path = LessonBookT;
+			sourceTree = "<group>";
+		};
+		A450C67A2205AE1200BA4047 /* LessonBookTTests */ = {
+			isa = PBXGroup;
+			children = (
+				A450C67B2205AE1200BA4047 /* LessonBookTTests.swift */,
+				A450C67D2205AE1200BA4047 /* Info.plist */,
+			);
+			path = LessonBookTTests;
+			sourceTree = "<group>";
+		};
+		A450C6852205AE1200BA4047 /* LessonBookTUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A450C6862205AE1200BA4047 /* LessonBookTUITests.swift */,
+				A450C6882205AE1200BA4047 /* Info.plist */,
+			);
+			path = LessonBookTUITests;
+			sourceTree = "<group>";
+		};
 		A4C1C8D521FDA95100A88255 = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +296,9 @@
 				A4C1C91C21FDAD1800A88255 /* LessonBook */,
 				A4C1C93621FDAD2100A88255 /* LessonBookTests */,
 				A4C1C94121FDAD2200A88255 /* LessonBookUITests */,
+				A450C6602205ADE100BA4047 /* LessonBookT */,
+				A450C67A2205AE1200BA4047 /* LessonBookTTests */,
+				A450C6852205AE1200BA4047 /* LessonBookTUITests */,
 				A4C1C8DF21FDA95100A88255 /* Products */,
 				A4C1C91021FDA97400A88255 /* Frameworks */,
 			);
@@ -197,6 +313,9 @@
 				A4C1C91B21FDAD1800A88255 /* LessonBook.app */,
 				A4C1C93321FDAD2100A88255 /* LessonBookTests.xctest */,
 				A4C1C93E21FDAD2100A88255 /* LessonBookUITests.xctest */,
+				A450C65F2205ADE000BA4047 /* LessonBookT.app */,
+				A450C6772205AE1200BA4047 /* LessonBookTTests.xctest */,
+				A450C6822205AE1200BA4047 /* LessonBookTUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -289,6 +408,59 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A450C65E2205ADE000BA4047 /* LessonBookT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A450C6892205AE1200BA4047 /* Build configuration list for PBXNativeTarget "LessonBookT" */;
+			buildPhases = (
+				A450C65B2205ADE000BA4047 /* Sources */,
+				A450C65C2205ADE000BA4047 /* Frameworks */,
+				A450C65D2205ADE000BA4047 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LessonBookT;
+			productName = LessonBookT;
+			productReference = A450C65F2205ADE000BA4047 /* LessonBookT.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A450C6762205AE1200BA4047 /* LessonBookTTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A450C68C2205AE1200BA4047 /* Build configuration list for PBXNativeTarget "LessonBookTTests" */;
+			buildPhases = (
+				A450C6732205AE1200BA4047 /* Sources */,
+				A450C6742205AE1200BA4047 /* Frameworks */,
+				A450C6752205AE1200BA4047 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A450C6792205AE1200BA4047 /* PBXTargetDependency */,
+			);
+			name = LessonBookTTests;
+			productName = LessonBookTTests;
+			productReference = A450C6772205AE1200BA4047 /* LessonBookTTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A450C6812205AE1200BA4047 /* LessonBookTUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A450C68F2205AE1200BA4047 /* Build configuration list for PBXNativeTarget "LessonBookTUITests" */;
+			buildPhases = (
+				A450C67E2205AE1200BA4047 /* Sources */,
+				A450C67F2205AE1200BA4047 /* Frameworks */,
+				A450C6802205AE1200BA4047 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A450C6842205AE1200BA4047 /* PBXTargetDependency */,
+			);
+			name = LessonBookTUITests;
+			productName = LessonBookTUITests;
+			productReference = A450C6822205AE1200BA4047 /* LessonBookTUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A4C1C8DD21FDA95100A88255 /* LessonBookX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A4C1C90721FDA95500A88255 /* Build configuration list for PBXNativeTarget "LessonBookX" */;
@@ -405,6 +577,31 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Michael Toth";
 				TargetAttributes = {
+					A450C65E2205ADE000BA4047 = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					A450C6762205AE1200BA4047 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = A450C65E2205ADE000BA4047;
+					};
+					A450C6812205AE1200BA4047 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = A450C65E2205ADE000BA4047;
+					};
 					A4C1C8DD21FDA95100A88255 = {
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
@@ -434,6 +631,9 @@
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
+								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 							com.apple.ClassKit = {
@@ -483,11 +683,38 @@
 				A4C1C91A21FDAD1800A88255 /* LessonBook */,
 				A4C1C93221FDAD2100A88255 /* LessonBookTests */,
 				A4C1C93D21FDAD2100A88255 /* LessonBookUITests */,
+				A450C65E2205ADE000BA4047 /* LessonBookT */,
+				A450C6762205AE1200BA4047 /* LessonBookTTests */,
+				A450C6812205AE1200BA4047 /* LessonBookTUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A450C65D2205ADE000BA4047 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A450C6712205AE0F00BA4047 /* LaunchScreen.storyboard in Resources */,
+				A450C66E2205AE0F00BA4047 /* Assets.xcassets in Resources */,
+				A450C66C2205ADE200BA4047 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A450C6752205AE1200BA4047 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A450C6802205AE1200BA4047 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A4C1C8DC21FDA95100A88255 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -540,6 +767,42 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A450C65B2205ADE000BA4047 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A450C6622205ADE100BA4047 /* AppDelegate.swift in Sources */,
+				A450C6652205ADE100BA4047 /* LessonBookT.xcdatamodeld in Sources */,
+				A450C69E22063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */,
+				A450C6672205ADE100BA4047 /* MasterViewController.swift in Sources */,
+				A450C69B22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */,
+				A450C6692205ADE100BA4047 /* DetailViewController.swift in Sources */,
+				A450C6962205BFE400BA4047 /* CloudKitManagedObject.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A450C6732205AE1200BA4047 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A450C69F22063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */,
+				A450C6A1220646BC00BA4047 /* CloudKitManagedObject.swift in Sources */,
+				A450C67C2205AE1200BA4047 /* LessonBookTTests.swift in Sources */,
+				A450C69C22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A450C67E2205AE1200BA4047 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A450C6A022063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */,
+				A450C6A2220646BD00BA4047 /* CloudKitManagedObject.swift in Sources */,
+				A450C6872205AE1200BA4047 /* LessonBookTUITests.swift in Sources */,
+				A450C69D22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A4C1C8DA21FDA95100A88255 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,6 +867,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A450C6792205AE1200BA4047 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A450C65E2205ADE000BA4047 /* LessonBookT */;
+			targetProxy = A450C6782205AE1200BA4047 /* PBXContainerItemProxy */;
+		};
+		A450C6842205AE1200BA4047 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A450C65E2205ADE000BA4047 /* LessonBookT */;
+			targetProxy = A450C6832205AE1200BA4047 /* PBXContainerItemProxy */;
+		};
 		A4C1C8F521FDA95500A88255 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A4C1C8DD21FDA95100A88255 /* LessonBookX */;
@@ -627,6 +900,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A450C66A2205ADE200BA4047 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A450C66B2205ADE200BA4047 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A450C66F2205AE0F00BA4047 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A450C6702205AE0F00BA4047 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		A4C1C8EA21FDA95500A88255 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -675,6 +964,147 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A450C68A2205AE1200BA4047 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LessonBookT/LessonBookT.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookT/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A450C68B2205AE1200BA4047 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LessonBookT/LessonBookT.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookT/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A450C68D2205AE1200BA4047 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookTTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookTTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LessonBookT.app/LessonBookT";
+			};
+			name = Debug;
+		};
+		A450C68E2205AE1200BA4047 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookTTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookTTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LessonBookT.app/LessonBookT";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A450C6902205AE1200BA4047 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookTUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookTUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LessonBookT;
+			};
+			name = Debug;
+		};
+		A450C6912205AE1200BA4047 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9E7Y9QZC52;
+				INFOPLIST_FILE = LessonBookTUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookTUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LessonBookT;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		A4C1C90521FDA95500A88255 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1056,6 +1486,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A450C6892205AE1200BA4047 /* Build configuration list for PBXNativeTarget "LessonBookT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A450C68A2205AE1200BA4047 /* Debug */,
+				A450C68B2205AE1200BA4047 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A450C68C2205AE1200BA4047 /* Build configuration list for PBXNativeTarget "LessonBookTTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A450C68D2205AE1200BA4047 /* Debug */,
+				A450C68E2205AE1200BA4047 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A450C68F2205AE1200BA4047 /* Build configuration list for PBXNativeTarget "LessonBookTUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A450C6902205AE1200BA4047 /* Debug */,
+				A450C6912205AE1200BA4047 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A4C1C8D921FDA95100A88255 /* Build configuration list for PBXProject "LessonBookX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1122,6 +1579,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A450C6642205ADE100BA4047 /* LessonBookT.xcdatamodel */,
+			);
+			currentVersion = A450C6642205ADE100BA4047 /* LessonBookT.xcdatamodel */;
+			path = LessonBookT.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		A4C1C8E521FDA95100A88255 /* LessonBookX.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

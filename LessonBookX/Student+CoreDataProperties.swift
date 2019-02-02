@@ -12,6 +12,8 @@ import CoreData
 
 
 extension Student {
+    
+    var firstName:String?
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Student> {
         return NSFetchRequest<Student>(entityName: "Student")
