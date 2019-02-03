@@ -31,6 +31,19 @@ public class Student: NSManagedObject,  CloudKitManagedObject {
         return studentRecord!
     }
     
+    func updateWithRecord(_ record: CKRecord) {
+        firstName = record["firstName"] as? String
+        lastName = record["lastName"] as? String
+        phone = record["phone"] as? String
+        recordName = record.recordID.recordName
+        // recordID = try? NSKeyedArchiver.archivedData(withRootObject: record.recordID, requiringSecureCoding: false)
+        do {
+            recordID = try NSKeyedArchiver.archivedData(withRootObject: record.recordID, requiringSecureCoding: false)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     func fullName() -> String {
         let fn = self.firstName ?? "No"
         let ln = self.lastName ?? "Name"

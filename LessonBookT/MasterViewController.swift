@@ -16,7 +16,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     var managedObjectContext: NSManagedObjectContext? = nil
     private var database = CKContainer.default().privateCloudDatabase
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
-    // private var database = CKContainer.init(identifier: "iCloud.com.virtualpianist.LessonBook").privateCloudDatabase
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -35,13 +37,75 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
         print(database)
+        // [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newCloudData) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:nil];
+        let predicate = NSPredicate(value: true)
+        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:[.firesOnRecordUpdate,.firesOnRecordDeletion,.firesOnRecordCreation])
+        database.fetchAllSubscriptions(completionHandler: {(sub,err) in
+            for s:CKSubscription in sub! {
+                self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
+                    // nothing to do
+                    print("Deleted")
+                    print(s)
+                })
+            }
+            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
+            notificationInfo.alertLocalizationKey = "Student Changed"
+            notificationInfo.shouldBadge = true
+            
+            subscription.notificationInfo = notificationInfo
+            self.database.save(subscription, completionHandler: {(s,error) in
+                if ((error) != nil) {
+                    print("Subscription error")
+                    print(error?.localizedDescription as Any)
+                } else {
+                    print("Subscribed")
+                }
+            })
+            
+        })
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
+        
+        
     }
 
+    @objc func newCloudData(notification:Notification) {
+        let userInfo = notification.userInfo
+        
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
     }
 
+    func updateLocalRecords(changedRecords: [CKRecord], deletedRecordIDs: [CKRecord.ID]) {
+        
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        
+        delegate.updateContext.perform {
+            
+            let changedRecordNames = changedRecords.map { $0.recordID.recordName }
+            let deletedRecordNames = deletedRecordIDs.map { $0.recordName }
+            self.updateObject(students: changedRecordNames)
+            self.deleteObject(students: deletedRecordNames)
+            self.saveUpdateContext()
+        }
+    }
+    
+    func updateObject(students:[String]) {
+        
+    }
+    
+    func deleteObject(students:[String]) {
+        
+    }
+    
+    func saveUpdateContext() {
+        
+    }
+    
     @objc
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext

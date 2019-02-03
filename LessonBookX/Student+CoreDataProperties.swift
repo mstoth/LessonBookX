@@ -13,24 +13,28 @@ import CoreData
 
 extension Student {
     
-    var firstName:String?
-
+    
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Student> {
         return NSFetchRequest<Student>(entityName: "Student")
     }
-
-    @NSManaged public var balance: Float
-    @NSManaged public var cell: String?
-    @NSManaged public var city: String?
+    
     @NSManaged public var firstName: String?
     @NSManaged public var lastName: String?
-    @NSManaged public var phone: String?
-    @NSManaged public var state: String?
     @NSManaged public var street1: String?
     @NSManaged public var street2: String?
-    @NSManaged public var uniqueIdenfier: String?
+    @NSManaged public var city: String?
+    @NSManaged public var state: String?
     @NSManaged public var zip: String?
-
+    @NSManaged public var email: String?
+    @NSManaged public var phone: String?
+    @NSManaged public var uniqueIdentifier: String?
+    @NSManaged public var balance: Float
+    @NSManaged public var cell: String?
+    @NSManaged public var photo: NSData?
+    @NSManaged public var metaData: NSData?
+    @NSManaged public var recordName: String?
+    @NSManaged public var lastUpdate: Date?
+    @NSManaged public var birthday: Date?
     
 
 }

@@ -20,6 +20,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     @IBOutlet weak var tableView: NSTableView!
     var storeChangeObserver:AnyObject? = nil
     var students:[CKRecord] = []
+    var coreDataStudents:[Student] = []
     let delegate = NSApp.delegate
     
     //private var database = CKContainer.init(identifier: "iCloud.com.virtualpianist.LessonBook").privateCloudDatabase
@@ -79,7 +80,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
                 print(record.debugDescription)
             }
         })
-        fetchStudents()
+        fetchStudentsFromCoreData()
     }
 
     override var representedObject: Any? {
@@ -88,7 +89,20 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         }
     }
 
-    func fetchStudents() {
+    func fetchStudentsFromCoreData() {
+        let delegate = NSApp.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        let request = NSFetchRequest<Student>.init(entityName: "Student")
+        do {
+            let results = try context.fetch(request)
+            coreDataStudents = results
+            print("\(coreDataStudents.count) Students")
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+    }
+    func fetchStudentsFromCloud() {
         
         let predicate = NSPredicate(value: true)
         
@@ -116,15 +130,15 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 
     // MARK: -- TABLE VIEW
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return self.students.count
+        return self.coreDataStudents.count
     }
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         
         if (tableColumn?.title == "Name") {
-            if let returnVal = students[row].value(forKey: "firstName") as! String? {
+            if let returnVal = coreDataStudents[row].value(forKey: "firstName") as! String? {
                 do {
-                    if let ln = students[row].value(forKey: "lastName") as! String? {
+                    if let ln = coreDataStudents[row].value(forKey: "lastName") as! String? {
                         let s = returnVal + " " + ln
                         if (s == "New Student") {
                             let ls = NSLocalizedString("new-student", tableName: "Localizable.strings", bundle: Bundle.main, value: "New Student", comment: "new-student")
@@ -142,7 +156,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             }
         } else {
             
-            if let returnVal = students[row].value(forKey: "phone") as! String?  {
+            if let returnVal = coreDataStudents[row].value(forKey: "phone") as! String?  {
                 do {
                     return returnVal
                 }

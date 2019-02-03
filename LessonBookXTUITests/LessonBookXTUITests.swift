@@ -1,14 +1,14 @@
 //
-//  LessonBookTUITests.swift
-//  LessonBookTUITests
+//  LessonBookXTUITests.swift
+//  LessonBookXTUITests
 //
-//  Created by Michael Toth on 2/2/19.
+//  Created by Michael Toth on 2/3/19.
 //  Copyright © 2019 Michael Toth. All rights reserved.
 //
 
 import XCTest
 
-class LessonBookTUITests: XCTestCase {
+class LessonBookXTUITests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -26,7 +26,7 @@ class LessonBookTUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-        func testExample() {
+    func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }

@@ -1,21 +1,18 @@
 //
-//  LessonBookTTests.swift
-//  LessonBookTTests
+//  LessonBookXTTests.swift
+//  LessonBookXTTests
 //
-//  Created by Michael Toth on 2/2/19.
+//  Created by Michael Toth on 2/3/19.
 //  Copyright © 2019 Michael Toth. All rights reserved.
 //
 
-import CloudKit
-import CoreData
 import XCTest
-@testable import LessonBookT
+@testable import LessonBookXT
 
-class LessonBookTTests: XCTestCase {
+class LessonBookXTTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
     }
 
     override func tearDown() {
@@ -25,7 +22,6 @@ class LessonBookTTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
     }
 
     func testPerformanceExample() {

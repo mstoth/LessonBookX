@@ -17,35 +17,42 @@ protocol StudentDelegate {
 }
 
 @objc(Student)
-public class Student: NSManagedObject {
+public class Student: NSManagedObject, CloudKitManagedObject {
     
-    // MARK: - Properties
-    let StudentType = "Student"
+    @NSManaged public var recordID: Data?
     
-    static let sharedInstance = Student()
-    var delegate: StudentDelegate?
-    var items: [Student] = []
-    // let userInfo: UserInfo
     
-    fileprivate static let recordType = "Student"
-    fileprivate static let keys = (firstName : "firstName", lastName : "lastName")
-
-    private let database = CKContainer.default().privateCloudDatabase
-    @NSManaged public var record : CKRecord
+    var recordType: String = "Student"
+    //var lastUpdate: Data?
     
-    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertInto: context)
-        self.record = CKRecord(recordType: Student.recordType)
+    func managedObjectToRecord() -> CKRecord {
+        guard let firstName = firstName, let lastName = lastName, let phone = phone else {
+            fatalError("Required properties for record not set")
+        }
+        
+        let studentRecord = cloudKitRecord()
+        studentRecord!["firstName"] = firstName as CKRecordValue
+        studentRecord!["lastName"] = lastName as CKRecordValue
+        studentRecord!["phone"] = phone as CKRecordValue
+        return studentRecord!
     }
-
     
-    var name : String {
-        get {
-            //let s = self.record.value(forKey: Student.firstName!) as! String + " " + self.record.value(forKey: Student.lastName!) as! String
-            return self.record.value(forKey: Student.keys.firstName) as! String
+    func updateWithRecord(_ record: CKRecord) {
+        firstName = record["firstName"] as? String
+        lastName = record["lastName"] as? String
+        phone = record["phone"] as? String
+        recordName = record.recordID.recordName
+        // recordID = try? NSKeyedArchiver.archivedData(withRootObject: record.recordID, requiringSecureCoding: false)
+        do {
+            recordID = try NSKeyedArchiver.archivedData(withRootObject: record.recordID, requiringSecureCoding: false)
+        } catch {
+            print(error.localizedDescription)
         }
-        set {
-            self.record.setValue(newValue, forKey: Student.keys.firstName)
-        }
+    }
+    
+    func fullName() -> String {
+        let fn = self.firstName ?? "No"
+        let ln = self.lastName ?? "Name"
+        return fn + " " + ln
     }
 }
