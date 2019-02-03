@@ -16,10 +16,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     var managedObjectContext: NSManagedObjectContext? = nil
     private var database = CKContainer.default().privateCloudDatabase
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
-
+    // private var database = CKContainer.init(identifier: "iCloud.com.virtualpianist.LessonBook").privateCloudDatabase
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        let containerIdentifier = String(CKContainer.default().containerIdentifier!)
+        let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
+        let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
+        database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
+
         navigationItem.leftBarButtonItem = editButtonItem
 
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
@@ -39,11 +45,43 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     @objc
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
-        let newEvent = Event(context: context)
-             
+        //let newEvent = Event(context: context)
+        let newStudent = Student(context: context)
+        newStudent.prepareForCloudKit()
+        let ccr = newStudent.cloudKitRecord()
+        
+        newStudent.firstName = "New"
+        newStudent.lastName = "Student"
+        newStudent.phone = ""
+        
+        
+        ccr!.setValue("New", forKey: "firstName")
+        ccr!.setValue("Student", forKey: "lastName")
+        ccr!.setValue("", forKey: "phone")
         // If appropriate, configure the new managed object.
-        newEvent.timestamp = Date()
-
+        // newEvent.timestamp = Date()
+        // let insertedObjects = context.insertedObjects
+        // let modifiedObjects = context.updatedObjects
+        // let deletedRecordIDs = context.deletedObjects.map { ($0 as! CloudKitManagedObject).cloudKitRecordID() }
+        if context.hasChanges {
+            do {
+                try context.save()
+                print("new student saved to core data")
+            } catch {
+                print(error.localizedDescription)
+            }
+            // let insertedObjectIDs = insertedObjects.map { $0 .objectID }
+            // let modifiedObjectIDs = modifiedObjects.map { $0 .objectID }
+            
+            database.save(ccr!, completionHandler: {(rec,err) in
+                if let err = err {
+                    print(err.localizedDescription)
+                } else {
+                    print("new student saved to cloud")
+                }
+                })
+            
+        }
         // Save the context.
         do {
             try context.save()
@@ -95,8 +133,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let context = fetchedResultsController.managedObjectContext
+            let studentToDelete = fetchedResultsController.object(at: indexPath)
+            let recordID = studentToDelete.cloudKitRecordID()
             context.delete(fetchedResultsController.object(at: indexPath))
-                
+            database.delete(withRecordID: recordID!, completionHandler: {id,err in
+                if let err = err {
+                    print(err.localizedDescription)
+                } else {
+                    print("record deleted from cloud")
+                }
+            })
             do {
                 try context.save()
             } catch {
@@ -108,24 +154,24 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
-    func configureCell(_ cell: UITableViewCell, withEvent event: Event) {
-        cell.textLabel!.text = event.timestamp!.description
+    func configureCell(_ cell: UITableViewCell, withEvent student: Student) {
+        cell.textLabel!.text = student.fullName()
     }
 
     // MARK: - Fetched results controller
 
-    var fetchedResultsController: NSFetchedResultsController<Event> {
+    var fetchedResultsController: NSFetchedResultsController<Student> {
         if _fetchedResultsController != nil {
             return _fetchedResultsController!
         }
         
-        let fetchRequest: NSFetchRequest<Event> = Event.fetchRequest()
+        let fetchRequest: NSFetchRequest<Student> = Student.fetchRequest()
         
         // Set the batch size to a suitable number.
         fetchRequest.fetchBatchSize = 20
         
         // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "lastName", ascending: false)
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -146,7 +192,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         
         return _fetchedResultsController!
     }    
-    var _fetchedResultsController: NSFetchedResultsController<Event>? = nil
+    var _fetchedResultsController: NSFetchedResultsController<Student>? = nil
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -170,9 +216,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             case .delete:
                 tableView.deleteRows(at: [indexPath!], with: .fade)
             case .update:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Student)
             case .move:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Student)
                 tableView.moveRow(at: indexPath!, to: newIndexPath!)
         }
     }

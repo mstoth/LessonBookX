@@ -31,8 +31,10 @@ extension Student {
     @NSManaged public var cell: String?
     @NSManaged public var photo: NSData?
     @NSManaged public var metaData: NSData?
-    // @NSManaged public var recordID: String?
+    // @NSManaged public var recordID: NSData?
     @NSManaged public var recordName: String?
     // @NSManaged public var recordType: String?
     @NSManaged public var lastUpdate: Date?
+    @NSManaged public var birthday: Date?
+    
 }

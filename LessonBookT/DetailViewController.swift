@@ -15,9 +15,10 @@ class DetailViewController: UIViewController {
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail = detailItem {
+        if let student = detailItem {
             if let label = detailDescriptionLabel {
-                label.text = detail.timestamp!.description
+                label.text = student.fullName()
+                self.title = student.fullName()
             }
         }
     }
@@ -28,9 +29,15 @@ class DetailViewController: UIViewController {
         configureView()
     }
 
-    var detailItem: Event? {
+    var detailItem: Student? {
         didSet {
             // Update the view.
+            configureView()
+        }
+    }
+    
+    var studentItem:  Student? {
+        didSet {
             configureView()
         }
     }

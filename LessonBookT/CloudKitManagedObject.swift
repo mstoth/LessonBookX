@@ -29,20 +29,28 @@ extension CloudKitManagedObject {
         recordName = recordType + "." + uuid.uuidString
         let _recordID = CKRecord.ID(recordName: recordName!, zoneID: customZone.zoneID)
         do {
-            try recordID = NSKeyedArchiver.archivedData(withRootObject: _recordID, requiringSecureCoding: false)  // NSKeyedArchiver.archivedData(withRootObject: _recordID)
+            self.recordID = try NSKeyedArchiver.archivedData(withRootObject: _recordID, requiringSecureCoding: false)
+            // try recordID = NSKeyedArchiver.archivedData(withRootObject: _recordID, requiringSecureCoding: false)  // NSKeyedArchiver.archivedData(withRootObject: _recordID)
+            // try recordID = NSKeyedArchiver.value(forKey: <#T##String#>)
         } catch {
             print("Error preparing for cloud kit")
         }
     }
     
-    func cloudKitRecord() -> CKRecord {
-        return CKRecord(recordType: recordType, recordID: cloudKitRecordID())
+    func cloudKitRecord() -> CKRecord? {
+        return CKRecord(recordType: recordType, recordID: cloudKitRecordID()!)
     }
     
-    func cloudKitRecordID() -> CKRecord.ID {
+    func cloudKitRecordID() -> CKRecord.ID? {
+        //let r = try! NSKeyedUnarchiver.unarchivedObject(ofClasses: [Data.self as! AnyObject.Type], from: recordID!) as! CKRecord.ID
+        do {
+            
+            let r = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(recordID!)
+            return r as? CKRecord.ID
+        } catch {
+            return nil
+        }
         
-        let r = try! NSKeyedUnarchiver.unarchivedObject(ofClasses: [Data.self as! AnyObject.Type], from: recordID!) as! CKRecord.ID
-        return r
         //return NSKeyedUnarchiver.unarchiveObject(with: recordID!) as! CKRecord.ID
     }
 }
