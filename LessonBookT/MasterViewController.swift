@@ -143,7 +143,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 } else {
                     print("new student saved to cloud")
                 }
-                })
+            })
             
         }
         // Save the context.

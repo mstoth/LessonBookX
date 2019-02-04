@@ -17,14 +17,54 @@ class StudentModel {
 
 class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
 
+    //var detailViewController: DetailViewController? = nil
+    var managedObjectContext: NSManagedObjectContext? = nil
+    private var database = CKContainer.default().privateCloudDatabase
+    let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
     @IBOutlet weak var tableView: NSTableView!
+    
+    @IBAction func addNewStudent(_ sender: Any) {
+        let delegate = NSApp.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        let newStudent = Student(context:context)
+        newStudent.prepareForCloudKit()
+        let ccr = newStudent.cloudKitRecord()
+        
+        newStudent.firstName = "New"
+        newStudent.lastName = "Student"
+        newStudent.phone = ""
+        ccr!.setValue("New",forKey: "firstName")
+        ccr!.setValue("Student",forKey: "lastName")
+        ccr!.setValue("", forKey: "phone")
+        do {
+            try context.save()
+            print("New student saved to core data")
+        } catch {
+            print(error.localizedDescription)
+        }
+        database.save(ccr!, completionHandler: {(rec,err) in
+            if let err = err {
+                print(err.localizedDescription)
+            } else {
+                print("new student saved to cloud")
+            }
+        })
+        
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        } 
+    }
+    
+    @IBAction func removeSelectedStudent(_ sender: Any) {
+    }
+    
     var storeChangeObserver:AnyObject? = nil
     var students:[CKRecord] = []
     var coreDataStudents:[Student] = []
     let delegate = NSApp.delegate
     
     //private var database = CKContainer.init(identifier: "iCloud.com.virtualpianist.LessonBook").privateCloudDatabase
-    private var database = CKContainer.default().privateCloudDatabase
+    //private var database = CKContainer.default().privateCloudDatabase
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +75,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
         
         let predicate = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:.firesOnRecordUpdate)
+        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:[.firesOnRecordUpdate,.firesOnRecordCreation,.firesOnRecordDeletion])
         database.fetchAllSubscriptions(completionHandler: {(sub,err) in
             for s:CKSubscription in sub! {
                 self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
@@ -61,16 +101,16 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 
         
         
-        database.save(subscription, completionHandler: {(s,error) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Subscribed")
-                DispatchQueue.main.sync {
-                    self.tableView.reloadData()
-                }
-            }
-        })
+//        database.save(subscription, completionHandler: {(s,error) in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                print("Subscribed")
+//                DispatchQueue.main.sync {
+//                    self.tableView.reloadData()
+//                }
+//            }
+//        })
 
         // Do any additional setup after loading the view.
         CKContainer.default().fetchUserRecordID(completionHandler: {(record,error) in
@@ -96,6 +136,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         do {
             let results = try context.fetch(request)
             coreDataStudents = results
+            //for s:Student in coreDataStudents {
+                //context.delete(s)
+            //}
+            // try! context.save()
+            
+            // coreDataStudents.removeAll()
             print("\(coreDataStudents.count) Students")
         } catch {
             print(error.localizedDescription)
