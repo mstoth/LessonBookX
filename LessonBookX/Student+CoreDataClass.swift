@@ -18,6 +18,8 @@ protocol StudentDelegate {
 
 @objc(Student)
 public class Student: NSManagedObject, CloudKitManagedObject {
+    var ckrecordID: Data?
+    
     
     @NSManaged public var recordID: Data?
     

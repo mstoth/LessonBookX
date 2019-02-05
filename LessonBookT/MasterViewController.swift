@@ -117,7 +117,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         newStudent.firstName = "New"
         newStudent.lastName = "Student"
         newStudent.phone = ""
-        
+        newStudent.recordID = newStudent.ckrecordID
         
         ccr!.setValue("New", forKey: "firstName")
         ccr!.setValue("Student", forKey: "lastName")
@@ -198,15 +198,25 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         if editingStyle == .delete {
             let context = fetchedResultsController.managedObjectContext
             let studentToDelete = fetchedResultsController.object(at: indexPath)
-            let recordID = studentToDelete.cloudKitRecordID()
+            if studentToDelete.recordID != nil {
+                studentToDelete.ckrecordID = studentToDelete.recordID
+                database.delete(withRecordID: studentToDelete.cloudKitRecordID()!, completionHandler: {id,err in
+                    if let err = err {
+                        print(err.localizedDescription)
+                    } else {
+                        print("record deleted from cloud")
+                    }
+                })
+
+            }
+            
+            
             context.delete(fetchedResultsController.object(at: indexPath))
-            database.delete(withRecordID: recordID!, completionHandler: {id,err in
-                if let err = err {
-                    print(err.localizedDescription)
-                } else {
-                    print("record deleted from cloud")
-                }
-            })
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
             do {
                 try context.save()
             } catch {

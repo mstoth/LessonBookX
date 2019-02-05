@@ -20,6 +20,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     //var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
     private var database = CKContainer.default().privateCloudDatabase
+    private var container = CKContainer.default()
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
     @IBOutlet weak var tableView: NSTableView!
     
@@ -33,12 +34,19 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         newStudent.firstName = "New"
         newStudent.lastName = "Student"
         newStudent.phone = ""
+        newStudent.recordID = newStudent.ckrecordID
+        
         ccr!.setValue("New",forKey: "firstName")
         ccr!.setValue("Student",forKey: "lastName")
         ccr!.setValue("", forKey: "phone")
         do {
             try context.save()
+            coreDataStudents.append(newStudent)
             print("New student saved to core data")
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+
         } catch {
             print(error.localizedDescription)
         }
@@ -50,12 +58,35 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             }
         })
         
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        } 
     }
     
     @IBAction func removeSelectedStudent(_ sender: Any) {
+        let delegate = NSApp.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+
+        let row = tableView.selectedRow
+        if (row < 0) {
+            print("select a student")
+        } else {
+            let selectedStudent = coreDataStudents[row]
+            context.delete(selectedStudent)
+            do {
+                try context.save()
+                print("Deleted student from core data")
+            } catch {
+                print(error.localizedDescription)
+            }
+            coreDataStudents.remove(at: row)
+            database.delete(withRecordID: selectedStudent.cloudKitRecordID()!, completionHandler: {(id,err) in
+                if let err = err {
+                    print("problem deleting record on cloud")
+                    print(err.localizedDescription)
+                } else {
+                    print("deleting record on cloud successful")
+                }
+            })
+            tableView.reloadData()
+        }
     }
     
     var storeChangeObserver:AnyObject? = nil
@@ -72,31 +103,38 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         let containerIdentifier = String(CKContainer.default().containerIdentifier!)
         let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
         let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
+        container = CKContainer.init(identifier: String(newContainerIdentifier))
         database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
         
         let predicate = NSPredicate(value: true)
         let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:[.firesOnRecordUpdate,.firesOnRecordCreation,.firesOnRecordDeletion])
         database.fetchAllSubscriptions(completionHandler: {(sub,err) in
-            for s:CKSubscription in sub! {
-                self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
-                    // nothing to do
-                    print("Deleted")
-                    print(s)
-                })
-            }
-            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
-            notificationInfo.alertLocalizationKey = "Student Changed"
-            notificationInfo.shouldBadge = true
-            subscription.notificationInfo = notificationInfo
-            self.database.save(subscription, completionHandler: {(s,error) in
-                if ((error) != nil) {
-                    print("Subscription error")
-                    print(error?.localizedDescription as Any)
-                } else {
-                    print("Subscribed")
+            DispatchQueue.main.sync {
+                for s:CKSubscription in sub! {
+                    self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
+                        // nothing to do
+                        if let err = err {
+                            print(err.localizedDescription)
+                        } else {
+                            print("Deleted subscription")
+                            print(s)
+                            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
+                            notificationInfo.alertLocalizationKey = "Student Changed"
+                            notificationInfo.shouldBadge = true
+                            subscription.notificationInfo = notificationInfo
+                            self.database.save(subscription, completionHandler: {(s,error) in
+                                if ((error) != nil) {
+                                    print("Subscription error")
+                                    print(error?.localizedDescription as Any)
+                                } else {
+                                    print("Subscribed")
+                                }
+                            })
+
+                        }
+                    })
                 }
-            })
-        
+            }
         })
 
         
@@ -135,7 +173,11 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         let request = NSFetchRequest<Student>.init(entityName: "Student")
         do {
             let results = try context.fetch(request)
+            for r:Student in results {
+                r.ckrecordID = r.recordID
+            }
             coreDataStudents = results
+            
             //for s:Student in coreDataStudents {
                 //context.delete(s)
             //}
@@ -187,8 +229,8 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
                     if let ln = coreDataStudents[row].value(forKey: "lastName") as! String? {
                         let s = returnVal + " " + ln
                         if (s == "New Student") {
-                            let ls = NSLocalizedString("new-student", tableName: "Localizable.strings", bundle: Bundle.main, value: "New Student", comment: "new-student")
-                            print(ls)
+                            //let ls = NSLocalizedString("new-student", tableName: "Localizable.strings", bundle: Bundle.main, value: "New Student", comment: "new-student")
+                            // print(ls)
                             return NSLocalizedString("new-student", tableName: "Localizable.strings", bundle: Bundle.main, value: "New Student", comment: "new-student")
                         } else {
                             return returnVal + " " + ln
