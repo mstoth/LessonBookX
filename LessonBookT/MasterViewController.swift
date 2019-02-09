@@ -23,10 +23,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let containerIdentifier = String(CKContainer.default().containerIdentifier!)
-        let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
-        let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
-        database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
+//        let containerIdentifier = String(CKContainer.default().containerIdentifier!)
+//        let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
+//        let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
+//        database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
 
         navigationItem.leftBarButtonItem = editButtonItem
 
@@ -38,37 +38,52 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
         print(database)
         // [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newCloudData) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:nil];
-        let predicate = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:[.firesOnRecordUpdate,.firesOnRecordDeletion,.firesOnRecordCreation])
-        database.fetchAllSubscriptions(completionHandler: {(sub,err) in
-            for s:CKSubscription in sub! {
-                self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
-                    // nothing to do
-                    print("Deleted")
-                    print(s)
-                })
-            }
-            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
-            notificationInfo.alertLocalizationKey = "Student Changed"
-            notificationInfo.shouldBadge = true
-            
-            subscription.notificationInfo = notificationInfo
-            self.database.save(subscription, completionHandler: {(s,error) in
-                if ((error) != nil) {
-                    print("Subscription error")
-                    print(error?.localizedDescription as Any)
-                } else {
-                    print("Subscribed")
-                }
-            })
-            
-        })
+//        let predicate = NSPredicate(value: true)
+//        //let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:.firesOnRecordUpdate | .firesOnRecordDeletion | .firesOnRecordCreation)
+//        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:.firesOnRecordCreation)
+//        let notificationObject = CKSubscription.NotificationInfo.init()
+//        notificationObject.alertLocalizationKey = "Student Created"
+//        subscription.notificationInfo = notificationObject
         
-        NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
+//        database.fetchAllSubscriptions(completionHandler: {(sub,err) in
+//            for s:CKSubscription in sub! {
+//                self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
+//                    if let err = err {
+//                        print(err.localizedDescription)
+//                    } else {
+//                        // nothing to do
+//                        print("Deleted subscription")
+//                        print(s.subscriptionID)
+//                    }
+//                })
+//            }
+//
+//            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
+//            notificationInfo.alertLocalizationKey = "Student Changed"
+//            notificationInfo.shouldBadge = true
+//
+//            subscription.notificationInfo = notificationInfo
+//            self.database.save(subscription, completionHandler: {(s,error) in
+//                if ((error) != nil) {
+//                    print("Subscription error")
+//                    print(error?.localizedDescription as Any)
+//                } else {
+//                    print("Subscribed")
+//                    print(s!.subscriptionID)
+//                }
+//            })
+//
+//        })
+        
+        //NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
         
         
     }
 
+    func setDataBase(_ db:CKDatabase) {
+        database = db
+    }
+    
     @objc func newCloudData(notification:Notification) {
         let userInfo = notification.userInfo
         

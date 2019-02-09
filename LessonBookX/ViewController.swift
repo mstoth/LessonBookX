@@ -24,6 +24,33 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
     @IBOutlet weak var tableView: NSTableView!
     
+    func addCloudKitRecordToCoreData(_ ckRecord:CKRecord) {
+        let delegate = NSApp.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+
+        let newStudent = Student(context: context)
+        newStudent.firstName = ckRecord.value(forKey: "firstName") as? String
+        newStudent.lastName = ckRecord.value(forKey: "lastName") as? String
+        newStudent.phone = ckRecord.value(forKey: "phone") as? String
+        do {
+            newStudent.recordID = try NSKeyedArchiver.archivedData(withRootObject: ckRecord.recordID, requiringSecureCoding: false)
+        } catch {
+            print(error.localizedDescription)
+        }
+        newStudent.recordName = ckRecord.value(forKey: "recordName") as? String
+        do {
+            try context.save()
+            coreDataStudents.append(newStudent)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
     @IBAction func addNewStudent(_ sender: Any) {
         let delegate = NSApp.delegate as! AppDelegate
         let context = delegate.persistentContainer.viewContext
@@ -77,6 +104,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
                 print(error.localizedDescription)
             }
             coreDataStudents.remove(at: row)
+            
             database.delete(withRecordID: selectedStudent.cloudKitRecordID()!, completionHandler: {(id,err) in
                 if let err = err {
                     print("problem deleting record on cloud")
@@ -86,6 +114,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
                 }
             })
             tableView.reloadData()
+
         }
     }
     
@@ -106,49 +135,61 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         container = CKContainer.init(identifier: String(newContainerIdentifier))
         database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
         
-        let predicate = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:[.firesOnRecordUpdate,.firesOnRecordCreation,.firesOnRecordDeletion])
-        database.fetchAllSubscriptions(completionHandler: {(sub,err) in
-            DispatchQueue.main.sync {
-                for s:CKSubscription in sub! {
-                    self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
-                        // nothing to do
-                        if let err = err {
-                            print(err.localizedDescription)
-                        } else {
-                            print("Deleted subscription")
-                            print(s)
-                            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
-                            notificationInfo.alertLocalizationKey = "Student Changed"
-                            notificationInfo.shouldBadge = true
-                            subscription.notificationInfo = notificationInfo
-                            self.database.save(subscription, completionHandler: {(s,error) in
-                                if ((error) != nil) {
-                                    print("Subscription error")
-                                    print(error?.localizedDescription as Any)
-                                } else {
-                                    print("Subscribed")
-                                }
-                            })
-
-                        }
-                    })
-                }
-            }
-        })
-
-        
-        
-//        database.save(subscription, completionHandler: {(s,error) in
-//            if let error = error {
-//                print(error.localizedDescription)
-//            } else {
-//                print("Subscribed")
-//                DispatchQueue.main.sync {
-//                    self.tableView.reloadData()
+        //  let predicate = NSPredicate(value: true)
+//        let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:.firesOnRecordCreation)
+//        database.fetchAllSubscriptions(completionHandler: {(sub,err) in
+//            DispatchQueue.main.sync {
+//                for s:CKSubscription in sub! {
+//                    self.database.delete(withSubscriptionID: s.subscriptionID, completionHandler: {(sub,err) in
+//                        // nothing to do
+//                        if let err = err {
+//                            print(err.localizedDescription)
+//                        } else {
+//                            print("Deleted subscription")
+//                            print(s)
+//                            let notificationInfo:CKSubscription.NotificationInfo = CKSubscription.NotificationInfo.init()
+//                            notificationInfo.alertLocalizationKey = "Student Changed"
+//                            notificationInfo.shouldBadge = true
+//                            subscription.notificationInfo = notificationInfo
+//                            self.database.save(subscription, completionHandler: {(s,error) in
+//                                if ((error) != nil) {
+//                                    print("Subscription error")
+//                                    print(error?.localizedDescription as Any)
+//                                } else {
+//                                    print("Subscribed")
+//                                }
+//                            })
+//
+//                        }
+//                    })
 //                }
 //            }
 //        })
+
+
+        let predicate = NSPredicate(value: true)
+        
+        let qSubscription = CKQuerySubscription(recordType: "Student", predicate: predicate, subscriptionID: "test",
+                                                options: [.firesOnRecordCreation,.firesOnRecordUpdate, .firesOnRecordDeletion])
+        
+        qSubscription.notificationInfo?.shouldSendMutableContent = true
+        
+        let notificationInfo = CKQuerySubscription.NotificationInfo()
+        notificationInfo.shouldSendMutableContent = true
+        notificationInfo.shouldBadge = true
+        notificationInfo.shouldSendContentAvailable = true
+        notificationInfo.desiredKeys = ["firstName","lastName","phone"]
+        
+        // notificationInfo.perform(#selector(handleNotification))
+        qSubscription.notificationInfo = notificationInfo
+        
+        database.save(qSubscription,completionHandler: {(sub,error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Saved Subscription")
+            }
+        })
 
         // Do any additional setup after loading the view.
         CKContainer.default().fetchUserRecordID(completionHandler: {(record,error) in
@@ -253,5 +294,60 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             }
         }
     }
+    
+    // MARK: -- Handle Cloud Kit Notifications
+
+    func deletedCloudKitRecord(_ id:String) {
+        
+    }
+    
+    func changedCloudKitRecord(_ id:String) {
+        
+    }
+    
+    func fetchAndAddRecordToCoreData(_ recordID:CKRecord.ID) {
+        database.fetch(withRecordID: recordID, completionHandler: { (r,err) in
+            if let err = err {
+                print(err.localizedDescription)
+            } else {
+                self.addCloudKitRecordToCoreData(r!)
+                print(r?.value(forKey: "firstName") ?? "No Name")
+                
+            }
+        })
+    }
+//    @objc func handleNotification(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
+//
+//        guard let ck = userInfo["ck"] as? [String: AnyObject] else {
+//            return
+//        }
+//
+//        guard let qry = ck["qry"] as? [String: AnyObject] else {
+//            return
+//        }
+//
+//        let recordIDString = qry["rid"] as! String
+//        let id = CKRecord.ID(recordName: recordIDString)
+//        let record = CKRecord(recordType: "Student", recordID: id)
+//
+//        let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
+//        switch options {
+//        case .firesOnRecordCreation:
+//            print("FIRE ON RECORD CREATION")
+//            addedCloudKitRecord(record)
+//            break
+//        case .firesOnRecordDeletion:
+//            print("FIRE ON RECORD DELETE")
+//            break
+//        case .firesOnRecordUpdate:
+//            print("FIRE ON UPDATE")
+//            break
+//        case [.firesOnRecordCreation, .firesOnRecordUpdate]:
+//            print("FIRE ON DELETE")
+//        default:
+//            print("DEFAULT \(options)")
+//        }
+//    }
+
 }
 

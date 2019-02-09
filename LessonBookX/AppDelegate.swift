@@ -7,6 +7,8 @@
 //
 
 import Cocoa
+import CloudKit
+import UserNotifications
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -14,9 +16,144 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     
     
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: {(granted,err) in
+            if granted {
+                print("authorization granted")
+            } else {
+                print("authorization not granted")
+            }
+            if let err = err {
+                print(err.localizedDescription)
+            }
+        })
+        
+        
     }
+    
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        NSApp.registerForRemoteNotifications()
+        
+    }
+    
+    func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
+        var recordID:CKRecord.ID
+        let notification: CKNotification =
+            CKNotification(fromRemoteNotificationDictionary:
+                userInfo as! [String : NSObject])
+
+        
+        if notification.notificationType == CKNotification.NotificationType.query {
+            print("query notification")
+            let queryNotification = notification as! CKQueryNotification
+            recordID = queryNotification.recordID!
+            
+            guard let ck = userInfo["ck"] as? [String: AnyObject] else {
+                return
+            }
+            
+            guard let qry = ck["qry"] as? [String: AnyObject] else {
+                return
+            }
+
+            
+            //let storyboard = NSStoryboard(name: "Main", bundle: nil)
+            guard let mainWindow = NSApplication.shared.mainWindow else {
+                return
+            }
+            guard let contentViewController = mainWindow.contentViewController else {
+                return
+            }
+            let viewController = contentViewController as! ViewController 
+            //let viewController = NSApplication.shared.mainWindow?.contentViewController as! ViewController
+            
+            
+            let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
+            switch options {
+            case .firesOnRecordCreation:
+                print("FIRE ON RECORD CREATION")
+                viewController.fetchAndAddRecordToCoreData(recordID)
+                
+                //viewController.addedCloudKitRecord(record)
+                break
+            case .firesOnRecordDeletion:
+                print("FIRE ON RECORD DELETE")
+                break
+            case .firesOnRecordUpdate:
+                print("FIRE ON UPDATE")
+                break
+            case [.firesOnRecordCreation, .firesOnRecordUpdate]:
+                print("FIRE ON DELETE")
+            default:
+                print("DEFAULT \(options)")
+            }
+
+            
+        }
+        
+        if notification.notificationType == CKNotification.NotificationType.database {
+            print("Database notification")
+        }
+
+        // let recordID = qry["rid"]
+
+
+        // let record = CKRecord(recordType: "Student", recordID: recordID)
+
+        // print(recordID ?? "No Record ID")
+
+//        let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
+//        switch options {
+//        case .firesOnRecordCreation:
+//            print("FIRE ON RECORD CREATION")
+//            rootViewController!.fetchRecord(recordID)
+//            //viewController.addedCloudKitRecord(record)
+//            break
+//        case .firesOnRecordDeletion:
+//            print("FIRE ON RECORD DELETE")
+//            break
+//        case .firesOnRecordUpdate:
+//            print("FIRE ON UPDATE")
+//            break
+//        case [.firesOnRecordCreation, .firesOnRecordUpdate]:
+//            print("FIRE ON DELETE")
+//        default:
+//            print("DEFAULT \(options)")
+//        }
+    }
+    
+    
+    
+    var rootViewController: ViewController? {
+        return NSApplication.shared.mainWindow?.contentViewController as? ViewController
+    }
+//
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//
+//        //let viewController: ViewController =
+//        guard let viewController = NSApp.mainWindow?.contentViewController as NSViewController else {
+//            return
+//        }
+//            //self.window?.rootViewController as! ViewController
+//
+//        let notification: CKNotification =
+//            CKNotification(fromRemoteNotificationDictionary:
+//                userInfo as! [String : NSObject])
+//
+//        if (notification.notificationType ==
+//            CKNotificationType.query) {
+//
+//            let queryNotification =
+//                notification as! CKQueryNotification
+//
+//            let recordID = queryNotification.recordID
+//
+//            viewController.fetchRecord(recordID!)
+//        }
+//    }
+    
     
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application

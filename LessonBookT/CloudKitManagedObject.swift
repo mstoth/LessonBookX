@@ -45,7 +45,9 @@ extension CloudKitManagedObject {
     func cloudKitRecordID() -> CKRecord.ID? {
         //let r = try! NSKeyedUnarchiver.unarchivedObject(ofClasses: [Data.self as! AnyObject.Type], from: recordID!) as! CKRecord.ID
         do {
-            
+            if (ckrecordID == nil) {
+                return CKRecord.ID(recordName: recordName ?? "None")
+            }
             let r = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(ckrecordID!)
             return r as? CKRecord.ID
         } catch {

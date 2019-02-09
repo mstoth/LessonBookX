@@ -4,8 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>LessonBook.xcscheme_^#shared#^_</key>
+		<key>LessonBook.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
@@ -19,10 +21,26 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>LessonBookXT.xcscheme_^#shared#^_</key>
+		<key>LessonBookXT.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>3</integer>
+		</dict>
+		<key>LessonBookXTTests copy copy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>LessonBookXTTests copy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -38,6 +56,36 @@
 			<true/>
 		</dict>
 		<key>A4C1C8FD21FDA95500A88255</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4C1C91A21FDAD1800A88255</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4C1C93221FDAD2100A88255</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4C1C93D21FDAD2100A88255</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4D3AD4F2207A92700D48A64</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4D3AD632207A99E00D48A64</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4D3AD6E2207A99F00D48A64</key>
 		<dict>
 			<key>primary</key>
 			<true/>
