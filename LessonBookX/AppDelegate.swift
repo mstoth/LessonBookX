@@ -80,12 +80,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 break
             case .firesOnRecordDeletion:
                 print("FIRE ON RECORD DELETE")
+                viewController.recordRemovedFromCloudKit(recordID)
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")
+                viewController.recordRemovedFromCloudKit(recordID)
+                break
             default:
                 print("DEFAULT \(options)")
             }

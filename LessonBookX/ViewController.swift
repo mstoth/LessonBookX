@@ -23,21 +23,25 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     private var container = CKContainer.default()
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
     @IBOutlet weak var tableView: NSTableView!
+    var storeChangeObserver:AnyObject? = nil
+    var students:[CKRecord] = []
+    var coreDataStudents:[Student] = []
+    let delegate = NSApp.delegate
+    var context: NSManagedObjectContext? = nil
+
     
     func addCloudKitRecordToCoreData(_ ckRecord:CKRecord) {
         let delegate = NSApp.delegate as! AppDelegate
         let context = delegate.persistentContainer.viewContext
 
         let newStudent = Student(context: context)
-        newStudent.firstName = ckRecord.value(forKey: "firstName") as? String
-        newStudent.lastName = ckRecord.value(forKey: "lastName") as? String
-        newStudent.phone = ckRecord.value(forKey: "phone") as? String
-        do {
-            newStudent.recordID = try NSKeyedArchiver.archivedData(withRootObject: ckRecord.recordID, requiringSecureCoding: false)
-        } catch {
-            print(error.localizedDescription)
-        }
-        newStudent.recordName = ckRecord.value(forKey: "recordName") as? String
+        newStudent.firstName = ckRecord["firstName"]
+        newStudent.lastName = ckRecord["lastName"]
+        newStudent.phone = ckRecord["phone"]
+        newStudent.setCloudKitRecordID(ckRecord.recordID)
+        newStudent.recordName = ckRecord["recordName"]
+    
+
         do {
             try context.save()
             coreDataStudents.append(newStudent)
@@ -82,10 +86,44 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
                 print(err.localizedDescription)
             } else {
                 print("new student saved to cloud")
+                print(rec?.value(forKey:"RecordName"))
             }
         })
         
     }
+    
+    func recordRemovedFromCloudKit(_ recordID:CKRecord.ID) {
+        var row = 0
+        for s:Student in coreDataStudents {
+            if s.cloudKitRecordID() == recordID {
+                context?.delete(s)
+                do {
+                    try context?.save()
+                    coreDataStudents.remove(at: row)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            row = row + 1
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func rowOfCoreDataStudent(_ student:Student) -> Int {
+        var i:Int
+        i = 0
+        for s:Student in coreDataStudents {
+            if s.recordName == student.recordName {
+                return i
+            } else {
+                i = i + 1
+            }
+        }
+        return -1
+    }
+    
     
     @IBAction func removeSelectedStudent(_ sender: Any) {
         let delegate = NSApp.delegate as! AppDelegate
@@ -118,17 +156,16 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         }
     }
     
-    var storeChangeObserver:AnyObject? = nil
-    var students:[CKRecord] = []
-    var coreDataStudents:[Student] = []
-    let delegate = NSApp.delegate
     
     //private var database = CKContainer.init(identifier: "iCloud.com.virtualpianist.LessonBook").privateCloudDatabase
     //private var database = CKContainer.default().privateCloudDatabase
 
     override func viewDidLoad() {
-        super.viewDidLoad()
         
+        super.viewDidLoad()
+        let delegate = NSApp.delegate as! AppDelegate
+        context = delegate.persistentContainer.viewContext
+
         let containerIdentifier = String(CKContainer.default().containerIdentifier!)
         let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
         let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
@@ -169,7 +206,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 
         let predicate = NSPredicate(value: true)
         
-        let qSubscription = CKQuerySubscription(recordType: "Student", predicate: predicate, subscriptionID: "test",
+        let qSubscription = CKQuerySubscription(recordType: "Student", predicate: predicate, subscriptionID: "lessonbook",
                                                 options: [.firesOnRecordCreation,.firesOnRecordUpdate, .firesOnRecordDeletion])
         
         qSubscription.notificationInfo?.shouldSendMutableContent = true
@@ -219,12 +256,6 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             }
             coreDataStudents = results
             
-            //for s:Student in coreDataStudents {
-                //context.delete(s)
-            //}
-            // try! context.save()
-            
-            // coreDataStudents.removeAll()
             print("\(coreDataStudents.count) Students")
         } catch {
             print(error.localizedDescription)
