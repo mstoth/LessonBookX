@@ -43,6 +43,7 @@
 		A4D3AD492207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4D3AD4A2207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4D3AD4B2207A55C00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
+		A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		A4D3AD642207A99E00D48A64 /* LessonBookXTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookXTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4D3AD87220990E700D48A64 /* LessonBookXTTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LessonBookXTTests copy-Info.plist"; path = "/Users/michaeltoth/Documents/LessonBookX/LessonBookXTTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		A4D3AD90220990EB00D48A64 /* LessonBookXTTests copy copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LessonBookXTTests copy copy-Info.plist"; path = "/Users/michaeltoth/Documents/LessonBookX/LessonBookXTTests copy copy-Info.plist"; sourceTree = "<absolute>"; };
+		A4D3AD91221330E100D48A64 /* ZoneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoneOperations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +266,7 @@
 				A4C1C8EE21FDA95500A88255 /* LessonBookX.entitlements */,
 				A4C1C8E521FDA95100A88255 /* LessonBookX.xcdatamodeld */,
 				A4C1C972220284CC00A88255 /* Localizable.strings */,
+				A4D3AD91221330E100D48A64 /* ZoneOperations.swift */,
 			);
 			path = LessonBookX;
 			sourceTree = "<group>";
@@ -620,6 +623,7 @@
 				A4C1C95B21FDBC2900A88255 /* Student+CoreDataClass.swift in Sources */,
 				A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */,
 				A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */,
+				A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */,
 				A4C1C95C21FDBC2900A88255 /* Student+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

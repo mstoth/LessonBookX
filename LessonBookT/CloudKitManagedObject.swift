@@ -38,6 +38,16 @@ extension CloudKitManagedObject {
         }
     }
     
+    func prepareForCloudKitWithCloudKitRecord(_ recordID:CKRecord.ID) {
+        do {
+            self.ckrecordID = try NSKeyedArchiver.archivedData(withRootObject: recordID, requiringSecureCoding: false)
+        } catch {
+            print(error)
+        }
+        recordName = recordID.recordName
+        
+    }
+    
     func setCloudKitRecordID(_ id:CKRecord.ID) {
         do {
             self.ckrecordID = try NSKeyedArchiver.archivedData(withRootObject: id, requiringSecureCoding: false)

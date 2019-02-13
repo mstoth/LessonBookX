@@ -735,6 +735,9 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <connections>
+                                                        <binding destination="egh-Y1-Odh" name="value" keyPath="arrangedObjects.firstName" id="0ui-cr-wlf"/>
+                                                    </connections>
                                                 </tableColumn>
                                                 <tableColumn width="316" minWidth="40" maxWidth="1000" id="EbD-6I-pjv">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Phone">
@@ -748,6 +751,9 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <connections>
+                                                        <binding destination="egh-Y1-Odh" name="value" keyPath="arrangedObjects.phone" id="6ui-0y-W9D"/>
+                                                    </connections>
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
@@ -778,7 +784,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="removeSelectedStudent:" target="XfG-lQ-9wD" id="dgj-ao-EDa"/>
+                                    <action selector="remove:" target="egh-Y1-Odh" id="piG-bh-Dnu"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uYh-vP-VLp">
@@ -789,7 +795,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="addNewStudent:" target="XfG-lQ-9wD" id="bfa-Hd-te7"/>
+                                    <action selector="add:" target="egh-Y1-Odh" id="Xfz-bQ-zRE"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -799,6 +805,12 @@
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="rte-dD-uuC"/>
+                <arrayController mode="entity" entityName="Student" automaticallyPreparesContent="YES" id="egh-Y1-Odh">
+                    <connections>
+                        <binding destination="XfG-lQ-9wD" name="managedObjectContext" keyPath="self.context" id="WNi-UC-4UK"/>
+                    </connections>
+                </arrayController>
             </objects>
             <point key="canvasLocation" x="75" y="655"/>
         </scene>

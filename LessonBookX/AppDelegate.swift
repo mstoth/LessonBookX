@@ -14,7 +14,7 @@ import UserNotifications
 class AppDelegate: NSObject, NSApplicationDelegate {
 
 
-    
+    var viewController:ViewController? = nil
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -30,8 +30,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         })
         
-        
+        guard let mainWindow = NSApplication.shared.mainWindow else {
+            return
+        }
+        guard let contentViewController = mainWindow.contentViewController else {
+            return
+        }
+        viewController = contentViewController as! ViewController
     }
+    
+    
     
     func applicationWillFinishLaunching(_ notification: Notification) {
         NSApp.registerForRemoteNotifications()
@@ -60,13 +68,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             
             //let storyboard = NSStoryboard(name: "Main", bundle: nil)
-            guard let mainWindow = NSApplication.shared.mainWindow else {
-                return
-            }
-            guard let contentViewController = mainWindow.contentViewController else {
-                return
-            }
-            let viewController = contentViewController as! ViewController 
+//            guard let mainWindow = NSApplication.shared.mainWindow else {
+//                return
+//            }
+//            guard let contentViewController = mainWindow.contentViewController else {
+//                return
+//            }
+//            let viewController = contentViewController as! ViewController 
             //let viewController = NSApplication.shared.mainWindow?.contentViewController as! ViewController
             
             
@@ -74,20 +82,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             switch options {
             case .firesOnRecordCreation:
                 print("FIRE ON RECORD CREATION")
-                viewController.fetchAndAddRecordToCoreData(recordID)
+                viewController?.fetchAndAddRecordToCoreData(recordID)
                 
                 //viewController.addedCloudKitRecord(record)
                 break
             case .firesOnRecordDeletion:
                 print("FIRE ON RECORD DELETE")
-                viewController.recordRemovedFromCloudKit(recordID)
+                viewController?.recordRemovedFromCloudKit(recordID)
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")
-                viewController.recordRemovedFromCloudKit(recordID)
+                viewController?.recordRemovedFromCloudKit(recordID)
                 break
             default:
                 print("DEFAULT \(options)")
