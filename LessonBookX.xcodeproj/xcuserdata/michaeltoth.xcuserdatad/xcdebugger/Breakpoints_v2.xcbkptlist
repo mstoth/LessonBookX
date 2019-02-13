@@ -10,27 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "571748766.967365"
+            timestampString = "571795017.0189641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "450"
-            endingLineNumber = "450">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookX/ViewController.swift"
-            timestampString = "571748766.967584"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "fetchStudentsFromCloud()"
-            landmarkType = "7">
+            startingLineNumber = "481"
+            endingLineNumber = "481">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -40,59 +24,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/AppDelegate.swift"
-            timestampString = "571748766.9677401"
+            timestampString = "571795017.019791"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "application(_:didReceiveRemoteNotification:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookX/ViewController.swift"
-            timestampString = "571748766.96782"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "417"
-            endingLineNumber = "417"
-            landmarkName = "handleCloudKitNotification(_:didReceiveRemoteNotification:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookX/ViewController.swift"
-            timestampString = "571748766.967906"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
-            landmarkName = "contextObjectsDidChange(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookX/AppDelegate.swift"
-            timestampString = "571748766.96798"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "applicationShouldTerminate(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -104,12 +40,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "571748766.968075"
+            timestampString = "571795017.0199291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "285"
-            endingLineNumber = "285"
-            landmarkName = "contextObjectsDidChange(_:)"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
+            landmarkName = "fetchAndAddRecordToCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -120,92 +56,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "571748766.968194"
+            timestampString = "571795017.020364"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
-            landmarkName = "contextObjectsDidChange(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "571748766.968266"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "308"
-            endingLineNumber = "308"
-            landmarkName = "tableView(_:commit:forRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "571748766.968341"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
-            landmarkName = "recordRemovedFromCloudKit(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookT/AppDelegate.swift"
-            timestampString = "571748766.9684269"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "application(_:didReceiveRemoteNotification:fetchCompletionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "571748766.968879"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "fetchAndAddRecordToCoreData(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "571748766.9689519"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
-            landmarkName = "fetchAndAddRecordToCoreData(_:)"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "addCloudKitRecordToCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

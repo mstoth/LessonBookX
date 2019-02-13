@@ -175,11 +175,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             case .firesOnRecordDeletion:
                 print("FIRE ON RECORD DELETE")
                 viewController?.recordRemovedFromCloudKit(recordID)
-                completionHandler(UIBackgroundFetchResult.newData)
+                completionHandler(UIBackgroundFetchResult.noData)
 
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
+                viewController?.updateRecordInCoreData(recordID)
+                completionHandler(UIBackgroundFetchResult.newData)
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")

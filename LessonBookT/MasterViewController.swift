@@ -213,6 +213,40 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     
+    func updateRecordInCoreData(_ recordID:CKRecord.ID) {
+        let recordName = recordID.recordName
+        let predicate = NSPredicate(format: "recordName == %@", recordName)
+        let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+        fetchRequest.predicate = predicate
+        do {
+            let students = try managedObjectContext?.fetch(fetchRequest)
+            for s:Student in students! {
+                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
+                    if let err = err {
+                        print(err.localizedDescription)
+                    } else {
+                        s.firstName = r?["firstName"]
+                        s.lastName = r?["lastName"]
+                        s.phone = r?["phone"]
+                    }
+                })
+            }
+            DispatchQueue.main.async {
+                do {
+                    try self.managedObjectContext!.save()
+                    self.tableView.reloadData()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    
+    
+    
     func recordRemovedFromCloudKit(_ recordID:CKRecord.ID) {
         // var row = 0
         let recordName = recordID.recordName
@@ -308,11 +342,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             
             
             context.delete(fetchedResultsController.object(at: indexPath))
-            do {
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
-            }
             do {
                 try context.save()
             } catch {

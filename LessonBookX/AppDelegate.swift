@@ -66,25 +66,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return
             }
 
-            
-            //let storyboard = NSStoryboard(name: "Main", bundle: nil)
-//            guard let mainWindow = NSApplication.shared.mainWindow else {
-//                return
-//            }
-//            guard let contentViewController = mainWindow.contentViewController else {
-//                return
-//            }
-//            let viewController = contentViewController as! ViewController 
-            //let viewController = NSApplication.shared.mainWindow?.contentViewController as! ViewController
-            
-            
             let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
             switch options {
             case .firesOnRecordCreation:
                 print("FIRE ON RECORD CREATION")
                 viewController?.fetchAndAddRecordToCoreData(recordID)
-                
-                //viewController.addedCloudKitRecord(record)
                 break
             case .firesOnRecordDeletion:
                 print("FIRE ON RECORD DELETE")
@@ -92,6 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
+                viewController?.updateRecordInCoreData(recordID)
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")
@@ -107,32 +94,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if notification.notificationType == CKNotification.NotificationType.database {
             print("Database notification")
         }
-
-        // let recordID = qry["rid"]
-
-
-        // let record = CKRecord(recordType: "Student", recordID: recordID)
-
-        // print(recordID ?? "No Record ID")
-
-//        let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
-//        switch options {
-//        case .firesOnRecordCreation:
-//            print("FIRE ON RECORD CREATION")
-//            rootViewController!.fetchRecord(recordID)
-//            //viewController.addedCloudKitRecord(record)
-//            break
-//        case .firesOnRecordDeletion:
-//            print("FIRE ON RECORD DELETE")
-//            break
-//        case .firesOnRecordUpdate:
-//            print("FIRE ON UPDATE")
-//            break
-//        case [.firesOnRecordCreation, .firesOnRecordUpdate]:
-//            print("FIRE ON DELETE")
-//        default:
-//            print("DEFAULT \(options)")
-//        }
     }
     
     

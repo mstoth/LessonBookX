@@ -143,18 +143,17 @@ class ViewController: NSViewController {
     }
     
     func recordRemovedFromCloudKit(_ recordID:CKRecord.ID) {
-        var row = 0
-        for s:Student in coreDataStudents {
-            if s.cloudKitRecordID() == recordID {
+        
+        let predicate = NSPredicate(format: "recordName=%@", recordID.recordName)
+        let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+        fetchRequest.predicate = predicate
+        do {
+            let results = try context?.fetch(fetchRequest)
+            for s:Student in results! {
                 context?.delete(s)
-                do {
-                    try context?.save()
-                    coreDataStudents.remove(at: row)
-                } catch {
-                    print(error.localizedDescription)
-                }
             }
-            row = row + 1
+        } catch {
+            print(error.localizedDescription)
         }
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -239,12 +238,20 @@ class ViewController: NSViewController {
 
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
             for s:Student in inserts {
-                s.prepareForCloudKit()
-                database.save(s.cloudKitRecord()!, completionHandler: {(r,err) in
-                    if let err = err {
-                        print(err.localizedDescription)
+                // make sure it's not already in the cloud
+                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
+                    if err != nil {
+                        s.prepareForCloudKit()
+                        self.database.save(s.cloudKitRecord()!, completionHandler: {(r,err) in
+                            if let err = err {
+                                print(err.localizedDescription)
+                            } else {
+                                print("Saved record to cloud")
+                                print(s.cloudKitRecord()?.recordID.recordName as Any)
+                            }
+                        })
                     } else {
-                        print("Saved record to cloud")
+                        // it's there, don't send it again
                     }
                 })
             }
@@ -254,9 +261,7 @@ class ViewController: NSViewController {
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
             for s:Student in updates {
                 database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
-                    if let err = err {
-                        print(err.localizedDescription)
-                    } else {
+                    if err != nil {
                         r?["phone"]=s.phone
                         r?["firstName"]=s.firstName
                         r?["lastName"]=s.lastName
@@ -266,8 +271,10 @@ class ViewController: NSViewController {
                                 print(err.localizedDescription)
                             } else {
                                 print("saved record to cloud for update")
+                                print(s.cloudKitRecord()?.recordID.recordName as Any)
                             }
                         })
+                    } else {
 
                     }
                 })
@@ -331,7 +338,7 @@ class ViewController: NSViewController {
             if let error = error {
                 DispatchQueue.main.async {
                     //self.delegate?.errorUpdating(error as NSError)
-                    print("Cloud Query Error - Fetch Establishments: \(error)")
+                    print("Cloud Query Error - Fetch Students: \(error)")
                 }
                 return
             }
@@ -344,6 +351,30 @@ class ViewController: NSViewController {
                 print("Retrieved \(self.students.count) students")
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    
+    func updateRecordInCoreData(_ recordID:CKRecord.ID) {
+        let recordName = recordID.recordName
+        let predicate = NSPredicate(format: "recordName == %@", recordName)
+        let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+        fetchRequest.predicate = predicate
+        do {
+            let students = try managedObjectContext?.fetch(fetchRequest)
+            for s:Student in students! {
+                database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+                    if let err = err {
+                        print(err.localizedDescription)
+                    } else {
+                        s.firstName = r?["firstName"]
+                        s.lastName = r?["lastName"]
+                        s.phone = r?["phone"]
+                    }
+                })
+            }
+        } catch {
+            print(error.localizedDescription)
         }
     }
 
@@ -412,38 +443,38 @@ class ViewController: NSViewController {
     }
     
     
-    @objc func handleCloudKitNotification(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
-
-        guard let ck = userInfo["ck"] as? [String: AnyObject] else {
-            return
-        }
-
-        guard let qry = ck["qry"] as? [String: AnyObject] else {
-            return
-        }
-
-        let recordIDString = qry["rid"] as! String
-        let id = CKRecord.ID(recordName: recordIDString)
-        let record = CKRecord(recordType: "Student", recordID: id)
-
-        let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
-        switch options {
-        case .firesOnRecordCreation:
-            print("FIRE ON RECORD CREATION")
-            // addedCloudKitRecord(record)
-            break
-        case .firesOnRecordDeletion:
-            print("FIRE ON RECORD DELETE")
-            break
-        case .firesOnRecordUpdate:
-            print("FIRE ON UPDATE")
-            break
-        case [.firesOnRecordCreation, .firesOnRecordUpdate]:
-            print("FIRE ON DELETE")
-        default:
-            print("DEFAULT \(options)")
-        }
-    }
+//    @objc func handleCloudKitNotification(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
+//
+//        guard let ck = userInfo["ck"] as? [String: AnyObject] else {
+//            return
+//        }
+//
+//        guard let qry = ck["qry"] as? [String: AnyObject] else {
+//            return
+//        }
+//
+//        let recordIDString = qry["rid"] as! String
+//        let id = CKRecord.ID(recordName: recordIDString)
+//        let record = CKRecord(recordType: "Student", recordID: id)
+//
+//        let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
+//        switch options {
+//        case .firesOnRecordCreation:
+//            print("FIRE ON RECORD CREATION")
+//            // addedCloudKitRecord(record)
+//            break
+//        case .firesOnRecordDeletion:
+//            print("FIRE ON RECORD DELETE")
+//            break
+//        case .firesOnRecordUpdate:
+//            print("FIRE ON UPDATE")
+//            break
+//        case [.firesOnRecordCreation, .firesOnRecordUpdate]:
+//            print("FIRE ON DELETE")
+//        default:
+//            print("DEFAULT \(options)")
+//        }
+//    }
 
 }
 
