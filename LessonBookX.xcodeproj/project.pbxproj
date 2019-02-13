@@ -44,6 +44,7 @@
 		A4D3AD4A2207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4D3AD4B2207A55C00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
+		A4D3AD932213B72500D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -589,6 +590,7 @@
 				A450C69B22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */,
 				A450C6692205ADE100BA4047 /* DetailViewController.swift in Sources */,
 				A450C6962205BFE400BA4047 /* CloudKitManagedObject.swift in Sources */,
+				A4D3AD932213B72500D48A64 /* ZoneOperations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

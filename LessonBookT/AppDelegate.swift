@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     private var database = CKContainer.default().privateCloudDatabase
     private var container = CKContainer.default()
-
+    var viewController:MasterViewController? = nil
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let containerIdentifier = String(CKContainer.default().containerIdentifier!)
@@ -37,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let controller = masterNavigationController.topViewController as! MasterViewController
         controller.managedObjectContext = self.persistentContainer.viewContext
         controller.setDataBase(database)
+        viewController = controller
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: {(granted,err) in
             if granted {
@@ -64,10 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let studentZone = CKRecordZone(zoneName: "LessonBook")
         let zoneID = studentZone.zoneID
         let predicate = NSPredicate(value: true)
-        
-        let qSubscription = CKQuerySubscription(recordType: "Student", predicate: predicate, subscriptionID: "test", options: [.firesOnRecordCreation,.firesOnRecordUpdate, .firesOnRecordDeletion])
+//
+        let qSubscription = CKQuerySubscription(recordType: "Student", predicate: predicate, subscriptionID: "lessonbook", options: [.firesOnRecordCreation,.firesOnRecordUpdate, .firesOnRecordDeletion])
         qSubscription.notificationInfo?.shouldSendMutableContent = true
-        
+        qSubscription.zoneID = zoneID
         //        subscription.recordType = "Student"
         //
         //let notificationInfo = CKSubscription.NotificationInfo()
@@ -78,18 +80,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         notificationInfo.shouldSendContentAvailable = true
         qSubscription.notificationInfo = notificationInfo
         
-//        let subscription = CKRecordZoneSubscription(zoneID: zoneID, subscriptionID: "test")
-//        subscription.recordType = "Student"
-//
-//        let notificationInfo = CKSubscription.NotificationInfo()
-//        notificationInfo.shouldBadge = true
-//        notificationInfo.shouldSendMutableContent = true
-//        subscription.notificationInfo = notificationInfo
-//        database.save(subscription, completionHandler: {(s,err) in
-//            if let err = err {
-//                print(err.localizedDescription)
-//            }
-//        })
+        //let subscription = CKRecordZoneSubscription(zoneID: zoneID, subscriptionID: "test")
+        //subscription.recordType = "Student"
+
+        //let notificationInfo = CKSubscription.NotificationInfo()
+        //notificationInfo.shouldBadge = true
+        //notificationInfo.shouldSendMutableContent = true
+        //subscription.notificationInfo = notificationInfo
+        database.save(qSubscription, completionHandler: {(s,err) in
+            if let err = err {
+                print(err.localizedDescription)
+            }
+        })
 //        let op = CKModifyRecordZonesOperation(recordZonesToSave: [studentZone], recordZoneIDsToDelete: [])
 //        database.add(op)
 //        database.save(studentZone, completionHandler: {(rz,err) in
@@ -98,13 +100,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //            }
 //        })
         
-        database.save(qSubscription,completionHandler: {(sub,error) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                print("Saved Subscription")
-            }
-        })
+//        database.save(qSubscription,completionHandler: {(sub,error) in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                print("Saved Subscription")
+//            }
+//        })
 
 //        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
 //        operation.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptionIDs, operationError in
@@ -130,27 +132,94 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print("Received Notification")
+        var recordID:CKRecord.ID
+        let notification: CKNotification =
+            CKNotification(fromRemoteNotificationDictionary:
+                userInfo as! [String : NSObject])
+        
+        
+        if notification.notificationType == CKNotification.NotificationType.query {
+            print("query notification")
+            let queryNotification = notification as! CKQueryNotification
+            recordID = queryNotification.recordID!
+            
+            guard let ck = userInfo["ck"] as? [String: AnyObject] else {
+                return
+            }
+            
+            guard let qry = ck["qry"] as? [String: AnyObject] else {
+                return
+            }
+            
+            
+            //let storyboard = NSStoryboard(name: "Main", bundle: nil)
+            //            guard let mainWindow = NSApplication.shared.mainWindow else {
+            //                return
+            //            }
+            //            guard let contentViewController = mainWindow.contentViewController else {
+            //                return
+            //            }
+            //            let viewController = contentViewController as! ViewController
+            //let viewController = NSApplication.shared.mainWindow?.contentViewController as! ViewController
+            
+            
+            let options = CKQuerySubscription.Options( rawValue: qry["fo"] as! UInt )
+            switch options {
+            case .firesOnRecordCreation:
+                print("FIRE ON RECORD CREATION")
+                viewController?.fetchAndAddRecordToCoreData(recordID)
+                completionHandler(UIBackgroundFetchResult.newData)
+
+                //viewController.addedCloudKitRecord(record)
+                break
+            case .firesOnRecordDeletion:
+                print("FIRE ON RECORD DELETE")
+                viewController?.recordRemovedFromCloudKit(recordID)
+                completionHandler(UIBackgroundFetchResult.newData)
+
+                break
+            case .firesOnRecordUpdate:
+                print("FIRE ON UPDATE")
+                break
+            case [.firesOnRecordCreation, .firesOnRecordUpdate]:
+                print("FIRE ON DELETE")
+                viewController?.recordRemovedFromCloudKit(recordID)
+                completionHandler(UIBackgroundFetchResult.noData)
+
+                break
+            default:
+                print("DEFAULT \(options)")
+            }
+            
+            
+        }
+        
+        if notification.notificationType == CKNotification.NotificationType.database {
+            print("Database notification")
+        }
+
         print(userInfo)
+        //completionHandler(nil)
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let subscription = CKQuerySubscription(recordType: "Student", predicate: NSPredicate(format: "TRUEPREDICATE"), options: .firesOnRecordCreation)
         
-        let info = CKSubscription.NotificationInfo()
-        info.alertBody = "A new student has been added"
-        info.shouldBadge = true
-        info.soundName = "default"
-        
-        subscription.notificationInfo = info
-        
-
-        database.save(subscription, completionHandler: { subscription, error in
-            if error == nil {
-                print("Saved Subscription")
-            } else {
-                print(error!.localizedDescription)
-            }
-        })
+//        let info = CKSubscription.NotificationInfo()
+//        info.alertBody = "A new student has been added"
+//        info.shouldBadge = true
+//        info.soundName = "default"
+//
+//        subscription.notificationInfo = info
+//
+//
+//        database.save(subscription, completionHandler: { subscription, error in
+//            if error == nil {
+//                print("Saved Subscription")
+//            } else {
+//                print(error!.localizedDescription)
+//            }
+//        })
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

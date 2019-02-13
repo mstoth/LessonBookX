@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Cocoa
+// import Cocoa
 import CloudKit
 import NotificationCenter
 

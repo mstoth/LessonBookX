@@ -17,7 +17,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     private var database = CKContainer.default().privateCloudDatabase
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
     
-    
+    var z:ZoneOperations? = nil
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
-        print(database)
+        z = ZoneOperations()
+
+        // print(database)
         // [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newCloudData) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:nil];
 //        let predicate = NSPredicate(value: true)
 //        //let subscription = CKQuerySubscription(recordType: "Student", predicate: predicate,options:.firesOnRecordUpdate | .firesOnRecordDeletion | .firesOnRecordCreation)
@@ -172,6 +175,77 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
+    
+    func addCloudKitRecordToCoreData(_ ckRecord:CKRecord) {
+        //let delegate = NSApp.delegate as! AppDelegate
+        //let context = delegate.persistentContainer.viewContext
+        
+        let newStudent = Student(context: managedObjectContext!)
+        newStudent.prepareForCloudKitWithCloudKitRecord(ckRecord.recordID)
+        newStudent.firstName = ckRecord["firstName"]
+        newStudent.lastName = ckRecord["lastName"]
+        newStudent.phone = ckRecord["phone"]
+        
+        do {
+            try managedObjectContext?.save()
+//            coreDataStudents.append(newStudent)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+
+    
+    
+    func fetchAndAddRecordToCoreData(_ recordID:CKRecord.ID) {
+        database.fetch(withRecordID: recordID, completionHandler: { (r,err) in
+            if let err = err {
+                print(err.localizedDescription)
+            } else {
+                self.addCloudKitRecordToCoreData(r!)
+                print(r?.value(forKey: "firstName") ?? "No Name")
+                
+            }
+        })
+    }
+    
+    
+    func recordRemovedFromCloudKit(_ recordID:CKRecord.ID) {
+        // var row = 0
+        let recordName = recordID.recordName
+        let predicate = NSPredicate(format: "recordName == %@", recordName)
+        let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+        fetchRequest.predicate = predicate
+        do {
+            let students = try managedObjectContext?.fetch(fetchRequest)
+            for s:Student in students! {
+                managedObjectContext?.delete(s)
+            }
+        } catch {
+            print(error)
+        }
+//        for s:Student in coreDataStudents {
+//            if s.cloudKitRecordID() == recordID {
+//                context?.delete(s)
+//                do {
+//                    try context?.save()
+//                    coreDataStudents.remove(at: row)
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//            }
+//            row = row + 1
+//        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    
+    
     // MARK: - Segues
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -212,18 +286,25 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let context = fetchedResultsController.managedObjectContext
+            
             let studentToDelete = fetchedResultsController.object(at: indexPath)
-            if studentToDelete.recordID != nil {
-                studentToDelete.ckrecordID = studentToDelete.recordID
-                database.delete(withRecordID: studentToDelete.cloudKitRecordID()!, completionHandler: {id,err in
-                    if let err = err {
-                        print(err.localizedDescription)
-                    } else {
-                        print("record deleted from cloud")
-                    }
-                })
-
-            }
+            let ckRecordToDelete = CKRecord(recordType: "Student", recordID: studentToDelete.cloudKitRecordID()!)
+            database.delete(withRecordID: ckRecordToDelete.recordID, completionHandler: {(id,err) in
+                if let err = err {
+                    print(err)
+                }
+            })
+//            if studentToDelete.recordName != nil {
+//                studentToDelete.ckrecordID = studentToDelete.recordID
+//                database.delete(withRecordID: studentToDelete.cloudKitRecordID()!, completionHandler: {id,err in
+//                    if let err = err {
+//                        print(err.localizedDescription)
+//                    } else {
+//                        print("record deleted from cloud")
+//                    }
+//                })
+//
+//            }
             
             
             context.delete(fetchedResultsController.object(at: indexPath))
