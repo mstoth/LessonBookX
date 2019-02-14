@@ -45,6 +45,7 @@
 		A4D3AD4B2207A55C00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
 		A4D3AD932213B72500D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
+		A4D3AD952215161800D48A64 /* StudentEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD942215161700D48A64 /* StudentEditViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +128,7 @@
 		A4D3AD87220990E700D48A64 /* LessonBookXTTests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LessonBookXTTests copy-Info.plist"; path = "/Users/michaeltoth/Documents/LessonBookX/LessonBookXTTests copy-Info.plist"; sourceTree = "<absolute>"; };
 		A4D3AD90220990EB00D48A64 /* LessonBookXTTests copy copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LessonBookXTTests copy copy-Info.plist"; path = "/Users/michaeltoth/Documents/LessonBookX/LessonBookXTTests copy copy-Info.plist"; sourceTree = "<absolute>"; };
 		A4D3AD91221330E100D48A64 /* ZoneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoneOperations.swift; sourceTree = "<group>"; };
+		A4D3AD942215161700D48A64 /* StudentEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentEditViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 				A450C6612205ADE100BA4047 /* AppDelegate.swift */,
 				A450C6662205ADE100BA4047 /* MasterViewController.swift */,
 				A450C6682205ADE100BA4047 /* DetailViewController.swift */,
+				A4D3AD942215161700D48A64 /* StudentEditViewController.swift */,
 				A450C66A2205ADE200BA4047 /* Main.storyboard */,
 				A450C66D2205AE0F00BA4047 /* Assets.xcassets */,
 				A450C66F2205AE0F00BA4047 /* LaunchScreen.storyboard */,
@@ -587,6 +590,7 @@
 				A450C6652205ADE100BA4047 /* LessonBookT.xcdatamodeld in Sources */,
 				A450C69E22063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */,
 				A450C6672205ADE100BA4047 /* MasterViewController.swift in Sources */,
+				A4D3AD952215161800D48A64 /* StudentEditViewController.swift in Sources */,
 				A450C69B22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */,
 				A450C6692205ADE100BA4047 /* DetailViewController.swift in Sources */,
 				A450C6962205BFE400BA4047 /* CloudKitManagedObject.swift in Sources */,

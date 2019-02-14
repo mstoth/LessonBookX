@@ -13,6 +13,8 @@ import CloudKit
 
 @objc(Student)
 public class Student: NSManagedObject,  CloudKitManagedObject {
+    var ckrecordName: String?
+    
     var ckrecordID: Data?
     
     @NSManaged public var recordID: Data?
