@@ -7,9 +7,9 @@
 //
 
 import Foundation
-// import Cocoa
-import CloudKit
 import NotificationCenter
+import CloudKit
+
 
 class ZoneOperations {
     var zoneID:CKRecordZone.ID? = nil
@@ -18,14 +18,14 @@ class ZoneOperations {
     
     init() {
         let zone = CKRecordZone(zoneName: "LessonBook")
-        let fetchResult = CKFetchRecordZonesOperation(recordZoneIDs: [zone.zoneID])
+        zoneID = zone.zoneID
+        //let fetchResult = CKFetchRecordZonesOperation(recordZoneIDs: [zone.zoneID])
         
         let containerIdentifier = String(CKContainer.default().containerIdentifier!)
         let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
         let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
         container = CKContainer.init(identifier: String(newContainerIdentifier))
         database = CKContainer.init(identifier: String(newContainerIdentifier)).privateCloudDatabase
-
         fetchAllZones(completion: {e in
             if let e = e {
                 print(e.localizedDescription)
@@ -38,7 +38,7 @@ class ZoneOperations {
     func fetchAllZones(completion: @escaping (Error?) -> Void)
     {
         // Check if zone already exists
-        var fetchedRecordZones: [CKRecordZone.ID : CKRecordZone]? = nil
+        //var fetchedRecordZones: [CKRecordZone.ID : CKRecordZone]? = nil
         let fetchZonesOperation = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
         fetchZonesOperation.fetchRecordZonesCompletionBlock = {
             (recordZones: [CKRecordZone.ID : CKRecordZone]?, error: Error?) -> Void in
@@ -49,7 +49,7 @@ class ZoneOperations {
             }
             
             if let recordZones = recordZones {
-                fetchedRecordZones = recordZones
+                //fetchedRecordZones = recordZones
                 
                 for recordID in recordZones.keys {
                     if recordID.zoneName == "LessonBook" {

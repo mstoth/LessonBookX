@@ -88,8 +88,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     @objc func newCloudData(notification:Notification) {
-        let userInfo = notification.userInfo
-        
+        // let userInfo = notification.userInfo
+        print("In newCloudData")
     }
     
     

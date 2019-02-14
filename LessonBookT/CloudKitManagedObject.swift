@@ -12,7 +12,7 @@ import CloudKit
 @objc protocol CloudKitManagedObject {
     var ckrecordID: Data? { get set }
     //@NSManaged public var recordID: NSData?
-    var recordName: String? { get set }
+    var ckrecordName: String? { get set }
     var recordType: String { get }
     //var lastUpdate: Data? { get set }
     
@@ -27,8 +27,8 @@ extension CloudKitManagedObject {
     
     func prepareForCloudKit() {
         let uuid = UUID()
-        recordName = recordType + "." + uuid.uuidString
-        let _recordID = CKRecord.ID(recordName: recordName!, zoneID: customZone.zoneID)
+        ckrecordName = recordType + "." + uuid.uuidString
+        let _recordID = CKRecord.ID(recordName: ckrecordName!, zoneID: customZone.zoneID)
         do {
             self.ckrecordID = try NSKeyedArchiver.archivedData(withRootObject: _recordID, requiringSecureCoding: false)
             // try recordID = NSKeyedArchiver.archivedData(withRootObject: _recordID, requiringSecureCoding: false)  // NSKeyedArchiver.archivedData(withRootObject: _recordID)
@@ -44,7 +44,7 @@ extension CloudKitManagedObject {
         } catch {
             print(error)
         }
-        recordName = recordID.recordName
+        ckrecordName = recordID.recordName
         
     }
     
@@ -63,7 +63,7 @@ extension CloudKitManagedObject {
         //let r = try! NSKeyedUnarchiver.unarchivedObject(ofClasses: [Data.self as! AnyObject.Type], from: recordID!) as! CKRecord.ID
         do {
             if (ckrecordID == nil) {
-                return CKRecord.ID(recordName: recordName ?? "None")
+                return CKRecord.ID(recordName: ckrecordName ?? "None")
             }
             let r = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(ckrecordID!)
             return r as? CKRecord.ID

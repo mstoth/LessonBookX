@@ -18,7 +18,7 @@ class StudentModel {
 class ViewController: NSViewController {
 
     //var detailViewController: DetailViewController? = nil
-    @objc dynamic var managedObjectContext: NSManagedObjectContext? = nil
+    //@objc dynamic var managedObjectContext: NSManagedObjectContext? = nil
     private var database = CKContainer.default().privateCloudDatabase
     private var container = CKContainer.default()
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
@@ -91,7 +91,7 @@ class ViewController: NSViewController {
         newStudent.firstName = ckRecord["firstName"]
         newStudent.lastName = ckRecord["lastName"]
         newStudent.phone = ckRecord["phone"]
-        
+        newStudent.recordName = ckRecord.recordID.recordName
         do {
             try context.save()
             coreDataStudents.append(newStudent)
@@ -116,6 +116,7 @@ class ViewController: NSViewController {
         newStudent.lastName = "Student"
         newStudent.phone = ""
         newStudent.recordID = newStudent.ckrecordID
+        newStudent.recordName = newStudent.cloudKitRecordID()?.recordName
         
         ccr!.setValue("New",forKey: "firstName")
         ccr!.setValue("Student",forKey: "lastName")
@@ -136,7 +137,7 @@ class ViewController: NSViewController {
                 print(err.localizedDescription)
             } else {
                 print("new student saved to cloud")
-                print(rec?.value(forKey:"RecordName"))
+                print(rec?.value(forKey:"RecordName") as Any)
             }
         })
         
@@ -242,12 +243,24 @@ class ViewController: NSViewController {
                 database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
                     if err != nil {
                         s.prepareForCloudKit()
-                        self.database.save(s.cloudKitRecord()!, completionHandler: {(r,err) in
+                        let ccr = s.cloudKitRecord()
+                        s.recordName = s.cloudKitRecordID()?.recordName
+                        ccr?["firstName"] = s.firstName
+                        ccr?["lastName"] = s.lastName
+                        ccr?["phone"] = s.phone
+                        self.database.save(ccr!, completionHandler: {(r,err) in
                             if let err = err {
                                 print(err.localizedDescription)
                             } else {
                                 print("Saved record to cloud")
                                 print(s.cloudKitRecord()?.recordID.recordName as Any)
+                                do {
+                                    try self.context?.save()
+                                    print("saved record to core data")
+                                    print(s.recordName as Any)
+                                } catch {
+                                    print(error)
+                                }
                             }
                         })
                     } else {
@@ -262,6 +275,8 @@ class ViewController: NSViewController {
             for s:Student in updates {
                 database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
                     if err != nil {
+                        // didn't find record. ignore update
+                    } else {
                         r?["phone"]=s.phone
                         r?["firstName"]=s.firstName
                         r?["lastName"]=s.lastName
@@ -274,8 +289,6 @@ class ViewController: NSViewController {
                                 print(s.cloudKitRecord()?.recordID.recordName as Any)
                             }
                         })
-                    } else {
-
                     }
                 })
 
@@ -298,6 +311,7 @@ class ViewController: NSViewController {
         DispatchQueue.main.async {
             do {
                 try self.context?.save()
+                self.tableView.reloadData()
             } catch {
                 print(error.localizedDescription)
             }
@@ -357,21 +371,27 @@ class ViewController: NSViewController {
     
     func updateRecordInCoreData(_ recordID:CKRecord.ID) {
         let recordName = recordID.recordName
-        let predicate = NSPredicate(format: "recordName == %@", recordName)
+        //let predicate = NSPredicate(format: "recordName == %@", recordName)
+        let predicate = NSPredicate(value: true)
         let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
         fetchRequest.predicate = predicate
         do {
-            let students = try managedObjectContext?.fetch(fetchRequest)
-            for s:Student in students! {
-                database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
-                    if let err = err {
-                        print(err.localizedDescription)
-                    } else {
-                        s.firstName = r?["firstName"]
-                        s.lastName = r?["lastName"]
-                        s.phone = r?["phone"]
+            let students = try context?.fetch(fetchRequest)
+            if students != nil {
+                for s:Student in students! {
+                    if s.recordName == recordName {
+                        database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+                            if let err = err {
+                                print(err.localizedDescription)
+                            } else {
+                                s.firstName = r?["firstName"]
+                                s.lastName = r?["lastName"]
+                                s.phone = r?["phone"]
+                                s.recordName = s.ckrecordName
+                            }
+                        })
                     }
-                })
+                }
             }
         } catch {
             print(error.localizedDescription)

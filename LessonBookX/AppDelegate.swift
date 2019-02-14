@@ -36,7 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let contentViewController = mainWindow.contentViewController else {
             return
         }
-        viewController = contentViewController as! ViewController
+        viewController = contentViewController as? ViewController
     }
     
     

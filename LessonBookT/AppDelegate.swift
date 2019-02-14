@@ -205,7 +205,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let subscription = CKQuerySubscription(recordType: "Student", predicate: NSPredicate(format: "TRUEPREDICATE"), options: .firesOnRecordCreation)
+       //  let subscription = CKQuerySubscription(recordType: "Student", predicate: NSPredicate(format: "TRUEPREDICATE"), options: .firesOnRecordCreation)
         
 //        let info = CKSubscription.NotificationInfo()
 //        info.alertBody = "A new student has been added"
