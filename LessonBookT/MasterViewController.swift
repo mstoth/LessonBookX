@@ -38,6 +38,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
         z = ZoneOperations()
+        managedObjectContext = self.fetchedResultsController.managedObjectContext
 
         // print(database)
         // [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(newCloudData) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:nil];
@@ -78,11 +79,138 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 //
 //        })
         
-        //NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
+        // NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
+        if let managedObjectContext = managedObjectContext {
+            // Add Observer
+            let notificationCenter = NotificationCenter.default
+            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
+            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: managedObjectContext)
+            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidSave), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext)
+        }
+    
         
         
     }
 
+
+    @objc func managedObjectContextObjectsWillSave(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        
+    }
+    
+
+    @objc func managedObjectContextObjectsDidSave(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+    }
+    
+
+
+    @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
+        print("Context Object Did Change.")
+        guard let userInfo = notification.userInfo else { return }
+        
+        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
+            for s:Student in inserts {
+                //addCoreDataRecordToCloud(s)
+                if s.recordName == nil {
+                    s.prepareForCloudKit()
+                    s.recordName = s.cloudKitRecordID()?.recordName
+                    let ccr = s.cloudKitRecord()
+                    ccr?["firstName"]=s.firstName
+                    ccr?["lastName"]=s.lastName
+                    ccr?["phone"]=s.phone
+                    ccr?["recordName"]=s.recordName
+                }
+                DispatchQueue.main.async {
+                    do {
+                        try self.managedObjectContext?.save()
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+        
+        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
+            print("Core Data Changed Notification")
+            for s:Student in updates {
+                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
+                    if err != nil {
+                        let ckerror = err as! CKError
+                        if ckerror.code == CKError.unknownItem {
+                            let ckr = s.cloudKitRecord()
+                            
+                            ckr?["phone"]=s.phone
+                            ckr?["firstName"]=s.firstName
+                            ckr?["lastName"]=s.lastName
+                            ckr?["recordName"]=s.cloudKitRecordID()?.recordName
+                            self.database.save(ckr!, completionHandler: {(r,err) in
+                                if let err = err {
+                                    print(err.localizedDescription)
+                                } else {
+                                    print("saved record to cloud for update.")
+                                    print(s.cloudKitRecordID()?.recordName as Any)
+                                }
+                            })
+                        } else {
+                            print("Unknown error from fetch.")
+                            print(ckerror.localizedDescription)
+                        }
+                        
+                    } else {
+                        r?["phone"]=s.phone
+                        r?["firstName"]=s.firstName
+                        r?["lastName"]=s.lastName
+                        r?["recordName"]=s.recordName
+                        self.database.save(r!, completionHandler: {(r,err) in
+                            if let err = err {
+                                print("error from saving update to cloud")
+                                print(err.localizedDescription)
+                            } else {
+                                print("saved record to cloud for update")
+                                print(s.cloudKitRecord()?.recordID.recordName as Any)
+                            }
+                        })
+
+                    }
+                })
+                //updateRecordOnCloud(s.cloudKitRecordID()!)
+            }
+        }
+        
+        if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Student>, deletes.count > 0 {
+            for s:Student in deletes {
+                database.delete(withRecordID: s.cloudKitRecordID()!, completionHandler: {(rid,err) in
+                    if let err = err {
+                        print(err.localizedDescription)
+                    } else {
+                        print("student deleted from cloud")
+                    }
+                })
+            }
+        }
+    }
+
+
+
+    func deleteCloudRecordFromStudent(_ recordID:CKRecord.ID) {
+        database.fetch(withRecordID: recordID, completionHandler:{ (r,err) in
+            if err != nil {
+                print("can't find record on cloud to delete.")
+                print(err?.localizedDescription as Any)
+            } else {
+                self.database.delete(withRecordID: recordID, completionHandler: {(id,err) in
+                    if err != nil {
+                        print("failed deleting cloud record")
+                    } else {
+                        print("deleted cloud record")
+                    }
+                })
+            }
+        })
+    }
+    
+    
     func setDataBase(_ db:CKDatabase) {
         database = db
     }
@@ -98,19 +226,19 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         super.viewWillAppear(animated)
     }
 
-    func updateLocalRecords(changedRecords: [CKRecord], deletedRecordIDs: [CKRecord.ID]) {
-        
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        
-        delegate.updateContext.perform {
-            
-            let changedRecordNames = changedRecords.map { $0.recordID.recordName }
-            let deletedRecordNames = deletedRecordIDs.map { $0.recordName }
-            self.updateObject(students: changedRecordNames)
-            self.deleteObject(students: deletedRecordNames)
-            self.saveUpdateContext()
-        }
-    }
+//    func updateLocalRecords(changedRecords: [CKRecord], deletedRecordIDs: [CKRecord.ID]) {
+//        
+//        let delegate = UIApplication.shared.delegate as! AppDelegate
+//        
+//        delegate.updateContext.perform {
+//            
+//            let changedRecordNames = changedRecords.map { $0.recordID.recordName }
+//            let deletedRecordNames = deletedRecordIDs.map { $0.recordName }
+//            self.updateObject(students: changedRecordNames)
+//            self.deleteObject(students: deletedRecordNames)
+//            self.saveUpdateContext()
+//        }
+//    }
     
     func updateObject(students:[String]) {
         
@@ -130,65 +258,76 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         //let newEvent = Event(context: context)
         let newStudent = Student(context: context)
         newStudent.prepareForCloudKit()
-        let ccr = newStudent.cloudKitRecord()
-        
         newStudent.firstName = "New"
         newStudent.lastName = "Student"
         newStudent.phone = ""
-        newStudent.recordID = newStudent.ckrecordID
-        
-        ccr!.setValue("New", forKey: "firstName")
-        ccr!.setValue("Student", forKey: "lastName")
-        ccr!.setValue("", forKey: "phone")
-        // If appropriate, configure the new managed object.
-        // newEvent.timestamp = Date()
-        // let insertedObjects = context.insertedObjects
-        // let modifiedObjects = context.updatedObjects
-        // let deletedRecordIDs = context.deletedObjects.map { ($0 as! CloudKitManagedObject).cloudKitRecordID() }
-        if context.hasChanges {
+        newStudent.recordName = newStudent.cloudKitRecordID()?.recordName
+        DispatchQueue.main.async {
             do {
-                try context.save()
-                print("new student saved to core data")
+                try self.managedObjectContext!.save()
+                self.tableView.reloadData()
             } catch {
-                print(error.localizedDescription)
+                print(error)
             }
-            // let insertedObjectIDs = insertedObjects.map { $0 .objectID }
-            // let modifiedObjectIDs = modifiedObjects.map { $0 .objectID }
-            
-            database.save(ccr!, completionHandler: {(rec,err) in
-                if let err = err {
-                    print(err.localizedDescription)
-                } else {
-                    print("new student saved to cloud")
-                }
-            })
             
         }
+
+//
+//        ccr!.setValue("New", forKey: "firstName")
+//        ccr!.setValue("Student", forKey: "lastName")
+//        ccr!.setValue("", forKey: "phone")
+//        ccr!.setValue(newStudent.recordName, forKey: "uniqueIdentifier")
+//        // If appropriate, configure the new managed object.
+//        // newEvent.timestamp = Date()
+//        // let insertedObjects = context.insertedObjects
+//        // let modifiedObjects = context.updatedObjects
+//        // let deletedRecordIDs = context.deletedObjects.map { ($0 as! CloudKitManagedObject).cloudKitRecordID() }
+//        if context.hasChanges {
+//            do {
+//                try context.save()
+//                print("new student saved to core data")
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//            // let insertedObjectIDs = insertedObjects.map { $0 .objectID }
+//            // let modifiedObjectIDs = modifiedObjects.map { $0 .objectID }
+//
+////            database.save(ccr!, completionHandler: {(rec,err) in
+////                if let err = err {
+////                    print(err.localizedDescription)
+////                } else {
+////                    print("new student saved to cloud")
+////                }
+////            })
+//
+//        }
         // Save the context.
-        do {
-            try context.save()
-        } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
+//        do {
+//            try context.save()
+//        } catch {
+//            // Replace this implementation with code to handle the error appropriately.
+//            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//            let nserror = error as NSError
+//            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//        }
     }
 
     
     func addCloudKitRecordToCoreData(_ ckRecord:CKRecord) {
         //let delegate = NSApp.delegate as! AppDelegate
         //let context = delegate.persistentContainer.viewContext
-        
+        print("making new student for core data")
         let newStudent = Student(context: managedObjectContext!)
         newStudent.prepareForCloudKitWithCloudKitRecord(ckRecord.recordID)
         newStudent.firstName = ckRecord["firstName"]
         newStudent.lastName = ckRecord["lastName"]
         newStudent.phone = ckRecord["phone"]
-        
+        newStudent.recordName = newStudent.ckrecordName
         do {
+            print("saving new record to core data")
             try managedObjectContext?.save()
 //            coreDataStudents.append(newStudent)
+            print("student \(newStudent.recordName) saved to core")
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -198,20 +337,102 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
+    func addCoreDataRecordToCloud(_ student:Student) {
+        // make sure it's not there
+        database.fetch(withRecordID: student.cloudKitRecordID()!, completionHandler: {(r,err) in
+            if let err = err {
+                // not on cloud, add it
+                if (student.recordName == nil) {
+                    student.prepareForCloudKit()
+                    student.ckrecordName = student.recordName
+                }
+                let ccr = student.cloudKitRecord()
+                ccr?["firstName"] = student.firstName
+                ccr?["lastName"] = student.lastName
+                ccr?["phone"] = student.phone
+                ccr?["uniqueIdentifier"] = student.uniqueIdentifier
+                student.ckrecordName = student.recordName
+                self.database.save(ccr!, completionHandler: {(r,err) in
+                    if let err = err {
+                        print(err)
+                    } else {
+                        print("Saved core data record to cloud")
+                    }
+                })
+            }
+        })
+    }
     
+    func updateCloudRecordWithCoreDataRecord(_ student:Student) {
+        database.fetch(withRecordID: student.cloudKitRecordID()!, completionHandler: {(r,err) in
+            if err != nil {
+                // not found, ignore update
+                print("cloud record to update not found.")
+            } else {
+                r?["firstName"]=student.firstName
+                r?["lastName"]=student.lastName
+                r?["phone"]=student.phone
+                self.database.save(r!, completionHandler: {(r,err) in
+                    if let err = err {
+                        print(err)
+                    } else {
+                        print("updated cloud kit record with core data record")
+                    }
+                })
+            }
+        })
+    }
     
     func fetchAndAddRecordToCoreData(_ recordID:CKRecord.ID) {
+        print("getting record from cloud")
         database.fetch(withRecordID: recordID, completionHandler: { (r,err) in
             if let err = err {
+                print("didn't find record on cloud \(recordID.recordName)")
                 print(err.localizedDescription)
             } else {
+                print("found record on cloud")
                 self.addCloudKitRecordToCoreData(r!)
                 print(r?.value(forKey: "firstName") ?? "No Name")
                 
             }
         })
     }
-    
+
+    func updateRecordOnCloud(_ recordID:CKRecord.ID) {
+        database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+            if let err = err {
+                print(err)
+            } else {
+                let predicate = NSPredicate(format: "recordName == %@", recordID.recordName)
+                let request = NSFetchRequest<Student>(entityName: "Student")
+                request.predicate = predicate
+                do {
+                    let results = try self.managedObjectContext?.fetch(request)
+                    for s:Student in results! {
+                        self.database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(ckr,err) in
+                            if let err = err {
+                                print(err)
+                            } else {
+                                ckr?["firstName"]=s.firstName
+                                ckr?["lastName"]=s.lastName
+                                ckr?["phone"]=s.phone
+                                self.database.save(ckr!, completionHandler: {(r,err) in
+                                    if let err = err {
+                                        print(err)
+                                    } else {
+                                        print("Updated record on cloud.")
+                                    }
+                                })
+                            }
+                        })
+                    }
+                } catch {
+                    print(error)
+                }
+
+            }
+        })
+    }
     
     func updateRecordInCoreData(_ recordID:CKRecord.ID) {
         let recordName = recordID.recordName
@@ -220,30 +441,31 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         fetchRequest.predicate = predicate
         do {
             let students = try managedObjectContext?.fetch(fetchRequest)
-            for s:Student in students! {
-                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
-                    if let err = err {
-                        print(err.localizedDescription)
-                    } else {
-                        s.firstName = r?["firstName"]
-                        s.lastName = r?["lastName"]
-                        s.phone = r?["phone"]
+            if students != nil {
+                for s:Student in students! {
+                    if s.recordName == recordName {
+                        database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+                            if let err = err {
+                                print(err.localizedDescription)
+                            } else {
+                                s.firstName = r?["firstName"]
+                                s.lastName = r?["lastName"]
+                                s.phone = r?["phone"]
+                                s.recordName = r?["recordName"]
+                                do {
+                                    try self.managedObjectContext?.save()
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        })
                     }
-                })
-            }
-            DispatchQueue.main.async {
-                do {
-                    try self.managedObjectContext!.save()
-                    self.tableView.reloadData()
-                } catch {
-                    print(error.localizedDescription)
                 }
             }
         } catch {
             print(error.localizedDescription)
         }
     }
-    
     
     
     
@@ -254,25 +476,22 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
         fetchRequest.predicate = predicate
         do {
+            print("getting student from core data for deletion")
             let students = try managedObjectContext?.fetch(fetchRequest)
+            print("found student")
             for s:Student in students! {
                 managedObjectContext?.delete(s)
+            }
+            print("deleted student")
+            do {
+                try managedObjectContext?.save()
+            } catch {
+                print("trouble saving context after delete.")
+                print(error)
             }
         } catch {
             print(error)
         }
-//        for s:Student in coreDataStudents {
-//            if s.cloudKitRecordID() == recordID {
-//                context?.delete(s)
-//                do {
-//                    try context?.save()
-//                    coreDataStudents.remove(at: row)
-//                } catch {
-//                    print(error.localizedDescription)
-//                }
-//            }
-//            row = row + 1
-//        }
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -289,6 +508,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
                 controller.context = managedObjectContext
+                controller.studentItem = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -320,36 +540,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let context = fetchedResultsController.managedObjectContext
+            // let context = fetchedResultsController.managedObjectContext
             
-            let studentToDelete = fetchedResultsController.object(at: indexPath)
-            let ckRecordToDelete = CKRecord(recordType: "Student", recordID: studentToDelete.cloudKitRecordID()!)
-            database.delete(withRecordID: ckRecordToDelete.recordID, completionHandler: {(id,err) in
-                if let err = err {
-                    print(err)
+            if editingStyle == .delete {
+                let context = fetchedResultsController.managedObjectContext
+                context.delete(fetchedResultsController.object(at: indexPath))
+                
+                do {
+                    try managedObjectContext?.save()
+                } catch {
+                    // Replace this implementation with code to handle the error appropriately.
+                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    let nserror = error as NSError
+                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
                 }
-            })
-//            if studentToDelete.recordName != nil {
-//                studentToDelete.ckrecordID = studentToDelete.recordID
-//                database.delete(withRecordID: studentToDelete.cloudKitRecordID()!, completionHandler: {id,err in
-//                    if let err = err {
-//                        print(err.localizedDescription)
-//                    } else {
-//                        print("record deleted from cloud")
-//                    }
-//                })
-//
-//            }
-            
-            
-            context.delete(fetchedResultsController.object(at: indexPath))
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
     }
@@ -416,6 +620,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             case .delete:
                 tableView.deleteRows(at: [indexPath!], with: .fade)
             case .update:
+                if tableView.cellForRow(at: indexPath!) ==  nil {
+                    return
+                }
                 configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Student)
             case .move:
                 configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Student)

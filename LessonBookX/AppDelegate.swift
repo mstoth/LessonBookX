@@ -78,6 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
+                //NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
                 viewController?.updateRecordInCoreData(recordID)
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:

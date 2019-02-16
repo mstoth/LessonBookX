@@ -57,7 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 //        application.registerUserNotificationSettings(UIUserNotificationSettings(types: .alert, categories: nil))
 //        application.registerForRemoteNotifications()
         
-        
 
         // Register for push notifications
 //        UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil];
@@ -180,6 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
+                // NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
                 viewController?.updateRecordInCoreData(recordID)
                 completionHandler(UIBackgroundFetchResult.newData)
                 break
@@ -200,9 +200,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             print("Database notification")
         }
 
-        print(userInfo)
+        // print(userInfo)
         //completionHandler(nil)
     }
+    
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
        //  let subscription = CKQuerySubscription(recordType: "Student", predicate: NSPredicate(format: "TRUEPREDICATE"), options: .firesOnRecordCreation)

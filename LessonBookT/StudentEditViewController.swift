@@ -32,6 +32,7 @@ class StudentEditViewController: UIViewController {
         student?.phone = phoneTextField.text
         do {
             try context?.save()
+            print("context saved in student edit view controller")
         } catch {
             print(error)
         }
