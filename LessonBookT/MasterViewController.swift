@@ -120,6 +120,28 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     ccr?["lastName"]=s.lastName
                     ccr?["phone"]=s.phone
                     ccr?["recordName"]=s.recordName
+                    database.save(ccr!, completionHandler: {(r,err) in
+                        if let err = err {
+                            print(err)
+                        } else {
+                            print("Saved record to cloud")
+                        }
+                    })
+                    
+                } else {
+                    let ccr = s.cloudKitRecord()
+                    ccr?["firstName"]=s.firstName
+                    ccr?["lastName"]=s.lastName
+                    ccr?["phone"]=s.phone
+                    ccr?["recordName"]=s.recordName
+                    database.save(ccr!, completionHandler: {(r,err) in
+                        if let err = err {
+                            print(err)
+                        } else {
+                            print("Saved record to cloud")
+                        }
+                    })
+
                 }
                 DispatchQueue.main.async {
                     do {
@@ -323,17 +345,19 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         newStudent.lastName = ckRecord["lastName"]
         newStudent.phone = ckRecord["phone"]
         newStudent.recordName = newStudent.ckrecordName
-        do {
-            print("saving new record to core data")
-            try managedObjectContext?.save()
-//            coreDataStudents.append(newStudent)
-            print("student \(newStudent.recordName) saved to core")
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+        DispatchQueue.main.async {
+            do {
+                print("saving new record to core data")
+                try self.managedObjectContext?.save()
+                //            coreDataStudents.append(newStudent)
+                print("student \(newStudent.recordName) saved to core")
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            } catch {
+                print(error.localizedDescription)
             }
-            
-        } catch {
-            print(error.localizedDescription)
         }
     }
 
@@ -452,10 +476,13 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                                 s.lastName = r?["lastName"]
                                 s.phone = r?["phone"]
                                 s.recordName = r?["recordName"]
-                                do {
-                                    try self.managedObjectContext?.save()
-                                } catch {
-                                    print(error)
+                                DispatchQueue.main.async {
+                                    do {
+                                        try self.managedObjectContext?.save()
+                                        self.tableView.reloadData()
+                                    } catch {
+                                        print(error)
+                                    }
                                 }
                             }
                         })
@@ -483,11 +510,14 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 managedObjectContext?.delete(s)
             }
             print("deleted student")
-            do {
-                try managedObjectContext?.save()
-            } catch {
-                print("trouble saving context after delete.")
-                print(error)
+            DispatchQueue.main.async {
+                do {
+                    try self.managedObjectContext?.save()
+                } catch {
+                    print("trouble saving context after delete.")
+                    print(error)
+                }
+
             }
         } catch {
             print(error)
@@ -545,14 +575,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             if editingStyle == .delete {
                 let context = fetchedResultsController.managedObjectContext
                 context.delete(fetchedResultsController.object(at: indexPath))
-                
-                do {
-                    try managedObjectContext?.save()
-                } catch {
-                    // Replace this implementation with code to handle the error appropriately.
-                    // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                    let nserror = error as NSError
-                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                DispatchQueue.main.async {
+                    do {
+                        try self.managedObjectContext?.save()
+                    } catch {
+                        // Replace this implementation with code to handle the error appropriately.
+                        // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                        let nserror = error as NSError
+                        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                    }
+
                 }
             }
         }

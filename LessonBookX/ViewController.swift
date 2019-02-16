@@ -257,10 +257,12 @@ class ViewController: NSViewController {
 //                        }
 //                    })
                 }
-                do {
-                    try context?.save()
-                } catch {
-                    print(error)
+                DispatchQueue.main.async {
+                    do {
+                        try self.context?.save()
+                    } catch {
+                        print(error)
+                    }
                 }
 //                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
 //                    if err != nil {
@@ -299,7 +301,7 @@ class ViewController: NSViewController {
                 
                 database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
                     if err != nil {
-                        // didn't find record. ignore update
+                        // didn't find record. upload
                         let ckerror = err as! CKError
                         if ckerror.code == CKError.unknownItem {
                             let ckr = s.cloudKitRecord()
@@ -321,20 +323,22 @@ class ViewController: NSViewController {
                             print(ckerror.localizedDescription)
                         }
                     } else {
-                        
-                        r?["phone"]=s.phone
-                        r?["firstName"]=s.firstName
-                        r?["lastName"]=s.lastName
-                        r?["recordName"]=s.recordName
-                        self.database.save(r!, completionHandler: {(r,err) in
-                            if let err = err {
-                                print("error from saving update to cloud")
-                                print(err.localizedDescription)
-                            } else {
-                                print("saved record to cloud for update")
-                                print(s.cloudKitRecord()?.recordID.recordName as Any)
-                            }
-                        })
+                        if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
+                            r?["recordName"]==s.recordName && r?["lastName"]==s.lastName) {
+                            r?["phone"]=s.phone
+                            r?["firstName"]=s.firstName
+                            r?["lastName"]=s.lastName
+                            r?["recordName"]=s.recordName
+                            self.database.save(r!, completionHandler: {(r,err) in
+                                if let err = err {
+                                    print("error from saving update to cloud")
+                                    print(err.localizedDescription)
+                                } else {
+                                    print("saved record to cloud for update")
+                                    print(s.recordName)
+                                }
+                            })
+                        }
                     }
                 })
 
@@ -434,14 +438,16 @@ class ViewController: NSViewController {
                                 s.lastName = r?["lastName"]
                                 s.phone = r?["phone"]
                                 s.recordName = r?["recordName"]
-                                do {
-                                    try self.context?.save()
-//                                    NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-
-                                } catch {
-                                    print(error)
-//                                    NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-
+                                DispatchQueue.main.async {
+                                    do {
+                                        try self.context?.save()
+                                        //                                    NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+                                        
+                                    } catch {
+                                        print(error)
+                                        //                                    NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+                                        
+                                    }
                                 }
                             }
                         })
