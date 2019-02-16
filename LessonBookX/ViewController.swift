@@ -296,7 +296,7 @@ class ViewController: NSViewController {
         }
         
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
-            print("Core Data Changed Notification")
+            print("Core Data Changed Notification (updates)")
             for s:Student in updates {
                 let recordName=s.recordName
                 let recordID = CKRecord.ID(recordName: recordName!)
@@ -305,28 +305,33 @@ class ViewController: NSViewController {
                         // didn't find record. upload
                         let ckerror = err as! CKError
                         if ckerror.code == CKError.unknownItem {
-                            let r = s.cloudKitRecord(s.recordName!)
-                            
-                            r?["phone"]=s.phone
-                            r?["firstName"]=s.firstName
-                            r?["lastName"]=s.lastName
-                            r?["recordName"]=s.recordName
-                            DispatchQueue.main.async {
-                                self.database.save(r!, completionHandler: {(r,err) in
-                                    if let err = err {
-                                        print("error from saving update to cloud")
-                                        print(err.localizedDescription)
-                                    } else {
-                                        print("saved record to cloud for update")
-                                        print(s.recordName)
-                                    }
-                                })
-                                
-                            }
 
-                        } else {
-                            print("Unknown error from fetch.")
-                            print(ckerror.localizedDescription)
+                            let ckerror = err as! CKError
+                            if ckerror.code == CKError.unknownItem {
+                                
+                                let ckr=CKRecord(recordType: "Student", recordID: recordID)
+                                
+                                ckr["phone"]=s.phone
+                                ckr["firstName"]=s.firstName
+                                ckr["lastName"]=s.lastName
+                                ckr["recordName"]=s.recordName
+                                DispatchQueue.main.async {
+                                    self.database.save(ckr, completionHandler: {(r,err) in
+                                        if let err = err {
+                                            print("error from saving update to cloud")
+                                            print(err.localizedDescription)
+                                        } else {
+                                            print("saved record to cloud for update")
+                                            print(s.recordName as Any)
+                                        }
+                                    })
+                                    
+                                }
+
+                            } else {
+                                print("Unknown error from fetch.")
+                                print(ckerror.localizedDescription)
+                            }
                         }
                     } else {
                         if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
@@ -353,7 +358,10 @@ class ViewController: NSViewController {
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Student>, deletes.count > 0 {
             // print(deletes)
             for s:Student in deletes {
-                database.delete(withRecordID: s.cloudKitRecordID()!, completionHandler: {(rid,err) in
+                let recordName=s.recordName
+                let recordID = CKRecord.ID(recordName: recordName!)
+
+                database.delete(withRecordID: recordID, completionHandler: {(rid,err) in
                     if let err = err {
                         print(err.localizedDescription)
                     } else {
