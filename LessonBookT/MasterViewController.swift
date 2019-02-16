@@ -156,24 +156,29 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
             print("Core Data Changed Notification")
             for s:Student in updates {
-                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
+                let recordName = s.recordName
+                let recordID=CKRecord.ID(recordName: recordName!)
+                database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
                     if err != nil {
                         let ckerror = err as! CKError
                         if ckerror.code == CKError.unknownItem {
-                            let ckr = s.cloudKitRecord()
+                            // let ckr = s.cloudKitRecord()
+                            let r = s.cloudKitRecord(recordName!)
+                            r?["phone"]=s.phone
+                            r?["firstName"]=s.firstName
+                            r?["lastName"]=s.lastName
+                            r?["recordName"]=s.cloudKitRecordID()?.recordName
                             
-                            ckr?["phone"]=s.phone
-                            ckr?["firstName"]=s.firstName
-                            ckr?["lastName"]=s.lastName
-                            ckr?["recordName"]=s.cloudKitRecordID()?.recordName
-                            self.database.save(ckr!, completionHandler: {(r,err) in
+                            self.database.save(r!, completionHandler: {(r,err) in
                                 if let err = err {
+                                    print("error from saving update to cloud")
                                     print(err.localizedDescription)
                                 } else {
-                                    print("saved record to cloud for update.")
-                                    print(s.cloudKitRecordID()?.recordName as Any)
+                                    print("saved record to cloud for update")
+                                    print(s.cloudKitRecord()?.recordID.recordName as Any)
                                 }
                             })
+
                         } else {
                             print("Unknown error from fetch.")
                             print(ckerror.localizedDescription)
@@ -184,15 +189,15 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                         r?["firstName"]=s.firstName
                         r?["lastName"]=s.lastName
                         r?["recordName"]=s.recordName
-                        self.database.save(r!, completionHandler: {(r,err) in
-                            if let err = err {
-                                print("error from saving update to cloud")
-                                print(err.localizedDescription)
-                            } else {
-                                print("saved record to cloud for update")
-                                print(s.cloudKitRecord()?.recordID.recordName as Any)
-                            }
-                        })
+                        
+                        let recordArray = [r!]
+                        let modifyRecords = CKModifyRecordsOperation.init()
+                        modifyRecords.recordsToSave = recordArray
+                        modifyRecords.savePolicy = .allKeys
+                        modifyRecords.qualityOfService = .background
+                        self.database.add(modifyRecords)
+
+                        
 
                     }
                 })

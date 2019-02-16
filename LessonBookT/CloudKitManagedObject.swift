@@ -55,6 +55,12 @@ extension CloudKitManagedObject {
             print("Error encoding id")
         }
     }
+    
+    func cloudKitRecord(_ recordName:String) -> CKRecord? {
+        let id = CKRecord.ID(recordName: recordName)
+        return(CKRecord(recordType: "Student", recordID: id))
+    }
+    
     func cloudKitRecord() -> CKRecord? {
         return CKRecord(recordType: recordType, recordID: cloudKitRecordID()!)
     }

@@ -298,26 +298,32 @@ class ViewController: NSViewController {
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
             print("Core Data Changed Notification")
             for s:Student in updates {
-                
-                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
+                let recordName=s.recordName
+                let recordID = CKRecord.ID(recordName: recordName!)
+                database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
                     if err != nil {
                         // didn't find record. upload
                         let ckerror = err as! CKError
                         if ckerror.code == CKError.unknownItem {
-                            let ckr = s.cloudKitRecord()
+                            let r = s.cloudKitRecord(s.recordName!)
                             
-                            ckr?["phone"]=s.phone
-                            ckr?["firstName"]=s.firstName
-                            ckr?["lastName"]=s.lastName
-                            ckr?["recordName"]=s.cloudKitRecordID()?.recordName
-                            self.database.save(ckr!, completionHandler: {(r,err) in
-                                if let err = err {
-                                    print(err.localizedDescription)
-                                } else {
-                                    print("saved record to cloud for update")
-                                    print(s.cloudKitRecord()?.recordID.recordName as Any)
-                                }
-                            })
+                            r?["phone"]=s.phone
+                            r?["firstName"]=s.firstName
+                            r?["lastName"]=s.lastName
+                            r?["recordName"]=s.recordName
+                            DispatchQueue.main.async {
+                                self.database.save(r!, completionHandler: {(r,err) in
+                                    if let err = err {
+                                        print("error from saving update to cloud")
+                                        print(err.localizedDescription)
+                                    } else {
+                                        print("saved record to cloud for update")
+                                        print(s.recordName)
+                                    }
+                                })
+                                
+                            }
+
                         } else {
                             print("Unknown error from fetch.")
                             print(ckerror.localizedDescription)
@@ -329,15 +335,14 @@ class ViewController: NSViewController {
                             r?["firstName"]=s.firstName
                             r?["lastName"]=s.lastName
                             r?["recordName"]=s.recordName
-                            self.database.save(r!, completionHandler: {(r,err) in
-                                if let err = err {
-                                    print("error from saving update to cloud")
-                                    print(err.localizedDescription)
-                                } else {
-                                    print("saved record to cloud for update")
-                                    print(s.recordName)
-                                }
-                            })
+                            let recordArray = [r!]
+                            let modifyRecords = CKModifyRecordsOperation.init()
+                            modifyRecords.recordsToSave = recordArray
+                            modifyRecords.savePolicy = .allKeys
+                            modifyRecords.qualityOfService = .background
+                            self.database.add(modifyRecords)
+                            
+
                         }
                     }
                 })
@@ -370,53 +375,53 @@ class ViewController: NSViewController {
     }
     
     
-    func fetchStudentsFromCoreData() {
-        let predicate = NSPredicate(value: true)
-        
-        let request = NSFetchRequest<Student>.init(entityName: "Student")
-        request.predicate = predicate
-
-        do {
-            let results = try context?.fetch(request)
-            for r:Student in results! {
-                r.ckrecordID = r.recordID
-            }
-            coreDataStudents = results!
-            
-            print("\(coreDataStudents.count) Students")
-            self.tableView.reloadData()
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-    }
+//    func fetchStudentsFromCoreData() {
+//        let predicate = NSPredicate(value: true)
+//
+//        let request = NSFetchRequest<Student>.init(entityName: "Student")
+//        request.predicate = predicate
+//
+//        do {
+//            let results = try context?.fetch(request)
+//            for r:Student in results! {
+//                r.ckrecordID = r.recordID
+//            }
+//            coreDataStudents = results!
+//
+//            print("\(coreDataStudents.count) Students")
+//            self.tableView.reloadData()
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//
+//    }
     
     
-    func fetchStudentsFromCloud() {
-        
-        let predicate = NSPredicate(value: true)
-        
-        let query = CKQuery(recordType: "Student", predicate: predicate)
-        
-        database.perform(query, inZoneWith: nil) { [unowned self] results, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    //self.delegate?.errorUpdating(error as NSError)
-                    print("Cloud Query Error - Fetch Students: \(error)")
-                }
-                return
-            }
-            self.students.removeAll(keepingCapacity: true)
-            results?.forEach({ (record: CKRecord) in
-                self.students.append(record)
-            })
-            DispatchQueue.main.async {
-                //self.delegate?.modelUpdated()
-                print("Retrieved \(self.students.count) students")
-                self.tableView.reloadData()
-            }
-        }
-    }
+//    func fetchStudentsFromCloud() {
+//
+//        let predicate = NSPredicate(value: true)
+//
+//        let query = CKQuery(recordType: "Student", predicate: predicate)
+//
+//        database.perform(query, inZoneWith: nil) { [unowned self] results, error in
+//            if let error = error {
+//                DispatchQueue.main.async {
+//                    //self.delegate?.errorUpdating(error as NSError)
+//                    print("Cloud Query Error - Fetch Students: \(error)")
+//                }
+//                return
+//            }
+//            self.students.removeAll(keepingCapacity: true)
+//            results?.forEach({ (record: CKRecord) in
+//                self.students.append(record)
+//            })
+//            DispatchQueue.main.async {
+//                //self.delegate?.modelUpdated()
+//                print("Retrieved \(self.students.count) students")
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
     
     
     func updateRecordInCoreData(_ recordID:CKRecord.ID) {
@@ -441,11 +446,9 @@ class ViewController: NSViewController {
                                 DispatchQueue.main.async {
                                     do {
                                         try self.context?.save()
-                                        //                                    NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-                                        
+                                        self.tableView.reloadData()
                                     } catch {
                                         print(error)
-                                        //                                    NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
                                         
                                     }
                                 }
