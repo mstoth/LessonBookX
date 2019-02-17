@@ -94,13 +94,13 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
 
     @objc func managedObjectContextObjectsWillSave(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
+        // guard let userInfo = notification.userInfo else { return }
         
     }
     
 
     @objc func managedObjectContextObjectsDidSave(notification: NSNotification) {
-        guard let userInfo = notification.userInfo else { return }
+        // guard let userInfo = notification.userInfo else { return }
     }
     
 
@@ -157,19 +157,23 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             print("Core Data Changed Notification")
             for s:Student in updates {
                 let recordName = s.recordName
-                let recordID=CKRecord.ID(recordName: recordName!)
-                database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+                let recordID=s.cloudKitRecordID()
+                print(recordName as Any)
+                database.fetch(withRecordID: recordID!, completionHandler: {(r,err) in
                     if err != nil {
                         let ckerror = err as! CKError
                         if ckerror.code == CKError.unknownItem {
                             // let ckr = s.cloudKitRecord()
-                            let r = s.cloudKitRecord(recordName!)
-                            r?["phone"]=s.phone
-                            r?["firstName"]=s.firstName
-                            r?["lastName"]=s.lastName
-                            r?["recordName"]=s.cloudKitRecordID()?.recordName
+                            print("Unknown Item")
+                            let recordID = CKRecord.ID(recordName: s.recordName!, zoneID: s.zoneID())
+                            let r = CKRecord(recordType: "Student", recordID: recordID)
                             
-                            self.database.save(r!, completionHandler: {(r,err) in
+                            r["phone"]=s.phone
+                            r["firstName"]=s.firstName
+                            r["lastName"]=s.lastName
+                            r["recordName"]=s.cloudKitRecordID()?.recordName
+                            
+                            self.database.save(r, completionHandler: {(r,err) in
                                 if let err = err {
                                     print("error from saving update to cloud")
                                     print(err.localizedDescription)
@@ -185,20 +189,46 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                         }
                         
                     } else {
+                        print("Setting Record Values")
+//                        let recordID = CKRecord.ID(recordName: s.recordName!, zoneID: s.zoneID())
+//                        let r = CKRecord(recordType: "Student", recordID: recordID)
+
                         r?["phone"]=s.phone
                         r?["firstName"]=s.firstName
                         r?["lastName"]=s.lastName
                         r?["recordName"]=s.recordName
-                        
+//                        self.save(record: r!, completion:{ e in
+//                            if e != nil {
+//                                print(e as Any)
+//                            }
+//                        })
                         let recordArray = [r!]
-                        let modifyRecords = CKModifyRecordsOperation.init()
-                        modifyRecords.recordsToSave = recordArray
+                        print(String(describing: recordArray))
+                        let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
+                        // modifyRecords.recordsToSave = recordArray
                         modifyRecords.savePolicy = .allKeys
                         modifyRecords.qualityOfService = .background
                         self.database.add(modifyRecords)
-
-                        
-
+//                        let saveOper = CKModifyRecordsOperation()
+//                        saveOper.recordsToSave = [r!]
+//                        saveOper.savePolicy = .allKeys
+//                        // let deletedRecordIDs:[CKRecord.ID] = []
+//                        saveOper.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+//                            if error != nil {
+//                                print(error as Any)
+//                            }
+//                            if saveOper.isFinished == true {
+//                                print("save operation is true")
+//                            }
+//                        }
+//                        self.database.add(saveOper)
+                        self.database.save(r!, completionHandler: {(r,err) in
+                            if err != nil {
+                                print(err as Any)
+                            } else {
+                                print("Saved record to cloud.")
+                            }
+                        })
                     }
                 })
                 //updateRecordOnCloud(s.cloudKitRecordID()!)
@@ -207,7 +237,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Student>, deletes.count > 0 {
             for s:Student in deletes {
-                database.delete(withRecordID: s.cloudKitRecordID()!, completionHandler: {(rid,err) in
+                let recordID = CKRecord.ID(recordName: s.recordName!, zoneID: s.zoneID())
+                database.delete(withRecordID: recordID, completionHandler: {(rid,err) in
                     if let err = err {
                         print(err.localizedDescription)
                     } else {
@@ -218,8 +249,52 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
+    public func save(record: CKRecord, completion: @escaping (Error?) -> Void)
+    {
+        let modifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: [])
+        modifyRecordsOperation.modifyRecordsCompletionBlock = { _, _, error in
+            guard error == nil else {
+                guard let ckerror = error as? CKError else {
+                    completion(error)
+                    return
+                }
+                if ckerror.code == .partialFailure {
+                    // This is a multiple-issue error. Check the underlying array
+                    // of errors to see if it contains a match for the error in question.
+                    guard let errors = ckerror.partialErrorsByItemID else {
+                        completion(error)
+                        return
+                    }
+                    for (_, error) in errors {
+                        if let currentError = error as? CKError {
+                            if currentError.code == CKError.zoneNotFound {
+                                self.createZone() { error in
+                                    guard error == nil else {
+                                        completion(error)
+                                        return
+                                    }
+                                    // Call save after creating the zone
+                                    self.save(record: record, completion: completion)
+                                    return
+                                }
+                                return
+                            }
+                        }
+                    }
+                }
+                completion(error)
+                return
+            }
+            // The record has been saved without errors
+            completion(nil)
+        }
+        self.database.add(modifyRecordsOperation)
+    }
 
-
+    func createZone(completion: @escaping (Error?) -> Void) -> CKRecordZone{
+        return CKRecordZone(zoneID: (z?.zoneID)!)
+    }
+    
     func deleteCloudRecordFromStudent(_ recordID:CKRecord.ID) {
         database.fetch(withRecordID: recordID, completionHandler:{ (r,err) in
             if err != nil {
@@ -355,7 +430,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 print("saving new record to core data")
                 try self.managedObjectContext?.save()
                 //            coreDataStudents.append(newStudent)
-                print("student \(newStudent.recordName) saved to core")
+                print("student \(String(describing: newStudent.recordName)) saved to core")
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -369,7 +444,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func addCoreDataRecordToCloud(_ student:Student) {
         // make sure it's not there
         database.fetch(withRecordID: student.cloudKitRecordID()!, completionHandler: {(r,err) in
-            if let err = err {
+            if err != nil {
                 // not on cloud, add it
                 if (student.recordName == nil) {
                     student.prepareForCloudKit()
@@ -508,8 +583,11 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
         fetchRequest.predicate = predicate
         do {
+            
             print("getting student from core data for deletion")
             let students = try managedObjectContext?.fetch(fetchRequest)
+            //let modifyRecords = CKModifyRecordsOperation.init()
+
             print("found student")
             for s:Student in students! {
                 managedObjectContext?.delete(s)

@@ -94,15 +94,16 @@ class ViewController: NSViewController {
         newStudent.phone = ckRecord["phone"]
         newStudent.recordName = ckRecord["recordName"]
         // newStudent.recordName = ckRecord.recordID.recordName
-        do {
-            try context?.save()
-            //coreDataStudents.append(newStudent)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+        DispatchQueue.main.async {
+            do {
+                try self.context?.save()
+                //coreDataStudents.append(newStudent)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print(error.localizedDescription)
             }
-            
-        } catch {
-            print(error.localizedDescription)
         }
     }
     
@@ -299,58 +300,64 @@ class ViewController: NSViewController {
             print("Core Data Changed Notification (updates)")
             for s:Student in updates {
                 let recordName=s.recordName
-                let recordID = CKRecord.ID(recordName: recordName!)
-                database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
-                    if err != nil {
-                        // didn't find record. upload
-                        let ckerror = err as! CKError
-                        if ckerror.code == CKError.unknownItem {
-
+                print("Making record ID with \(String(describing: recordName))")
+                let recordID = CKRecord.ID.init(recordName: recordName!, zoneID: s.zoneID())
+                
+                DispatchQueue.main.async {
+                    self.database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+                        if err != nil {
+                            // didn't find record. upload
                             let ckerror = err as! CKError
+                            print(ckerror.localizedDescription)
                             if ckerror.code == CKError.unknownItem {
-                                
-                                let ckr=CKRecord(recordType: "Student", recordID: recordID)
-                                
-                                ckr["phone"]=s.phone
-                                ckr["firstName"]=s.firstName
-                                ckr["lastName"]=s.lastName
-                                ckr["recordName"]=s.recordName
-                                DispatchQueue.main.async {
-                                    self.database.save(ckr, completionHandler: {(r,err) in
-                                        if let err = err {
-                                            print("error from saving update to cloud")
-                                            print(err.localizedDescription)
-                                        } else {
-                                            print("saved record to cloud for update")
-                                            print(s.recordName as Any)
-                                        }
-                                    })
-                                    
-                                }
 
-                            } else {
-                                print("Unknown error from fetch.")
-                                print(ckerror.localizedDescription)
+                                let ckerror = err as! CKError
+                                if ckerror.code == CKError.unknownItem {
+                                    
+                                    let ckr=CKRecord(recordType: "Student", recordID: recordID)
+                                    
+                                    ckr["phone"]=s.phone
+                                    ckr["firstName"]=s.firstName
+                                    ckr["lastName"]=s.lastName
+                                    ckr["recordName"]=s.recordName
+                                    DispatchQueue.main.async {
+                                        self.database.save(ckr, completionHandler: {(r,err) in
+                                            if let err = err {
+                                                print("error from saving update to cloud")
+                                                print(err.localizedDescription)
+                                            } else {
+                                                print("saved record to cloud for update")
+                                                print(s.recordName as Any)
+                                            }
+                                        })
+                                        
+                                    }
+
+                                } else {
+                                    print("Unknown error from fetch.")
+                                    print(ckerror.localizedDescription)
+                                }
+                            }
+                        } else {
+                            if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
+                                r?["recordName"]==s.recordName && r?["lastName"]==s.lastName) {
+                                r?["phone"]=s.phone
+                                r?["firstName"]=s.firstName
+                                r?["lastName"]=s.lastName
+                                r?["recordName"]=s.recordName
+                                let recordArray = [r!]
+                                let modifyRecords = CKModifyRecordsOperation.init()
+                                modifyRecords.recordsToSave = recordArray
+                                modifyRecords.savePolicy = .allKeys
+                                modifyRecords.qualityOfService = .background
+                                self.database.add(modifyRecords)
+                                
+
                             }
                         }
-                    } else {
-                        if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
-                            r?["recordName"]==s.recordName && r?["lastName"]==s.lastName) {
-                            r?["phone"]=s.phone
-                            r?["firstName"]=s.firstName
-                            r?["lastName"]=s.lastName
-                            r?["recordName"]=s.recordName
-                            let recordArray = [r!]
-                            let modifyRecords = CKModifyRecordsOperation.init()
-                            modifyRecords.recordsToSave = recordArray
-                            modifyRecords.savePolicy = .allKeys
-                            modifyRecords.qualityOfService = .background
-                            self.database.add(modifyRecords)
-                            
-
-                        }
-                    }
-                })
+                    
+                    })
+                }
 
             }
         }
@@ -359,7 +366,7 @@ class ViewController: NSViewController {
             // print(deletes)
             for s:Student in deletes {
                 let recordName=s.recordName
-                let recordID = CKRecord.ID(recordName: recordName!)
+                let recordID = CKRecord.ID.init(recordName: recordName!, zoneID: s.zoneID())
 
                 database.delete(withRecordID: recordID, completionHandler: {(rid,err) in
                     if let err = err {

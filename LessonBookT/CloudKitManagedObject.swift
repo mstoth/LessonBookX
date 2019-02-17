@@ -47,6 +47,9 @@ extension CloudKitManagedObject {
         ckrecordName = recordID.recordName
         
     }
+    func zoneID() -> CKRecordZone.ID{
+        return customZone.zoneID
+    }
     
     func setCloudKitRecordID(_ id:CKRecord.ID) {
         do {

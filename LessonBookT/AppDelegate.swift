@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print("Received Notification")
         var recordID:CKRecord.ID
-        var recordName:String
+        //var recordName:String
         let notification: CKNotification =
             CKNotification(fromRemoteNotificationDictionary:
                 userInfo as! [String : NSObject])

@@ -30,11 +30,13 @@ class StudentEditViewController: UIViewController {
         student?.firstName = firstNameTextField.text
         student?.lastName = lastNameTextField.text
         student?.phone = phoneTextField.text
-        do {
-            try context?.save()
-            print("context saved in student edit view controller")
-        } catch {
-            print(error)
+        DispatchQueue.main.async {
+            do {
+                try self.context?.save()
+                print("context saved in student edit view controller")
+            } catch {
+                print(error)
+            }
         }
     }
 
