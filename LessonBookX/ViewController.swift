@@ -93,6 +93,7 @@ class ViewController: NSViewController {
         newStudent.lastName = ckRecord["lastName"]
         newStudent.phone = ckRecord["phone"]
         newStudent.recordName = ckRecord["recordName"]
+        newStudent.lastUpdate = Date()
         // newStudent.recordName = ckRecord.recordID.recordName
         DispatchQueue.main.async {
             do {
@@ -120,7 +121,7 @@ class ViewController: NSViewController {
         newStudent.phone = ""
         newStudent.recordID = newStudent.ckrecordID
         newStudent.recordName = newStudent.cloudKitRecordID()?.recordName
-        
+        newStudent.lastUpdate = Date()
         ccr!.setValue("New",forKey: "firstName")
         ccr!.setValue("Student",forKey: "lastName")
         ccr!.setValue("", forKey: "phone")
@@ -248,10 +249,13 @@ class ViewController: NSViewController {
                     s.prepareForCloudKit()
                     s.recordName = s.cloudKitRecordID()?.recordName
                     let ccr = s.cloudKitRecord()
-                    ccr?["firstName"]=s.firstName
-                    ccr?["lastName"]=s.lastName
-                    ccr?["phone"]=s.phone
-                    ccr?["recordName"]=s.recordName
+                    
+                    ccr?["firstName"]=s.firstName! as CKRecordValue
+                    ccr?["lastName"]=s.lastName! as CKRecordValue
+                    ccr?["phone"]=s.phone! as CKRecordValue
+                    ccr?["recordName"]=s.recordName! as CKRecordValue
+                    ccr?["lastUpdate"]=Date() as CKRecordValue
+                    
 //                    database.save(ccr!, completionHandler: {(r,err) in
 //                        if err == nil {
 //                            print("saved new record to cloud")
@@ -316,10 +320,11 @@ class ViewController: NSViewController {
                                     
                                     let ckr=CKRecord(recordType: "Student", recordID: recordID)
                                     
-                                    ckr["phone"]=s.phone
-                                    ckr["firstName"]=s.firstName
-                                    ckr["lastName"]=s.lastName
-                                    ckr["recordName"]=s.recordName
+                                    ckr["phone"]=s.phone as CKRecordValue?
+                                    ckr["firstName"]=s.firstName as CKRecordValue?
+                                    ckr["lastName"]=s.lastName as CKRecordValue?
+                                    ckr["recordName"]=s.recordName as CKRecordValue?
+                                    ckr["lastUpdate"]=Date()
                                     DispatchQueue.main.async {
                                         self.database.save(ckr, completionHandler: {(r,err) in
                                             if let err = err {
@@ -454,10 +459,12 @@ class ViewController: NSViewController {
                             if let err = err {
                                 print(err.localizedDescription)
                             } else {
+                                print("Modifying core data on Mac")
                                 s.firstName = r?["firstName"]
                                 s.lastName = r?["lastName"]
                                 s.phone = r?["phone"]
                                 s.recordName = r?["recordName"]
+                                s.lastUpdate = Date()
                                 DispatchQueue.main.async {
                                     do {
                                         try self.context?.save()

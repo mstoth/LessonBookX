@@ -99,6 +99,7 @@
 		A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManagedObject.swift; sourceTree = "<group>"; };
 		A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4BA9C3E221A170D00A65642 /* LessonBookT 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LessonBookT 2.xcdatamodel"; sourceTree = "<group>"; };
 		A4C1C8DE21FDA95100A88255 /* LessonBookX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C1C8E121FDA95100A88255 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4C1C8E321FDA95100A88255 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -1221,9 +1222,10 @@
 		A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				A4BA9C3E221A170D00A65642 /* LessonBookT 2.xcdatamodel */,
 				A450C6642205ADE100BA4047 /* LessonBookT.xcdatamodel */,
 			);
-			currentVersion = A450C6642205ADE100BA4047 /* LessonBookT.xcdatamodel */;
+			currentVersion = A4BA9C3E221A170D00A65642 /* LessonBookT 2.xcdatamodel */;
 			path = LessonBookT.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

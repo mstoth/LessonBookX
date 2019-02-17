@@ -120,6 +120,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     ccr?["lastName"]=s.lastName
                     ccr?["phone"]=s.phone
                     ccr?["recordName"]=s.recordName
+                    ccr?["lastUpdate"]=Date()
                     database.save(ccr!, completionHandler: {(r,err) in
                         if let err = err {
                             print(err)
@@ -172,7 +173,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r["firstName"]=s.firstName
                             r["lastName"]=s.lastName
                             r["recordName"]=s.cloudKitRecordID()?.recordName
-                            
+                            r["lastUpdate"]=Date()
                             self.database.save(r, completionHandler: {(r,err) in
                                 if let err = err {
                                     print("error from saving update to cloud")
@@ -197,6 +198,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                         r?["firstName"]=s.firstName
                         r?["lastName"]=s.lastName
                         r?["recordName"]=s.recordName
+                        r?["lastUpdate"]=Date()
+                        
 //                        self.save(record: r!, completion:{ e in
 //                            if e != nil {
 //                                print(e as Any)
@@ -364,6 +367,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         newStudent.lastName = "Student"
         newStudent.phone = ""
         newStudent.recordName = newStudent.cloudKitRecordID()?.recordName
+        newStudent.lastUpdate = Date()
         DispatchQueue.main.async {
             do {
                 try self.managedObjectContext!.save()
@@ -425,6 +429,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         newStudent.lastName = ckRecord["lastName"]
         newStudent.phone = ckRecord["phone"]
         newStudent.recordName = newStudent.ckrecordName
+        newStudent.lastUpdate = Date()
         DispatchQueue.main.async {
             do {
                 print("saving new record to core data")
@@ -455,6 +460,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 ccr?["lastName"] = student.lastName
                 ccr?["phone"] = student.phone
                 ccr?["uniqueIdentifier"] = student.uniqueIdentifier
+                ccr?["lastUpdate"]=Date()
                 student.ckrecordName = student.recordName
                 self.database.save(ccr!, completionHandler: {(r,err) in
                     if let err = err {
@@ -556,6 +562,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                                 s.lastName = r?["lastName"]
                                 s.phone = r?["phone"]
                                 s.recordName = r?["recordName"]
+                                s.lastUpdate = r?["lastUpdate"]
                                 DispatchQueue.main.async {
                                     do {
                                         try self.managedObjectContext?.save()
