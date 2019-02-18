@@ -30,6 +30,7 @@ class StudentEditViewController: UIViewController {
         student?.firstName = firstNameTextField.text
         student?.lastName = lastNameTextField.text
         student?.phone = phoneTextField.text
+        student?.lastUpdate = Date()
         DispatchQueue.main.async {
             do {
                 try self.context?.save()

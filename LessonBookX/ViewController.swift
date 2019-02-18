@@ -40,7 +40,7 @@ class ViewController: NSViewController {
         super.viewDidLoad()
         let delegate = NSApp.delegate as! AppDelegate
         context = delegate.persistentContainer.viewContext
-        
+        delegate.viewController = self
         let containerIdentifier = String(CKContainer.default().containerIdentifier!)
         let lessonBookLoc = containerIdentifier.lastIndex(of: "k")!
         let newContainerIdentifier = containerIdentifier[...lessonBookLoc]
@@ -60,7 +60,7 @@ class ViewController: NSViewController {
         notificationInfo.shouldSendMutableContent = true
         notificationInfo.shouldBadge = true
         notificationInfo.shouldSendContentAvailable = true
-        notificationInfo.desiredKeys = ["firstName","lastName","phone","recordName"]
+        notificationInfo.desiredKeys = ["firstName","lastName","phone","recordName","lastUpdate"]
         // notificationInfo.perform(#selector(handleCloudKitNotification))
         qSubscription.notificationInfo = notificationInfo
         database.save(qSubscription, completionHandler: {(sub,err) in
@@ -72,9 +72,51 @@ class ViewController: NSViewController {
         })
         z = ZoneOperations()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
 //        fetchStudentsFromCoreData()
         
+        let request = NSFetchRequest<Student>(entityName: "Student")
+        request.predicate = predicate
+        do {
+            let students = try context?.fetch(request)
+            for s:Student in students! {
+                if s.lastUpdate != nil {
+                    
+                    let ckpredicate = NSPredicate(format: "recordName == %@ AND lastUpdate > %@", s.recordName!, s.lastUpdate! as NSDate)
+                    let query = CKQuery(recordType: "Student", predicate: ckpredicate)
+                    
+                    database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(r,err) in
+                        if err != nil {
+                            print(err)
+                        } else {
+                            for rec:CKRecord in r! {
+                                s.firstName = rec["firstName"]
+                                s.lastName = rec["lastName"]
+                                s.recordName = rec["recordName"]
+                                s.phone = rec["phone"]
+                                s.lastUpdate = Date()
+                            }
+                            do {
+                                try self.context?.save()
+//                                NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    })
+                }
+            }
+            if students?.count == 0 {
+//                NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+            }
+        } catch {
+            print(error)
+        }
+        DispatchQueue.main.async {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+
+        }
+
     }
 
     
@@ -87,23 +129,22 @@ class ViewController: NSViewController {
         //let delegate = NSApp.delegate as! AppDelegate
         //let context = delegate.persistentContainer.viewContext
 
-        let newStudent = Student(context: context!)
-        newStudent.prepareForCloudKitWithCloudKitRecord(ckRecord.recordID)
-        newStudent.firstName = ckRecord["firstName"]
-        newStudent.lastName = ckRecord["lastName"]
-        newStudent.phone = ckRecord["phone"]
-        newStudent.recordName = ckRecord["recordName"]
-        newStudent.lastUpdate = Date()
-        // newStudent.recordName = ckRecord.recordID.recordName
         DispatchQueue.main.async {
             do {
+
+                let newStudent = Student(context: self.context!)
+                newStudent.prepareForCloudKitWithCloudKitRecord(ckRecord.recordID)
+                newStudent.firstName = ckRecord["firstName"]
+                newStudent.lastName = ckRecord["lastName"]
+                newStudent.phone = ckRecord["phone"]
+                newStudent.recordName = ckRecord["recordName"]
+                newStudent.lastUpdate = Date()
+                // newStudent.recordName = ckRecord.recordID.recordName
                 try self.context?.save()
                 //coreDataStudents.append(newStudent)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+                self.tableView.reloadData()
             } catch {
-                print(error.localizedDescription)
+                    print(error.localizedDescription)
             }
         }
     }
@@ -241,26 +282,40 @@ class ViewController: NSViewController {
         
         // print(notification)
         
-
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
             for s:Student in inserts {
-                // if recordName is nil, need to send it up to the cloud
+                //addCoreDataRecordToCloud(s)
                 if s.recordName == nil {
                     s.prepareForCloudKit()
                     s.recordName = s.cloudKitRecordID()?.recordName
                     let ccr = s.cloudKitRecord()
+                    ccr?["firstName"]=s.firstName
+                    ccr?["lastName"]=s.lastName
+                    ccr?["phone"]=s.phone
+                    ccr?["recordName"]=s.recordName
+                    ccr?["lastUpdate"]=Date()
+                    database.save(ccr!, completionHandler: {(r,err) in
+                        if let err = err {
+                            print(err)
+                        } else {
+                            print("Saved record to cloud")
+                        }
+                    })
                     
-                    ccr?["firstName"]=s.firstName! as CKRecordValue
-                    ccr?["lastName"]=s.lastName! as CKRecordValue
-                    ccr?["phone"]=s.phone! as CKRecordValue
-                    ccr?["recordName"]=s.recordName! as CKRecordValue
-                    ccr?["lastUpdate"]=Date() as CKRecordValue
+                } else {
+                    let ccr = s.cloudKitRecord()
+                    ccr?["firstName"]=s.firstName
+                    ccr?["lastName"]=s.lastName
+                    ccr?["phone"]=s.phone
+                    ccr?["recordName"]=s.recordName
+                    database.save(ccr!, completionHandler: {(r,err) in
+                        if let err = err {
+                            print(err)
+                        } else {
+                            print("Saved record to cloud")
+                        }
+                    })
                     
-//                    database.save(ccr!, completionHandler: {(r,err) in
-//                        if err == nil {
-//                            print("saved new record to cloud")
-//                        }
-//                    })
                 }
                 DispatchQueue.main.async {
                     do {
@@ -269,6 +324,44 @@ class ViewController: NSViewController {
                         print(error)
                     }
                 }
+            }
+        }
+
+//        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
+//            for s:Student in inserts {
+//                // if recordName is nil, need to send it up to the cloud
+//                if s.recordName == nil {
+//                    s.prepareForCloudKit()
+//                    s.recordName = s.cloudKitRecordID()?.recordName
+//                    let ccr = s.cloudKitRecord()
+//
+//                    ccr?["firstName"]=s.firstName! as CKRecordValue
+//                    ccr?["lastName"]=s.lastName! as CKRecordValue
+//                    ccr?["phone"]=s.phone! as CKRecordValue
+//                    ccr?["recordName"]=s.recordName! as CKRecordValue
+//                    //ccr?["lastUpdate"]=Date() as CKRecordValue
+//                    database.save(ccr!, completionHandler: {(rec,err) in
+//                        if err != nil {
+//                            print(err)
+//                        } else {
+//                            print("record saved to cloud")
+//                        }
+//                    })
+////                    database.save(ccr!, completionHandler: {(r,err) in
+////                        if err == nil {
+////                            print("saved new record to cloud")
+////                        }
+////                    })
+//                }
+//            }
+//        }
+//                DispatchQueue.main.async {
+//                    do {
+//                        try self.context?.save()
+//                    } catch {
+//                        print(error)
+//                    }
+//                }
 //                database.fetch(withRecordID: s.cloudKitRecordID()!, completionHandler: {(r,err) in
 //                    if err != nil {
 //                        s.prepareForCloudKit()
@@ -296,76 +389,160 @@ class ViewController: NSViewController {
 //                        // it's there, don't send it again
 //                    }
 //                })
-            }
-            // print(inserts)
-        }
+//            }
+//            // print(inserts)
+//        }
         
         if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
-            print("Core Data Changed Notification (updates)")
+            print("Core Data Changed Notification")
             for s:Student in updates {
-                let recordName=s.recordName
-                print("Making record ID with \(String(describing: recordName))")
-                let recordID = CKRecord.ID.init(recordName: recordName!, zoneID: s.zoneID())
-                
-                DispatchQueue.main.async {
-                    self.database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
-                        if err != nil {
-                            // didn't find record. upload
-                            let ckerror = err as! CKError
-                            print(ckerror.localizedDescription)
-                            if ckerror.code == CKError.unknownItem {
-
-                                let ckerror = err as! CKError
-                                if ckerror.code == CKError.unknownItem {
-                                    
-                                    let ckr=CKRecord(recordType: "Student", recordID: recordID)
-                                    
-                                    ckr["phone"]=s.phone as CKRecordValue?
-                                    ckr["firstName"]=s.firstName as CKRecordValue?
-                                    ckr["lastName"]=s.lastName as CKRecordValue?
-                                    ckr["recordName"]=s.recordName as CKRecordValue?
-                                    ckr["lastUpdate"]=Date()
-                                    DispatchQueue.main.async {
-                                        self.database.save(ckr, completionHandler: {(r,err) in
-                                            if let err = err {
-                                                print("error from saving update to cloud")
-                                                print(err.localizedDescription)
-                                            } else {
-                                                print("saved record to cloud for update")
-                                                print(s.recordName as Any)
-                                            }
-                                        })
-                                        
-                                    }
-
+                let recordName = s.recordName
+                // let recordID = CKRecord.ID(recordName: recordName)
+                // let recordID=s.cloudKitRecordID()
+                let predicate = NSPredicate(format: "recordName == %@", recordName!)
+                let query = CKQuery(recordType: "Student", predicate: predicate)
+                database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(recs,err) in
+                    if err != nil {
+                        let ckerror = err as! CKError
+                        if ckerror.code == CKError.unknownItem {
+                            print("Unknown Item")
+                            let recordID = CKRecord.ID(recordName: s.recordName!, zoneID: s.zoneID())
+                            let r = CKRecord(recordType: "Student", recordID: recordID)
+                            
+                            r["phone"]=s.phone
+                            r["firstName"]=s.firstName
+                            r["lastName"]=s.lastName
+                            r["recordName"]=s.cloudKitRecordID()?.recordName
+                            r["lastUpdate"]=Date()
+                            self.database.save(r, completionHandler: {(r,err) in
+                                if let err = err {
+                                    print("error from saving update to cloud")
+                                    print(err.localizedDescription)
                                 } else {
-                                    print("Unknown error from fetch.")
-                                    print(ckerror.localizedDescription)
+                                    print("saved record to cloud for update")
+                                    print(s.cloudKitRecord()?.recordID.recordName as Any)
                                 }
-                            }
-                        } else {
-                            if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
-                                r?["recordName"]==s.recordName && r?["lastName"]==s.lastName) {
-                                r?["phone"]=s.phone
-                                r?["firstName"]=s.firstName
-                                r?["lastName"]=s.lastName
-                                r?["recordName"]=s.recordName
-                                let recordArray = [r!]
-                                let modifyRecords = CKModifyRecordsOperation.init()
-                                modifyRecords.recordsToSave = recordArray
+                            })
+                        }
+                    } else {
+                        for r:CKRecord in recs! {
+                            if !(r["phone"]==s.phone && r["firstName"]==s.firstName && r["lastName"]==s.lastName) {
+                                print("Setting Record Values")
+                                
+                                r["phone"]=s.phone
+                                r["firstName"]=s.firstName
+                                r["lastName"]=s.lastName
+                                r["recordName"]=s.recordName
+                                r["lastUpdate"]=Date()
+                                
+                                let recordArray = [r]
+                                print(String(describing: recordArray))
+                                let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
+                                // modifyRecords.recordsToSave = recordArray
                                 modifyRecords.savePolicy = .allKeys
                                 modifyRecords.qualityOfService = .background
                                 self.database.add(modifyRecords)
-                                
-
+                                self.database.save(r, completionHandler: {(r,err) in
+                                    if err != nil {
+                                        print(err as Any)
+                                    } else {
+                                        print("Saved record to cloud.")
+                                    }
+                                })
                             }
                         }
-                    
-                    })
-                }
-
+                    }
+                })
             }
         }
+
+        
+//        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
+//            print("Core Data Changed Notification (updates)")
+//            for s:Student in updates {
+//                let recordName=s.recordName
+//
+//                let predicate = NSPredicate(format: "recordName == %@", recordName!)
+//                let query = CKQuery(recordType: "Student", predicate: predicate)
+//                database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(recs,err) in
+//                    if err != nil {
+//                        print(err)
+//                    } else {
+//                        for r:CKRecord in recs! {
+//                            if !(r["phone"]==s.phone && r["firstName"]==s.firstName && r["lastName"]==s.lastName) {
+//                                r["phone"]=s.phone as CKRecordValue?
+//                                r["firstName"]=s.firstName as CKRecordValue?
+//                                r["lastName"]=s.lastName as CKRecordValue?
+//                                r["recordName"]=s.recordName as CKRecordValue?
+//                                //r["lastUpdate"]=Date()
+//                                self.database.save(r, completionHandler: {(rec,err) in
+//                                    if err != nil {
+//                                        print(err)
+//                                    } else {
+//                                        print("record updated to cloud")
+//                                    }
+//                                })
+//                            }
+//                        }
+//                    }
+//                })
+//            }
+//        }
+        
+                
+                
+                
+//                print("Making record ID with \(String(describing: recordName))")
+//                let recordID = CKRecord.ID.init(recordName: recordName!, zoneID: s.zoneID())
+//
+//                // DispatchQueue.main.async {
+//                    self.database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+//                        if err != nil {
+//                            // didn't find record. upload
+//                            let ckerror = err as! CKError
+//                            print(ckerror.localizedDescription)
+//                            if ckerror.code == CKError.unknownItem {
+//                                print("Unknown Item")
+//                                let ckr=CKRecord(recordType: "Student", recordID: recordID)
+//
+//                                ckr["phone"]=s.phone as CKRecordValue?
+//                                ckr["firstName"]=s.firstName as CKRecordValue?
+//                                ckr["lastName"]=s.lastName as CKRecordValue?
+//                                ckr["recordName"]=s.recordName as CKRecordValue?
+//                                ckr["lastUpdate"]=Date()
+//                                self.database.save(ckr, completionHandler: {(r,err) in
+//                                    if let err = err {
+//                                        print("error from saving update to cloud")
+//                                        print(err.localizedDescription)
+//                                    } else {
+//                                        print("saved record to cloud for update")
+//                                        print(s.recordName as Any)
+//                                    }
+//                                })
+//
+//                            } else {
+//                                print("Unknown error from fetch.")
+//                                print(ckerror.localizedDescription)
+//                            }
+//                        } else {
+//                            if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
+//                                r?["recordName"]==s.recordName && r?["lastName"]==s.lastName) {
+//                                r?["phone"]=s.phone
+//                                r?["firstName"]=s.firstName
+//                                r?["lastName"]=s.lastName
+//                                r?["recordName"]=s.recordName
+//                                r?["lastUpdate"]=Date()
+//                                let recordArray = [r!]
+//                                let modifyRecords = CKModifyRecordsOperation.init()
+//                                modifyRecords.recordsToSave = recordArray
+//                                modifyRecords.savePolicy = .allKeys
+//                                modifyRecords.qualityOfService = .background
+//                                self.database.add(modifyRecords)
+//                            }
+//                        }
+//                    })
+//            }
+//        }
         
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Student>, deletes.count > 0 {
             // print(deletes)
@@ -380,6 +557,11 @@ class ViewController: NSViewController {
                         print("student deleted from cloud")
                     }
                 })
+            }
+            do {
+                try context!.save()
+            } catch {
+                print(error)
             }
         }
         
