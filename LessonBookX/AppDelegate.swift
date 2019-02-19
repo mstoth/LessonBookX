@@ -19,17 +19,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: {(granted,err) in
-            if granted {
-                print("authorization granted")
-            } else {
-                print("authorization not granted")
-            }
-            if let err = err {
-                print(err.localizedDescription)
-            }
-        })
-        
         guard let mainWindow = NSApplication.shared.mainWindow else {
             return
         }
@@ -37,6 +26,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         viewController = contentViewController as? ViewController
+
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: {(granted,err) in
+            if granted {
+                print("authorization granted")
+            } else {
+                print("authorization not granted")
+                // remind the server not to send notifications
+            }
+            if let err = err {
+                print(err.localizedDescription)
+            }
+        })
+        
     }
     
     
@@ -94,10 +96,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if notification.notificationType == CKNotification.NotificationType.database {
             print("Database notification")
+            let dbNotification = notification as! CKDatabaseNotification
+            //let recordID = dbNotification.
+            print(String(describing: dbNotification))
+            // let notificationID = dbNotification.notificationID
+            let dict = userInfo as! [String: NSObject]
+            guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else { return }
+            viewController!.fetchChanges(in: notification.databaseScope) {
+            }
+            
         }
+    
     }
-    
-    
     
     var rootViewController: ViewController? {
         return NSApplication.shared.mainWindow?.contentViewController as? ViewController
