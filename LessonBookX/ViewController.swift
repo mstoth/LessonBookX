@@ -106,7 +106,9 @@ class ViewController: NSViewController {
             NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
 
         }
-
+        fetchDatabaseChanges(database: database, databaseTokenKey: "private") {
+            print("in completion")
+        }
     }
 
     
@@ -178,7 +180,7 @@ class ViewController: NSViewController {
         var changedZoneIDs: [CKRecordZone.ID] = []
         var changeToken:CKServerChangeToken? = nil
         // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
-            let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken")
+        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken")
         if changeTokenData != nil {
             changeToken = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
         }
@@ -193,6 +195,9 @@ class ViewController: NSViewController {
         
         operation.changeTokenUpdatedBlock = { (token) in
             print("in changeTokenUpdatedBlock")
+            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
+            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+
             // Flush zone deletions for this database to disk
             // Write this new database change token to memory
         }
@@ -206,44 +211,44 @@ class ViewController: NSViewController {
             }
             // Flush zone deletions for this database to disk
             // Write this new database change token to memory
-            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
-            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
-//            self.fetchZoneChanges(database: database, databaseTokenKey: "private", zoneIDs: changedZoneIDs) {
-//                // Flush in-memory database change token to disk
-//
+            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token as Any, requiringSecureCoding: true)
+            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+            self.fetchZoneChanges(database: database, databaseTokenKey: "private", zoneIDs: changedZoneIDs) {
+                // Flush in-memory database change token to disk
+
 //                let changeTokenData = UserDefaults.standard.value(forKey: "\(self.zoneID.zoneName) zoneChangeToken") as? Data // Read change token from disk
 //                var zoneChangeToken:CKServerChangeToken?
 //                if (changeTokenData != nil){
-//                    
+//
 //                    try! zoneChangeToken = NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: changeTokenData!)  // unarchiveObject(with: changeTokenData!)as! CKServerChangeToken?
 //                }
-//
-//                completion()
-//            }
+                
+                completion()
+            }
         }
         operation.qualityOfService = .userInitiated
         database.add(operation)
     }
     
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
-    // MARK -- Zone Operations
-    
-    
-    func getPreviousServerChangeToken() -> CKServerChangeToken? {
-        var tokenFile = getDocumentsDirectory()
-        tokenFile.appendPathComponent("token.dat")
-        do {
-            let data:Data = try Data(contentsOf: tokenFile)
-            let token = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
-            return token as? CKServerChangeToken
-        } catch {
-            print(error)
-        }
-        return nil
-    }
+//    func getDocumentsDirectory() -> URL {
+//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        return paths[0]
+//    }
+//    // MARK -- Zone Operations
+//
+//
+//    func getPreviousServerChangeToken() -> CKServerChangeToken? {
+//        var tokenFile = getDocumentsDirectory()
+//        tokenFile.appendPathComponent("token.dat")
+//        do {
+//            let data:Data = try Data(contentsOf: tokenFile)
+//            let token = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data)
+//            return token as? CKServerChangeToken
+//        } catch {
+//            print(error)
+//        }
+//        return nil
+//    }
     
     
     func fetchZoneChanges(database: CKDatabase, databaseTokenKey: String, zoneIDs: [CKRecordZone.ID], completion: @escaping () -> Void) {
@@ -255,14 +260,33 @@ class ViewController: NSViewController {
             let tokenData = UserDefaults.standard.value(forKey: "\(self.zoneID.zoneName) zoneChangeToken")
             let token = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(tokenData as! Data) as! CKServerChangeToken
             options.previousServerChangeToken = token // Read change token from disk
-                optionsByRecordZoneID[zoneID] = options
+            
+            optionsByRecordZoneID[zoneID] = options
         }
-        
+        if zoneIDs.count > 0 {
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
         
         operation.recordChangedBlock = { (record) in
             print("Record changed:", record)
             // Write this record change to memory
+            let recordName = record.recordID.recordName
+            let predicate = NSPredicate(format: "recordName == %@", recordName)
+            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+            fetchRequest.predicate = predicate
+            let students = try! self.context?.fetch(fetchRequest)
+            for s:Student in students! {
+                s.firstName = record["firstName"]
+                s.lastName = record["lastName"]
+                s.phone = record["phone"]
+            }
+            DispatchQueue.main.async {
+                do {
+                    try self.context?.save()
+                    self.tableView.reloadData()
+                } catch {
+                    print(error)
+                }
+            }
         }
         
         operation.recordWithIDWasDeletedBlock = { (recordID,recordType) in
@@ -274,6 +298,9 @@ class ViewController: NSViewController {
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
             // Flush record changes and deletions for this zone to disk
             // Write this new zone change token to disk
+            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token as Any, requiringSecureCoding: true)
+            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+
         }
         
         
@@ -284,6 +311,9 @@ class ViewController: NSViewController {
                 print("Error fetching zone changes for \(databaseTokenKey) database:", error)
                 return
             }
+            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: changeToken as Any, requiringSecureCoding: true)
+            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+
             // Flush record changes and deletions for this zone to disk
             // Write this new zone change token to disk
         }
@@ -298,6 +328,8 @@ class ViewController: NSViewController {
             completion()
         }
         database.add(operation)
+        }
+        //completion()
     }
     
 
