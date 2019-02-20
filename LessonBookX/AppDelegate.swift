@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         viewController = contentViewController as? ViewController
 
+        
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: {(granted,err) in
             if granted {
                 print("authorization granted")

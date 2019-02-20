@@ -18,6 +18,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     let zoneID = CKRecordZone.ID(zoneName: "LessonBook", ownerName: CKCurrentUserDefaultName)
     
     var z:ZoneOperations? = nil
+    var subscribedToPrivateChanges:Bool = false
+    var createdCustomZone:Bool = false
+    
+    let privateSubscriptionId = "LessonBook"
 
     
     override func viewDidLoad() {
@@ -79,51 +83,289 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 //
 //        })
         
+        
         // update from cloud in case changed occurred
-        let predicate = NSPredicate(value: true)
-        let request = NSFetchRequest<Student>(entityName: "Student")
-        request.predicate = predicate
-        do {
-            let students = try managedObjectContext?.fetch(request)
-            print("Found \(students!.count) Students.")
-            for s:Student in students! {
-                
-                let ckpredicate = NSPredicate(format: "recordName == %@ AND lastUpdate > %@", s.recordName!, s.lastUpdate! as NSDate)
-                print(String(describing: ckpredicate))
-                let query = CKQuery(recordType: "Student", predicate: ckpredicate)
-                
-                database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(r,err) in
-                    if err != nil {
-                        print(err)
-                    } else {
-                        print("Found \(r!.count) Records with lastUpdate later than now.")
-                        for rec:CKRecord in r! {
-                            s.firstName = rec["firstName"]
-                            s.lastName = rec["lastName"]
-                            s.recordName = rec["recordName"]
-                            s.phone = rec["phone"]
-                            s.lastUpdate = Date()
-                        }
-                    }
-                })
+//        let predicate = NSPredicate(value: true)
+//        let request = NSFetchRequest<Student>(entityName: "Student")
+//        request.predicate = predicate
+//        do {
+//            let students = try managedObjectContext?.fetch(request)
+//            print("Found \(students!.count) Students.")
+//            for s:Student in students! {
+//
+//                let ckpredicate = NSPredicate(format: "recordName == %@ AND lastUpdate > %@", s.recordName!, s.lastUpdate! as NSDate)
+//                print(String(describing: ckpredicate))
+//                let query = CKQuery(recordType: "Student", predicate: ckpredicate)
+//
+//                database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(r,err) in
+//                    if err != nil {
+//                        print(err)
+//                    } else {
+//                        print("Found \(r!.count) Records with lastUpdate later than now.")
+//                        for rec:CKRecord in r! {
+//                            s.firstName = rec["firstName"]
+//                            s.lastName = rec["lastName"]
+//                            s.recordName = rec["recordName"]
+//                            s.phone = rec["phone"]
+//                            s.lastUpdate = Date()
+//                        }
+//                    }
+//                })
+//            }
+//        } catch {
+//            print(error)
+//        }
+        let createZoneGroup = DispatchGroup()
+        
+        if !self.createdCustomZone {
+            createZoneGroup.enter()
+            let customZone = CKRecordZone(zoneID: z!.zoneID!)
+            let createZoneOperation = CKModifyRecordZonesOperation(recordZonesToSave: [customZone], recordZoneIDsToDelete: [] )
+            createZoneOperation.modifyRecordZonesCompletionBlock = { (saved, deleted, error) in
+                if (error == nil) { self.createdCustomZone = true }
+                // else custom error handling
+                createZoneGroup.leave()
             }
-        } catch {
-            print(error)
+            createZoneOperation.qualityOfService = .userInitiated
+            self.database.add(createZoneOperation)
         }
-
+        
+        if !self.subscribedToPrivateChanges {
+            let createSubscriptionOperation = self.createDatabaseSubscriptionOperation(subscriptionId: privateSubscriptionId)
+            createSubscriptionOperation.modifySubscriptionsCompletionBlock = { (subscriptions, deletedIds, error) in
+                if error == nil {
+                    self.subscribedToPrivateChanges = true
+                } else {
+                    print(error as Any)
+                }
+                // else custom error handling
+            }
+            self.database.add(createSubscriptionOperation)
+        }
         // NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
         if let managedObjectContext = managedObjectContext {
             // Add Observer
             let notificationCenter = NotificationCenter.default
             notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
-            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: managedObjectContext)
-            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidSave), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext)
+//            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: managedObjectContext)
+//            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidSave), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext)
         }
     
         
         
     }
 
+
+    func createDatabaseSubscriptionOperation(subscriptionId: String) -> CKModifySubscriptionsOperation {
+        
+        let subscription = CKDatabaseSubscription.init(subscriptionID: privateSubscriptionId)
+        let notificationInfo = CKSubscription.NotificationInfo()
+        
+        // send a silent notification
+        notificationInfo.shouldSendContentAvailable = true
+        subscription.notificationInfo = notificationInfo
+        let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+        operation.qualityOfService = .utility
+        return operation
+    }
+
+    
+    
+    func fetchChanges(in databaseScope: CKDatabase.Scope, completion: @escaping () -> Void) {
+        
+        switch databaseScope {
+        case .private:
+            let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken") as? Data // Read change token from disk
+            if changeTokenData != nil {
+                let changeToken = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData!)
+                if changeToken != nil {
+                    let previousServerChangeToken = changeToken as? CKServerChangeToken// Read change token from disk
+                    fetchDatabaseChanges(database: self.database, databaseTokenKey:previousServerChangeToken! , completion: completion)
+                } else {
+                    // fetchDatabaseChanges(database: self.database, databaseTokenKey:nil , completion: completion)
+                }
+            }
+            
+        case .shared:
+            print("Shared scope.")
+            //fetchDatabaseChanges(database: self.sharedDB, databaseTokenKey: "shared", completion: completion)
+            
+        case .public:
+            fatalError()
+            
+        }
+    }
+
+    
+    func fetchDatabaseChanges(database: CKDatabase, databaseTokenKey: CKServerChangeToken, completion: @escaping () -> Void) {
+        
+        var changedZoneIDs: [CKRecordZone.ID] = []
+        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken") as? Data // Read change token from disk
+        
+        var zoneChangeToken:CKServerChangeToken?
+        if (changeTokenData != nil){
+            try! zoneChangeToken = NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: changeTokenData!)  // unarchiveObject(with: changeTokenData!)as! CKServerChangeToken?
+        }
+        
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: zoneChangeToken)
+        operation.recordZoneWithIDChangedBlock = { (zoneID) in
+            changedZoneIDs.append(zoneID)
+        }
+        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+            // Write this zone deletion to memory
+            
+        }
+        
+        operation.changeTokenUpdatedBlock = { (token) in
+            print("in changeTokenUpdatedBlock")
+            // Flush zone deletions for this database to disk
+            // Write this new database change token to memory
+            do {
+                let changeTokenData = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
+                UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+            } catch {
+                print(error)
+            }
+        }
+        
+        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+            
+            if let error = error {
+                print("Error during fetch shared database changes operation", error)
+                completion()
+                return
+            }
+            // Flush zone deletions for this database to disk
+            // Write this new database change token to memory
+            
+            self.fetchZoneChanges(database: database, databaseTokenKey: token!, zoneIDs: changedZoneIDs) {
+                // Flush in-memory database change token to disk
+                do {
+                    let changeTokenData = try NSKeyedArchiver.archivedData(withRootObject: databaseTokenKey, requiringSecureCoding: true)
+                    UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+                } catch {
+                    print(error)
+                }
+                completion()
+            }
+        }
+        operation.qualityOfService = .userInitiated
+        database.add(operation)
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    // MARK -- Zone Operations
+    
+    
+    
+    func fetchZoneChanges(database: CKDatabase, databaseTokenKey: CKServerChangeToken, zoneIDs: [CKRecordZone.ID], completion: @escaping () -> Void) {
+        // Look up the previous change token for each zone
+        var optionsByRecordZoneID:[CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration] = [:]
+        //var optionsByRecordZoneID = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
+        for zoneID in zoneIDs {
+            let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
+            let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken") as? Data // Read change token from disk
+            if changeTokenData != nil {
+                do {
+                    let changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData!)
+                    options.previousServerChangeToken = changeToken as? CKServerChangeToken// Read change token from disk
+                    optionsByRecordZoneID[zoneID] = options
+
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
+
+        operation.recordChangedBlock = { (record) in
+            print("Record changed:", record)
+            // Write this record change to memory
+            let predicate = NSPredicate(format: "recordName == %@", record.recordID.recordName)
+            let fetchRequest = Student.fetchRequest() as NSFetchRequest
+            fetchRequest.predicate = predicate
+            do {
+                let student = try self.managedObjectContext?.fetch(fetchRequest)
+                for s in student! {
+                    var changed:Bool = false
+                    
+                    if s.firstName != record["firstName"] {
+                        s.firstName = record["firstName"]
+                        changed = true
+                    }
+                    if s.lastName != record["lastName"] {
+                        s.lastName = record["lastName"]
+                        changed = true
+                    }
+                    if s.phone != record["phone"] {
+                        s.phone = record["phone"]
+                        changed = true
+                    }
+                    if changed {
+                        do {
+                            try self.managedObjectContext?.save()
+                        } catch {
+                            print(error)
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+        
+        operation.recordWithIDWasDeletedBlock = { (recordID,recordType) in
+            print("Record deleted:", recordID)
+            // write this record deletion to memory
+            let predicate = NSPredicate(format: "recordName == %@", recordID.recordName)
+            let fetchRequest = Student.fetchRequest() as NSFetchRequest
+            fetchRequest.predicate = predicate
+            do {
+                let student = try self.managedObjectContext?.fetch(fetchRequest)
+                for s in student! {
+                    self.managedObjectContext?.delete(s)
+                    print("Deleted student in core data")
+                }
+            } catch {
+                print(error)
+            }
+
+        }
+        
+        
+        operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
+            // Flush record changes and deletions for this zone to disk
+            // Write this new zone change token to disk
+        }
+        
+        
+        
+        operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, _, _, error) in
+            
+            if let error = error {
+                print("Error fetching zone changes for \(databaseTokenKey) database:", error)
+                return
+            }
+            // Flush record changes and deletions for this zone to disk
+            // Write this new zone change token to disk
+        }
+        
+        
+        
+        operation.fetchRecordZoneChangesCompletionBlock = { (error) in
+            
+            if let error = error {
+                print("Error fetching zone changes for \(databaseTokenKey) database:", error)
+            }
+            completion()
+        }
+        database.add(operation)
+    }
+    
 
     @objc func managedObjectContextObjectsWillSave(notification: NSNotification) {
         // guard let userInfo = notification.userInfo else { return }
@@ -180,7 +422,11 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 }
                 DispatchQueue.main.async {
                     do {
+                        let notificationCenter = NotificationCenter.default
+                        notificationCenter.removeObserver(self)
                         try self.managedObjectContext?.save()
+                        notificationCenter.addObserver(self, selector: #selector(self.managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: self.managedObjectContext)
+
                     } catch {
                         print(error)
                     }

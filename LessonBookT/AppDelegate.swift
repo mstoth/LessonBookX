@@ -200,6 +200,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         if notification.notificationType == CKNotification.NotificationType.database {
             print("Database notification")
+            let dbNotification = notification as! CKDatabaseNotification
+            //let recordID = dbNotification.
+            print(String(describing: dbNotification))
+            // let notificationID = dbNotification.notificationID
+            let dict = userInfo as! [String: NSObject]
+            guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else { return }
+            viewController!.fetchChanges(in: notification.databaseScope) {
+            }
+            completionHandler(UIBackgroundFetchResult.noData)
         }
 
         // print(userInfo)
