@@ -147,11 +147,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             // Add Observer
             let notificationCenter = NotificationCenter.default
             notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
-//            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsWillSave), name: NSNotification.Name.NSManagedObjectContextWillSave, object: managedObjectContext)
-//            notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidSave), name: NSNotification.Name.NSManagedObjectContextDidSave, object: managedObjectContext)
         }
-    
-        
         
     }
 
@@ -200,20 +196,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func fetchDatabaseChanges(database: CKDatabase, databaseTokenKey: CKServerChangeToken, completion: @escaping () -> Void) {
         
         var changedZoneIDs: [CKRecordZone.ID] = []
-        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken") as? Data // Read change token from disk
+        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
         
-        var zoneChangeToken:CKServerChangeToken?
-        if (changeTokenData != nil){
-            try! zoneChangeToken = NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: changeTokenData!)  // unarchiveObject(with: changeTokenData!)as! CKServerChangeToken?
-        }
+//        var zoneChangeToken:CKServerChangeToken?
+//        if (changeTokenData != nil){
+//            try! zoneChangeToken = NSKeyedUnarchiver.unarchivedObject(ofClass: CKServerChangeToken.self, from: changeTokenData!)  // unarchiveObject(with: changeTokenData!)as! CKServerChangeToken?
+//        }
         
-        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: zoneChangeToken)
+        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseTokenKey)
         operation.recordZoneWithIDChangedBlock = { (zoneID) in
             changedZoneIDs.append(zoneID)
         }
         operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
             // Write this zone deletion to memory
-            
+            print("in recordZoneWithIDWasDeletedBlock")
         }
         
         operation.changeTokenUpdatedBlock = { (token) in
@@ -222,14 +218,14 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             // Write this new database change token to memory
             do {
                 let changeTokenData = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
-                UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+                UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
             } catch {
                 print(error)
             }
         }
         
         operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
-            
+            print("in fetchDatabaseChangesCompletionBlock")
             if let error = error {
                 print("Error during fetch shared database changes operation", error)
                 completion()
@@ -242,7 +238,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 // Flush in-memory database change token to disk
                 do {
                     let changeTokenData = try NSKeyedArchiver.archivedData(withRootObject: databaseTokenKey, requiringSecureCoding: true)
-                    UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+                    UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
                 } catch {
                     print(error)
                 }

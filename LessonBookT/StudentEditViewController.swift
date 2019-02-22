@@ -9,10 +9,14 @@
 import UIKit
 import CoreData
 
-class StudentEditViewController: UIViewController {
+class StudentEditViewController: UIViewController, UITextFieldDelegate {
 
     var student:Student? = nil
     var context:NSManagedObjectContext? = nil
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+    }
     
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -22,7 +26,7 @@ class StudentEditViewController: UIViewController {
         firstNameTextField.text = student?.firstName
         lastNameTextField.text = student?.lastName
         phoneTextField.text = student?.phone
-        
+        firstNameTextField.delegate = self
         // Do any additional setup after loading the view.
     }
     
