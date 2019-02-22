@@ -187,9 +187,15 @@ class ViewController: NSViewController {
                 previousToken = nil
             }
         }
+        print("Using previous token =  ", String(describing: previousToken))
         let zoneConfiguration = CKFetchRecordZoneChangesOperation.ZoneConfiguration(previousServerChangeToken: previousToken, resultsLimit: nil, desiredKeys: ["firstName","lastName","phone","recordName"])
-        let zoneID = z?.zoneID
-        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [(z?.zoneID)!], configurationsByRecordZoneID: [zoneID!:zoneConfiguration])
+        let zone = CKRecordZone(zoneName: "LessonBook")
+        let zoneID = zone.zoneID
+
+        let operation = CKFetchRecordZoneChangesOperation.init()
+        operation.recordZoneIDs = [zoneID]
+        operation.configurationsByRecordZoneID = [zoneID:zoneConfiguration]
+        
         operation.fetchAllChanges = true
         
         operation.recordWithIDWasDeletedBlock = { (recordID,recordType) in
@@ -208,12 +214,14 @@ class ViewController: NSViewController {
                 print(error)
             }
         }
+        
         operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
             // Flush record changes and deletions for this zone to disk
             // Write this new zone change token to disk
             print("in recordZoneChangeTokensUpdatedBlock", token as Any)
+            print("Saving token from server = ",String(describing: token))
             let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token as Any, requiringSecureCoding: true)
-            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+            UserDefaults.standard.set(tokenData, forKey: "LessonBook databaseChangeToken")
             
         }
         
@@ -225,8 +233,9 @@ class ViewController: NSViewController {
             error: Error?) in
             // do something with the token??
             print("in recordZoneFetchCompletionBlock")
+            print("Saving token = ", String(describing: serverChangeToken))
             let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: serverChangeToken as Any, requiringSecureCoding: true)
-            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+            UserDefaults.standard.set(tokenData, forKey: "LessonBook databaseChangeToken")
 
         }
         operation.fetchRecordZoneChangesCompletionBlock = { error in
@@ -243,20 +252,32 @@ class ViewController: NSViewController {
             let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
             fetchRequest.predicate = predicate
             let students = try! self.context?.fetch(fetchRequest)
-            for s:Student in students! {
+            if students?.count == 0 {
+                let s=Student(context: self.context!)
+                s.prepareForCloudKitWithCloudKitRecord(record.recordID)
                 s.firstName = record["firstName"]
                 s.lastName = record["lastName"]
                 s.phone = record["phone"]
                 s.recordName = recordName
+
+            } else {
+                for s:Student in students! {
+                    s.firstName = record["firstName"]
+                    s.lastName = record["lastName"]
+                    s.phone = record["phone"]
+                    s.recordName = recordName
+                }
             }
             DispatchQueue.main.async {
                 do {
                     try self.context?.save()
+                    print("Saved record to core data.")
                     self.tableView.reloadData()
                 } catch {
                     print(error)
                 }
             }
+
         }
         database.add(operation)
 

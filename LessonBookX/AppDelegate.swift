@@ -73,20 +73,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             switch options {
             case .firesOnRecordCreation:
                 print("FIRE ON RECORD CREATION")
-                viewController?.fetchAndAddRecordToCoreData(recordID)
+                //viewController?.fetchAndAddRecordToCoreData(recordID)
                 break
             case .firesOnRecordDeletion:
                 print("FIRE ON RECORD DELETE")
-                viewController?.recordRemovedFromCloudKit(recordID)
+                //viewController?.recordRemovedFromCloudKit(recordID)
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
                 //NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-                viewController!.updateRecordInCoreData(recordID)
+                //viewController!.updateRecordInCoreData(recordID)
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")
-                viewController?.recordRemovedFromCloudKit(recordID)
+                //viewController?.recordRemovedFromCloudKit(recordID)
                 break
             default:
                 print("DEFAULT \(options)")

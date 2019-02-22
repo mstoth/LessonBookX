@@ -196,8 +196,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             }
         }
         let zoneConfiguration = CKFetchRecordZoneChangesOperation.ZoneConfiguration(previousServerChangeToken: previousToken, resultsLimit: nil, desiredKeys: ["firstName","lastName","phone","recordName"])
-        let zoneID = z?.zoneID
-        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [(z?.zoneID)!], configurationsByRecordZoneID: [zoneID!:zoneConfiguration])
+        let zone = CKRecordZone(zoneName: "LessonBook")
+        let zoneID = zone.zoneID
+        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], configurationsByRecordZoneID: [zoneID:zoneConfiguration])
         operation.fetchAllChanges = true
         
         operation.recordWithIDWasDeletedBlock = { (recordID,recordType) in

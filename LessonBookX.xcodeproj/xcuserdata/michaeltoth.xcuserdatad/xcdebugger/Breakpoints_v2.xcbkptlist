@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.194466"
+            timestampString = "572566523.013937"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1081"
-            endingLineNumber = "1081"
+            startingLineNumber = "1102"
+            endingLineNumber = "1102"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/AppDelegate.swift"
-            timestampString = "572525941.1946599"
+            timestampString = "572566523.0146919"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "202"
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.194777"
+            timestampString = "572566523.014822"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1036"
-            endingLineNumber = "1036"
+            startingLineNumber = "1057"
+            endingLineNumber = "1057"
             landmarkName = "deletedCloudKitRecord(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.194934"
+            timestampString = "572566523.0154361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "851"
-            endingLineNumber = "851"
+            startingLineNumber = "852"
+            endingLineNumber = "852"
             landmarkName = "updateRecordOnCloud(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.195452"
+            timestampString = "572566523.015558"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "848"
-            endingLineNumber = "848"
+            startingLineNumber = "849"
+            endingLineNumber = "849"
             landmarkName = "updateRecordOnCloud(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.195852"
+            timestampString = "572566523.015662"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "888"
-            endingLineNumber = "888"
+            startingLineNumber = "889"
+            endingLineNumber = "889"
             landmarkName = "updateRecordInCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,13 +106,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.196244"
+            timestampString = "572566523.015767"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "593"
-            endingLineNumber = "593"
+            startingLineNumber = "594"
+            endingLineNumber = "594"
             landmarkName = "save(record:completion:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LessonBookT.MasterViewController.save(record: __C.CKRecord, completion: (Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "LessonBookT"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/michaeltoth/Documents/LessonBookX/LessonBookT/MasterViewController.swift"
+                  timestampString = "572564503.914984"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "594"
+                  endingLineNumber = "594"
+                  offsetFromSymbolStart = "460">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.CKRecord&gt;&gt;, Swift.Optional&lt;Swift.Array&lt;__C.CKRecordID&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in LessonBookT.MasterViewController.save(record: __C.CKRecord, completion: (Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "LessonBookT"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/michaeltoth/Documents/LessonBookX/LessonBookT/MasterViewController.swift"
+                  timestampString = "572564503.9167989"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "595"
+                  endingLineNumber = "595"
+                  offsetFromSymbolStart = "68">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.196628"
+            timestampString = "572566523.015872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "602"
-            endingLineNumber = "602"
+            startingLineNumber = "603"
+            endingLineNumber = "603"
             landmarkName = "save(record:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.197026"
+            timestampString = "572566523.015985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "954"
-            endingLineNumber = "954"
+            startingLineNumber = "975"
+            endingLineNumber = "975"
             landmarkName = "updateRecordInCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.197184"
+            timestampString = "572566523.016615"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "948"
-            endingLineNumber = "948"
+            startingLineNumber = "969"
+            endingLineNumber = "969"
             landmarkName = "updateRecordInCoreData(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.197335"
+            timestampString = "572566523.017199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "514"
-            endingLineNumber = "514"
+            startingLineNumber = "515"
+            endingLineNumber = "515"
             landmarkName = "managedObjectContextObjectsDidChange(notification:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,7 +218,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.197734"
+            timestampString = "572566523.017311"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "142"
@@ -202,7 +234,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/AppDelegate.swift"
-            timestampString = "572525941.197889"
+            timestampString = "572566523.017887"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
@@ -218,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.198004"
+            timestampString = "572566523.018008"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "fetchZoneChanges(database:databaseTokenKey:zoneIDs:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -234,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.198398"
+            timestampString = "572566523.018103"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
             landmarkName = "fetchZoneChanges(database:databaseTokenKey:zoneIDs:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -250,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.198774"
+            timestampString = "572566523.018204"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
             landmarkName = "fetchZoneChanges(database:databaseTokenKey:zoneIDs:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -266,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.199151"
+            timestampString = "572566523.0183049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "460"
-            endingLineNumber = "460"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
             landmarkName = "managedObjectContextObjectsDidChange(notification:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.199522"
+            timestampString = "572566523.018411"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "360"
-            endingLineNumber = "360"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
             landmarkName = "fetchZoneChanges(database:databaseTokenKey:zoneIDs:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.199906"
+            timestampString = "572566523.018513"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "765"
-            endingLineNumber = "765"
+            startingLineNumber = "786"
+            endingLineNumber = "786"
             landmarkName = "contextObjectsDidChange(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,7 +346,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/StudentEditViewController.swift"
-            timestampString = "572525941.2000411"
+            timestampString = "572566523.019027"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "18"
@@ -330,7 +362,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.200128"
+            timestampString = "572566523.019111"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "173"
@@ -346,7 +378,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.200467"
+            timestampString = "572566523.019194"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
@@ -362,7 +394,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/AppDelegate.swift"
-            timestampString = "572525941.200781"
+            timestampString = "572566523.019266"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "133"
@@ -378,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookT/MasterViewController.swift"
-            timestampString = "572525941.200846"
+            timestampString = "572566523.019334"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
             landmarkName = "fetchDatabaseChanges(database:databaseTokenKey:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -394,45 +426,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/AppDelegate.swift"
-            timestampString = "572525941.201148"
+            timestampString = "572566523.019407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "104"
             endingLineNumber = "104"
             landmarkName = "application(_:didReceiveRemoteNotification:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "LessonBookX.AppDelegate.application(_: __C.NSApplication, didReceiveRemoteNotification: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "LessonBookX"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/michaeltoth/Documents/LessonBookX/LessonBookX/AppDelegate.swift"
-                  timestampString = "572525136.207262"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "104"
-                  endingLineNumber = "104"
-                  offsetFromSymbolStart = "7445">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in LessonBookX.AppDelegate.application(_: __C.NSApplication, didReceiveRemoteNotification: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
-                  moduleName = "LessonBookX"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/michaeltoth/Documents/LessonBookX/LessonBookX/AppDelegate.swift"
-                  timestampString = "572525136.20908"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "105"
-                  endingLineNumber = "105"
-                  offsetFromSymbolStart = "4">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -442,7 +442,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/AppDelegate.swift"
-            timestampString = "572525941.201228"
+            timestampString = "572566523.019479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "54"
@@ -458,11 +458,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.2012939"
+            timestampString = "572566523.019545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "fetchChangesInDataBase()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LessonBookT/MasterViewController.swift"
+            timestampString = "572566523.019892"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "fetchChangesInDataBase()"
             landmarkType = "7">
          </BreakpointContent>
@@ -474,11 +490,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LessonBookX/ViewController.swift"
-            timestampString = "572525941.201355"
+            timestampString = "572566523.019972"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
+            landmarkName = "fetchChangesInDataBase()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LessonBookX/ViewController.swift"
+            timestampString = "572566523.020273"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "fetchChangesInDataBase()"
             landmarkType = "7">
          </BreakpointContent>
