@@ -46,6 +46,9 @@
 		A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
 		A4D3AD932213B72500D48A64 /* ZoneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD91221330E100D48A64 /* ZoneOperations.swift */; };
 		A4D3AD952215161800D48A64 /* StudentEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D3AD942215161700D48A64 /* StudentEditViewController.swift */; };
+		A4EDB83B2220AD9E00412A47 /* blank-avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */; };
+		A4EDB83C2220AD9F00412A47 /* blank-avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */; };
+		A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +133,8 @@
 		A4D3AD90220990EB00D48A64 /* LessonBookXTTests copy copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "LessonBookXTTests copy copy-Info.plist"; path = "/Users/michaeltoth/Documents/LessonBookX/LessonBookXTTests copy copy-Info.plist"; sourceTree = "<absolute>"; };
 		A4D3AD91221330E100D48A64 /* ZoneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoneOperations.swift; sourceTree = "<group>"; };
 		A4D3AD942215161700D48A64 /* StudentEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentEditViewController.swift; sourceTree = "<group>"; };
+		A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "blank-avatar.jpg"; path = "Assets.xcassets/blank-avatar.jpg"; sourceTree = "<group>"; };
+		A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStudentProfileController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,7 +270,9 @@
 				A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */,
 				A4C1C8E121FDA95100A88255 /* AppDelegate.swift */,
 				A4C1C8E321FDA95100A88255 /* ViewController.swift */,
+				A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */,
 				A4C1C8E821FDA95500A88255 /* Assets.xcassets */,
+				A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */,
 				A4C1C8EA21FDA95500A88255 /* Main.storyboard */,
 				A4C1C8ED21FDA95500A88255 /* Info.plist */,
 				A4C1C8EE21FDA95500A88255 /* LessonBookX.entitlements */,
@@ -532,6 +539,7 @@
 				A450C6712205AE0F00BA4047 /* LaunchScreen.storyboard in Resources */,
 				A450C66E2205AE0F00BA4047 /* Assets.xcassets in Resources */,
 				A450C66C2205ADE200BA4047 /* Main.storyboard in Resources */,
+				A4EDB83C2220AD9F00412A47 /* blank-avatar.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +564,7 @@
 				A4C1C8E921FDA95500A88255 /* Assets.xcassets in Resources */,
 				A4C1C970220284CC00A88255 /* Localizable.strings in Resources */,
 				A4C1C8EC21FDA95500A88255 /* Main.storyboard in Resources */,
+				A4EDB83B2220AD9E00412A47 /* blank-avatar.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +637,7 @@
 				A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */,
 				A4D3AD492207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */,
 				A4C1C95B21FDBC2900A88255 /* Student+CoreDataClass.swift in Sources */,
+				A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */,
 				A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */,
 				A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */,
 				A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */,

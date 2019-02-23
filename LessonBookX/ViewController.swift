@@ -35,7 +35,7 @@ class ViewController: NSViewController {
 
     let privateSubscriptionId = "LessonBook"
 
-    
+    @IBOutlet var arrayController: NSArrayController!
     
     override func viewDidLoad() {
         
@@ -188,7 +188,7 @@ class ViewController: NSViewController {
             }
         }
         print("Using previous token =  ", String(describing: previousToken))
-        let zoneConfiguration = CKFetchRecordZoneChangesOperation.ZoneConfiguration(previousServerChangeToken: previousToken, resultsLimit: nil, desiredKeys: ["firstName","lastName","phone","recordName"])
+        let zoneConfiguration = CKFetchRecordZoneChangesOperation.ZoneConfiguration(previousServerChangeToken: previousToken, resultsLimit: nil, desiredKeys: ["firstName","lastName","phone","recordName","street1","street2","city","state","zip","cell","email"])
         let zone = CKRecordZone(zoneName: "LessonBook")
         let zoneID = zone.zoneID
 
@@ -258,6 +258,14 @@ class ViewController: NSViewController {
                 s.firstName = record["firstName"]
                 s.lastName = record["lastName"]
                 s.phone = record["phone"]
+                s.street1 = record["street1"]
+                s.street2 = record["street2"]
+                s.city = record["city"]
+                s.state = record["state"]
+                s.zip = record["zip"]
+                s.cell = record["cell"]
+                s.email = record["email"]
+                
                 s.recordName = recordName
 
             } else {
@@ -265,6 +273,14 @@ class ViewController: NSViewController {
                     s.firstName = record["firstName"]
                     s.lastName = record["lastName"]
                     s.phone = record["phone"]
+                    s.street1 = record["street1"]
+                    s.street2 = record["street2"]
+                    s.city = record["city"]
+                    s.state = record["state"]
+                    s.zip = record["zip"]
+                    s.cell = record["cell"]
+                    s.email = record["email"]
+
                     s.recordName = recordName
                 }
             }
@@ -284,71 +300,71 @@ class ViewController: NSViewController {
     }
 
     
-    func fetchDatabaseChanges(database: CKDatabase, completion: @escaping () -> Void) {
-
-        var changedZoneIDs: [CKRecordZone.ID] = []
-//        //let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
+//    func fetchDatabaseChanges(database: CKDatabase, completion: @escaping () -> Void) {
 //
-        var changeToken:CKServerChangeToken? = nil
-        // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
-//        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken")
-//        if changeTokenData != nil {
-//            do {
-//                changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
-//            } catch {
-//                changeToken = nil
-//            }
-//        } else {
-//            changeToken = nil
+//        var changedZoneIDs: [CKRecordZone.ID] = []
+////        //let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
+////
+//        var changeToken:CKServerChangeToken? = nil
+//        // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
+////        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) zoneChangeToken")
+////        if changeTokenData != nil {
+////            do {
+////                changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
+////            } catch {
+////                changeToken = nil
+////            }
+////        } else {
+////            changeToken = nil
+////        }
+//        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
+//        
+//        operation.recordZoneWithIDChangedBlock = { (zoneID) in
+//            changedZoneIDs.append(zoneID)
+//            print("in recordZoneWithIDChangedBlock")
 //        }
-        let operation = CKFetchDatabaseChangesOperation(previousServerChangeToken: changeToken)
-        
-        operation.recordZoneWithIDChangedBlock = { (zoneID) in
-            changedZoneIDs.append(zoneID)
-            print("in recordZoneWithIDChangedBlock")
-        }
-        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
-            // Write this zone deletion to memory
-            print("in recordZoneWithIDWasDeletedBlock")
-        }
-
-        operation.changeTokenUpdatedBlock = { (token) in
-            print("in changeTokenUpdatedBlock")
-            do {
-                let changeTokenData = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
-                UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
-            } catch {
-                print(error)
-            }
-
-            // Flush zone deletions for this database to disk
-            // Write this new database change token to memory
-        }
-
-        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
-            print("in fetchDatabaseChangesCompletionBlock")
-            if let error = error {
-                print("Error during fetch shared database changes operation", error)
-                completion()
-                return
-            }
-            // Flush zone deletions for this database to disk
-            // Write this new database change token to memory
-//            var changeToken:CKServerChangeToken? = nil
-//            // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
-//            let changeTokenData = UserDefaults.standard.value(forKey: "\(self.zoneID.zoneName) databaseChangeToken")
-//            if changeTokenData != nil {
-//                changeToken = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
+//        operation.recordZoneWithIDWasDeletedBlock = { (zoneID) in
+//            // Write this zone deletion to memory
+//            print("in recordZoneWithIDWasDeletedBlock")
+//        }
+//
+//        operation.changeTokenUpdatedBlock = { (token) in
+//            print("in changeTokenUpdatedBlock")
+//            do {
+//                let changeTokenData = try NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
+//                UserDefaults.standard.set(changeTokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+//            } catch {
+//                print(error)
 //            }
-
-            self.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {
-                // Flush in-memory database change token to disk
-                completion()
-            }
-        }
-        operation.qualityOfService = .userInitiated
-        database.add(operation)
-    }
+//
+//            // Flush zone deletions for this database to disk
+//            // Write this new database change token to memory
+//        }
+//
+//        operation.fetchDatabaseChangesCompletionBlock = { (token, moreComing, error) in
+//            print("in fetchDatabaseChangesCompletionBlock")
+//            if let error = error {
+//                print("Error during fetch shared database changes operation", error)
+//                completion()
+//                return
+//            }
+//            // Flush zone deletions for this database to disk
+//            // Write this new database change token to memory
+////            var changeToken:CKServerChangeToken? = nil
+////            // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
+////            let changeTokenData = UserDefaults.standard.value(forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+////            if changeTokenData != nil {
+////                changeToken = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
+////            }
+//
+//            self.fetchZoneChanges(database: database, zoneIDs: changedZoneIDs) {
+//                // Flush in-memory database change token to disk
+//                completion()
+//            }
+//        }
+//        operation.qualityOfService = .userInitiated
+//        database.add(operation)
+//    }
 
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -371,120 +387,125 @@ class ViewController: NSViewController {
     }
     
     
-    func fetchZoneChanges(database: CKDatabase, zoneIDs: [CKRecordZone.ID], completion: @escaping () -> Void) {
-        // Look up the previous change token for each zone
-        var optionsByRecordZoneID:[CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration] = [:]
-        var changeToken:CKServerChangeToken? = nil
-        // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
-        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken")
-        if changeTokenData != nil {
-            do {
-                changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
-            } catch {
-                changeToken = nil
-            }
-        } else {
-            changeToken = nil
-        }
-
-        for zoneID in zoneIDs {
-            let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
-            let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
-            if changeTokenData != nil {
-                do {
-                    let changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData!)
-                    options.previousServerChangeToken = changeToken as? CKServerChangeToken // changeToken as? CKServerChangeToken// Read change token from disk
-                    optionsByRecordZoneID[zoneID] = options
-
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
-
-        operation.recordChangedBlock = { (record) in
-            print("Record changed:", record)
-            // Write this record change to memory
-            let recordName = record.recordID.recordName
-            let predicate = NSPredicate(format: "recordName == %@", recordName)
-            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
-            fetchRequest.predicate = predicate
-            let students = try! self.context?.fetch(fetchRequest)
-            for s:Student in students! {
-                s.firstName = record["firstName"]
-                s.lastName = record["lastName"]
-                s.phone = record["phone"]
-            }
-            DispatchQueue.main.async {
-                do {
-                    try self.context?.save()
-                    self.tableView.reloadData()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-
-        operation.recordWithIDWasDeletedBlock = { (recordID,recordType) in
-            print("Record deleted:", recordID)
-            // write this record deletion to memory
-            let predicate = NSPredicate(format: "recordName == %@", recordID.recordName)
-            let fetchRequest = Student.fetchRequest() as NSFetchRequest
-            fetchRequest.predicate = predicate
-            do {
-                let student = try self.context?.fetch(fetchRequest)
-                for s in student! {
-                    self.context?.delete(s)
-                    print("Deleted student in core data")
-                }
-            } catch {
-                print(error)
-            }
-        }
-
-
-        operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
-            // Flush record changes and deletions for this zone to disk
-            // Write this new zone change token to disk
-            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token as Any, requiringSecureCoding: true)
-            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
-
-        }
-
-
-
-        operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, _, _, error) in
-
-            if let error = error {
-                print("Error fetching zone changes for the database:", error)
-                return
-            }
-//            if (changeToken != nil) {
-//                let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: changeToken as Any, requiringSecureCoding: true)
-//                UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+//    func fetchZoneChanges(database: CKDatabase, zoneIDs: [CKRecordZone.ID], completion: @escaping () -> Void) {
+//        // Look up the previous change token for each zone
+//        var optionsByRecordZoneID:[CKRecordZone.ID: CKFetchRecordZoneChangesOperation.ZoneConfiguration] = [:]
+//        var changeToken:CKServerChangeToken? = nil
+//        // let changeToken = getPreviousServerChangeToken()  // Read change token from disk
+//        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken")
+//        if changeTokenData != nil {
+//            do {
+//                changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData as! Data) as! CKServerChangeToken
+//            } catch {
+//                changeToken = nil
 //            }
-            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: changeToken as Any, requiringSecureCoding: true)
-            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+//        } else {
+//            changeToken = nil
+//        }
+//
+//        for zoneID in zoneIDs {
+//            let options = CKFetchRecordZoneChangesOperation.ZoneConfiguration()
+//            let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
+//            if changeTokenData != nil {
+//                do {
+//                    let changeToken = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(changeTokenData!)
+//                    options.previousServerChangeToken = changeToken as? CKServerChangeToken // changeToken as? CKServerChangeToken// Read change token from disk
+//                    optionsByRecordZoneID[zoneID] = options
+//
+//                } catch {
+//                    print(error)
+//                }
+//            }
+//        }
+//        let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIDs, configurationsByRecordZoneID: optionsByRecordZoneID)
+//
+//        operation.recordChangedBlock = { (record) in
+//            print("Record changed:", record)
+//            // Write this record change to memory
+//            let recordName = record.recordID.recordName
+//            let predicate = NSPredicate(format: "recordName == %@", recordName)
+//            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+//            fetchRequest.predicate = predicate
+//            let students = try! self.context?.fetch(fetchRequest)
+//            for s:Student in students! {
+//                s.firstName = record["firstName"]
+//                s.lastName = record["lastName"]
+//                s.phone = record["phone"]
+//            }
+//            DispatchQueue.main.async {
+//                do {
+//                    try self.context?.save()
+//                    self.tableView.reloadData()
+//                } catch {
+//                    print(error)
+//                }
+//            }
+//        }
+//
+//        operation.recordWithIDWasDeletedBlock = { (recordID,recordType) in
+//            print("Record deleted:", recordID)
+//            // write this record deletion to memory
+//            let predicate = NSPredicate(format: "recordName == %@", recordID.recordName)
+//            let fetchRequest = Student.fetchRequest() as NSFetchRequest
+//            fetchRequest.predicate = predicate
+//            do {
+//                let student = try self.context?.fetch(fetchRequest)
+//                for s in student! {
+//                    self.context?.delete(s)
+//                    print("Deleted student in core data")
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        }
+//
+//
+//        operation.recordZoneChangeTokensUpdatedBlock = { (zoneId, token, data) in
+//            // Flush record changes and deletions for this zone to disk
+//            // Write this new zone change token to disk
+//            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: token as Any, requiringSecureCoding: true)
+//            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+//
+//        }
+//
+//
+//
+//        operation.recordZoneFetchCompletionBlock = { (zoneId, changeToken, _, _, error) in
+//
+//            if let error = error {
+//                print("Error fetching zone changes for the database:", error)
+//                return
+//            }
+////            if (changeToken != nil) {
+////                let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: changeToken as Any, requiringSecureCoding: true)
+////                UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) zoneChangeToken")
+////            }
+//            let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: changeToken as Any, requiringSecureCoding: true)
+//            UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
+//
+//            // Flush recoxrd changes and deletions for this zone to disk
+//            // Write this new zone change token to disk
+//        }
+//
+//
+//
+//        operation.fetchRecordZoneChangesCompletionBlock = { (error) in
+//
+//            if let error = error {
+//                print("Error fetching zone changes for the database:", error)
+//            }
+//            completion()
+//        }
+//        database.add(operation)
+//        //completion()
+//    }
 
-            // Flush recoxrd changes and deletions for this zone to disk
-            // Write this new zone change token to disk
-        }
 
-
-
-        operation.fetchRecordZoneChangesCompletionBlock = { (error) in
-
-            if let error = error {
-                print("Error fetching zone changes for the database:", error)
-            }
-            completion()
-        }
-        database.add(operation)
-        //completion()
+    
+    @IBAction func editStudent(_ sender: Any) {
+        
+        
     }
-
-
     
     
     @IBAction func addNewStudent(_ sender: Any) {
@@ -497,15 +518,28 @@ class ViewController: NSViewController {
         newStudent.firstName = "New"
         newStudent.lastName = "Student"
         newStudent.phone = ""
+        newStudent.street1 = ""
+        newStudent.street2 = ""
+        newStudent.city = ""
+        newStudent.state = ""
+        newStudent.zip = ""
+        newStudent.email = ""
+        newStudent.cell = ""
         newStudent.recordID = newStudent.ckrecordID
         newStudent.recordName = newStudent.cloudKitRecordID()?.recordName
         newStudent.lastUpdate = Date()
         ccr!.setValue("New",forKey: "firstName")
         ccr!.setValue("Student",forKey: "lastName")
+        ccr!.setValue("",forKey: "street1")
+        ccr!.setValue("",forKey: "street2")
+        ccr!.setValue("",forKey: "city")
+        ccr!.setValue("",forKey: "state")
+        ccr!.setValue("",forKey: "zip")
+        ccr!.setValue("",forKey: "email")
+        ccr!.setValue("",forKey: "cell")
         ccr!.setValue("", forKey: "phone")
         do {
             try context.save()
-            coreDataStudents.append(newStudent)
             print("New student saved to core data")
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -514,14 +548,15 @@ class ViewController: NSViewController {
         } catch {
             print(error.localizedDescription)
         }
-        database.save(ccr!, completionHandler: {(rec,err) in
-            if let err = err {
-                print(err.localizedDescription)
-            } else {
-                print("new student saved to cloud")
-                print(rec?.value(forKey:"RecordName") as Any)
-            }
-        })
+        database.add(CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil))
+//        database.save(ccr!, completionHandler: {(rec,err) in
+//            if let err = err {
+//                print(err.localizedDescription)
+//            } else {
+//                print("new student saved to cloud")
+//                print(rec?.value(forKey:"RecordName") as Any)
+//            }
+//        })
         
     }
     
@@ -631,13 +666,22 @@ class ViewController: NSViewController {
                     ccr?["phone"]=s.phone
                     ccr?["recordName"]=s.recordName
                     ccr?["lastUpdate"]=Date()
-                    database.save(ccr!, completionHandler: {(r,err) in
-                        if let err = err {
-                            print(err)
-                        } else {
-                            print("Saved record to cloud")
-                        }
-                    })
+                    ccr!.setValue("",forKey: "street1")
+                    ccr!.setValue("",forKey: "street2")
+                    ccr!.setValue("",forKey: "city")
+                    ccr!.setValue("",forKey: "state")
+                    ccr!.setValue("",forKey: "zip")
+                    ccr!.setValue("",forKey: "email")
+                    ccr!.setValue("",forKey: "cell")
+
+                    database.add(CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil))
+//                    database.save(ccr!, completionHandler: {(r,err) in
+//                        if let err = err {
+//                            print(err)
+//                        } else {
+//                            print("Saved record to cloud")
+//                        }
+//                    })
                     
                 } else {
                     let ccr = s.cloudKitRecord()
@@ -646,13 +690,22 @@ class ViewController: NSViewController {
                         ccr?["lastName"]=s.lastName
                         ccr?["phone"]=s.phone
                         ccr?["recordName"]=s.recordName
-                        database.save(ccr!, completionHandler: {(r,err) in
-                            if let err = err {
-                                print(err)
-                            } else {
-                                print("Saved record to cloud")
-                            }
-                        })
+                        ccr!.setValue("",forKey: "street1")
+                        ccr!.setValue("",forKey: "street2")
+                        ccr!.setValue("",forKey: "city")
+                        ccr!.setValue("",forKey: "state")
+                        ccr!.setValue("",forKey: "zip")
+                        ccr!.setValue("",forKey: "email")
+                        ccr!.setValue("",forKey: "cell")
+
+                        database.add(CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil))
+//                        database.save(ccr!, completionHandler: {(r,err) in
+//                            if let err = err {
+//                                print(err)
+//                            } else {
+//                                print("Saved record to cloud")
+//                            }
+//                        })
                     }
                     
                 }
@@ -753,6 +806,14 @@ class ViewController: NSViewController {
                             r["lastName"]=s.lastName
                             r["recordName"]=s.cloudKitRecordID()?.recordName
                             r["lastUpdate"]=Date()
+                            r.setValue("",forKey: "street1")
+                            r.setValue("",forKey: "street2")
+                            r.setValue("",forKey: "city")
+                            r.setValue("",forKey: "state")
+                            r.setValue("",forKey: "zip")
+                            r.setValue("",forKey: "email")
+                            r.setValue("",forKey: "cell")
+
                             self.database.save(r, completionHandler: {(r,err) in
                                 if let err = err {
                                     print("error from saving update to cloud")
@@ -773,7 +834,14 @@ class ViewController: NSViewController {
                                 r["lastName"]=s.lastName
                                 r["recordName"]=s.recordName
                                 r["lastUpdate"]=Date()
-                                
+                                r.setValue("",forKey: "street1")
+                                r.setValue("",forKey: "street2")
+                                r.setValue("",forKey: "city")
+                                r.setValue("",forKey: "state")
+                                r.setValue("",forKey: "zip")
+                                r.setValue("",forKey: "email")
+                                r.setValue("",forKey: "cell")
+
                                 let recordArray = [r]
                                 print(String(describing: recordArray))
                                 let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
@@ -795,94 +863,6 @@ class ViewController: NSViewController {
             }
         }
 
-        
-//        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
-//            print("Core Data Changed Notification (updates)")
-//            for s:Student in updates {
-//                let recordName=s.recordName
-//
-//                let predicate = NSPredicate(format: "recordName == %@", recordName!)
-//                let query = CKQuery(recordType: "Student", predicate: predicate)
-//                database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(recs,err) in
-//                    if err != nil {
-//                        print(err)
-//                    } else {
-//                        for r:CKRecord in recs! {
-//                            if !(r["phone"]==s.phone && r["firstName"]==s.firstName && r["lastName"]==s.lastName) {
-//                                r["phone"]=s.phone as CKRecordValue?
-//                                r["firstName"]=s.firstName as CKRecordValue?
-//                                r["lastName"]=s.lastName as CKRecordValue?
-//                                r["recordName"]=s.recordName as CKRecordValue?
-//                                //r["lastUpdate"]=Date()
-//                                self.database.save(r, completionHandler: {(rec,err) in
-//                                    if err != nil {
-//                                        print(err)
-//                                    } else {
-//                                        print("record updated to cloud")
-//                                    }
-//                                })
-//                            }
-//                        }
-//                    }
-//                })
-//            }
-//        }
-        
-                
-                
-                
-//                print("Making record ID with \(String(describing: recordName))")
-//                let recordID = CKRecord.ID.init(recordName: recordName!, zoneID: s.zoneID())
-//
-//                // DispatchQueue.main.async {
-//                    self.database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
-//                        if err != nil {
-//                            // didn't find record. upload
-//                            let ckerror = err as! CKError
-//                            print(ckerror.localizedDescription)
-//                            if ckerror.code == CKError.unknownItem {
-//                                print("Unknown Item")
-//                                let ckr=CKRecord(recordType: "Student", recordID: recordID)
-//
-//                                ckr["phone"]=s.phone as CKRecordValue?
-//                                ckr["firstName"]=s.firstName as CKRecordValue?
-//                                ckr["lastName"]=s.lastName as CKRecordValue?
-//                                ckr["recordName"]=s.recordName as CKRecordValue?
-//                                ckr["lastUpdate"]=Date()
-//                                self.database.save(ckr, completionHandler: {(r,err) in
-//                                    if let err = err {
-//                                        print("error from saving update to cloud")
-//                                        print(err.localizedDescription)
-//                                    } else {
-//                                        print("saved record to cloud for update")
-//                                        print(s.recordName as Any)
-//                                    }
-//                                })
-//
-//                            } else {
-//                                print("Unknown error from fetch.")
-//                                print(ckerror.localizedDescription)
-//                            }
-//                        } else {
-//                            if !(r?["phone"]==s.phone && r?["firstName"]==s.firstName &&
-//                                r?["recordName"]==s.recordName && r?["lastName"]==s.lastName) {
-//                                r?["phone"]=s.phone
-//                                r?["firstName"]=s.firstName
-//                                r?["lastName"]=s.lastName
-//                                r?["recordName"]=s.recordName
-//                                r?["lastUpdate"]=Date()
-//                                let recordArray = [r!]
-//                                let modifyRecords = CKModifyRecordsOperation.init()
-//                                modifyRecords.recordsToSave = recordArray
-//                                modifyRecords.savePolicy = .allKeys
-//                                modifyRecords.qualityOfService = .background
-//                                self.database.add(modifyRecords)
-//                            }
-//                        }
-//                    })
-//            }
-//        }
-        
         if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Student>, deletes.count > 0 {
             // print(deletes)
             for s:Student in deletes {
@@ -964,49 +944,58 @@ class ViewController: NSViewController {
 //        }
 //    }
     
-    
-    func updateRecordInCoreData(_ recordID:CKRecord.ID) {
-        let recordName = recordID.recordName
-        //let predicate = NSPredicate(format: "recordName == %@", recordName)
-        let predicate = NSPredicate(format: "recordName == %@", recordName)
-        let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
-        fetchRequest.predicate = predicate
-        do {
-            let students = try context?.fetch(fetchRequest)
-            if students != nil {
-                for s:Student in students! {
-                    if s.recordName == recordName {
-                        database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
-                            if let err = err {
-                                print(err.localizedDescription)
-                            } else {
-                                print("Modifying core data on Mac")
-                                s.firstName = r?["firstName"]
-                                s.lastName = r?["lastName"]
-                                s.phone = r?["phone"]
-                                s.recordName = r?["recordName"]
-                                s.lastUpdate = Date()
-                                DispatchQueue.main.async {
-                                    do {
-                                        NotificationCenter.default.removeObserver(self)
-                                        try self.context?.save()
-                                        self.tableView.reloadData()
-                                        NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-
-                                    } catch {
-                                        print(error)
-                                        
-                                    }
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-        } catch {
-            print(error.localizedDescription)
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        let controller = segue.destinationController as! EditStudentProfileController
+        if tableView.selectedRow >= 0 {
+            let selectedStudents = arrayController.selectedObjects
+            controller.studentToEdit = selectedStudents?.first as? Student
+            controller.context = context
         }
     }
+    
+    
+//    func updateRecordInCoreData(_ recordID:CKRecord.ID) {
+//        let recordName = recordID.recordName
+//        //let predicate = NSPredicate(format: "recordName == %@", recordName)
+//        let predicate = NSPredicate(format: "recordName == %@", recordName)
+//        let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+//        fetchRequest.predicate = predicate
+//        do {
+//            let students = try context?.fetch(fetchRequest)
+//            if students != nil {
+//                for s:Student in students! {
+//                    if s.recordName == recordName {
+//                        database.fetch(withRecordID: recordID, completionHandler: {(r,err) in
+//                            if let err = err {
+//                                print(err.localizedDescription)
+//                            } else {
+//                                print("Modifying core data on Mac")
+//                                s.firstName = r?["firstName"]
+//                                s.lastName = r?["lastName"]
+//                                s.phone = r?["phone"]
+//                                s.recordName = r?["recordName"]
+//                                s.lastUpdate = Date()
+//                                DispatchQueue.main.async {
+//                                    do {
+//                                        NotificationCenter.default.removeObserver(self)
+//                                        try self.context?.save()
+//                                        self.tableView.reloadData()
+//                                        NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+//
+//                                    } catch {
+//                                        print(error)
+//                                        
+//                                    }
+//                                }
+//                            }
+//                        })
+//                    }
+//                }
+//            }
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//    }
 
     // MARK: -- TABLE VIEW
 //    func numberOfRows(in tableView: NSTableView) -> Int {
