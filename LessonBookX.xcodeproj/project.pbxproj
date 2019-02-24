@@ -27,6 +27,7 @@
 		A450C6A022063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */; };
 		A450C6A1220646BC00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A450C6A2220646BD00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
+		A49CC7982221D24E00D9FA1F /* ImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */; };
 		A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E121FDA95100A88255 /* AppDelegate.swift */; };
 		A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E321FDA95100A88255 /* ViewController.swift */; };
 		A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E521FDA95100A88255 /* LessonBookX.xcdatamodeld */; };
@@ -102,6 +103,7 @@
 		A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManagedObject.swift; sourceTree = "<group>"; };
 		A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtensions.swift; sourceTree = "<group>"; };
 		A4BA9C3E221A170D00A65642 /* LessonBookT 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LessonBookT 2.xcdatamodel"; sourceTree = "<group>"; };
 		A4C1C8DE21FDA95100A88255 /* LessonBookX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C1C8E121FDA95100A88255 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				A4C1C8E521FDA95100A88255 /* LessonBookX.xcdatamodeld */,
 				A4C1C972220284CC00A88255 /* Localizable.strings */,
 				A4D3AD91221330E100D48A64 /* ZoneOperations.swift */,
+				A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */,
 			);
 			path = LessonBookX;
 			sourceTree = "<group>";
@@ -481,6 +484,9 @@
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 							com.apple.Maps.Mac = {
 								enabled = 1;
 							};
@@ -640,6 +646,7 @@
 				A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */,
 				A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */,
 				A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */,
+				A49CC7982221D24E00D9FA1F /* ImageExtensions.swift in Sources */,
 				A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */,
 				A4C1C95C21FDBC2900A88255 /* Student+CoreDataProperties.swift in Sources */,
 			);

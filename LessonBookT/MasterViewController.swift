@@ -195,7 +195,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 previousToken = nil
             }
         }
-        let zoneConfiguration = CKFetchRecordZoneChangesOperation.ZoneConfiguration(previousServerChangeToken: previousToken, resultsLimit: nil, desiredKeys: ["firstName","lastName","phone","recordName"])
+        let zoneConfiguration = CKFetchRecordZoneChangesOperation.ZoneConfiguration(previousServerChangeToken: previousToken, resultsLimit: nil, desiredKeys: ["firstName","lastName","phone","recordName","street1","street2","city","state","zip","cell","email","photo"])
         let zone = CKRecordZone(zoneName: "LessonBook")
         let zoneID = zone.zoneID
         let operation = CKFetchRecordZoneChangesOperation(recordZoneIDs: [zoneID], configurationsByRecordZoneID: [zoneID:zoneConfiguration])
@@ -233,15 +233,28 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             moreComing: Bool,
             error: Error?) in
             // do something with the token??
+            if (error != nil) {
+                print("Error in recordZoneFetchCompletionBlock")
+                print(error as Any)
+                return
+            }
             print("in recordZoneFetchCompletionBlock")
             let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: serverChangeToken as Any, requiringSecureCoding: true)
             UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
-            
+            DispatchQueue.main.async {
+                do {
+                    try self.managedObjectContext?.save()
+                    self.tableView.reloadData()
+                } catch {
+                    print(error)
+                }
+            }
+
         }
         operation.fetchRecordZoneChangesCompletionBlock = { error in
             print("in fetchRecordZoneChangesCompletionBlock")
             if (error != nil) {
-                print(error)
+                print(error as Any)
             }
         }
         operation.recordChangedBlock = { (record) in
@@ -252,18 +265,43 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
             fetchRequest.predicate = predicate
             let students = try! self.managedObjectContext?.fetch(fetchRequest)
-            for s:Student in students! {
+            if students?.count == 0 {
+                let s=Student(context: self.managedObjectContext!)
+                s.prepareForCloudKitWithCloudKitRecord(record.recordID)
                 s.firstName = record["firstName"]
                 s.lastName = record["lastName"]
                 s.phone = record["phone"]
+                s.street1 = record["street1"]
+                s.street2 = record["street2"]
+                s.city = record["city"]
+                s.state = record["state"]
+                s.zip = record["zip"]
+                s.cell = record["cell"]
+                s.email = record["email"]
+                if let asset = record["photo"] as? CKAsset,
+                    let data = NSData(contentsOf: (asset.fileURL)) {
+                    s.photo = data
+                }
+                    
                 s.recordName = recordName
-            }
-            DispatchQueue.main.async {
-                do {
-                    try self.managedObjectContext?.save()
-                    self.tableView.reloadData()
-                } catch {
-                    print(error)
+                
+            } else {
+                for s:Student in students! {
+                    s.firstName = record["firstName"]
+                    s.lastName = record["lastName"]
+                    s.phone = record["phone"]
+                    s.street1 = record["street1"]
+                    s.street2 = record["street2"]
+                    s.city = record["city"]
+                    s.state = record["state"]
+                    s.zip = record["zip"]
+                    s.cell = record["cell"]
+                    s.email = record["email"]
+                    if let asset = record["photo"] as? CKAsset,
+                        let data = NSData(contentsOf: (asset.fileURL)) {
+                        s.photo = data
+                    }
+                    s.recordName = recordName
                 }
             }
         }
@@ -275,7 +313,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func fetchDatabaseChanges(database: CKDatabase, databaseTokenKey: CKServerChangeToken, completion: @escaping () -> Void) {
         
         var changedZoneIDs: [CKRecordZone.ID] = []
-        let changeTokenData = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
+        _ = UserDefaults.standard.value(forKey: "\(zoneID.zoneName) databaseChangeToken") as? Data // Read change token from disk
         
 //        var zoneChangeToken:CKServerChangeToken?
 //        if (changeTokenData != nil){
@@ -470,13 +508,34 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     ccr?["phone"]=s.phone
                     ccr?["recordName"]=s.recordName
                     ccr?["lastUpdate"]=Date()
-                    database.save(ccr!, completionHandler: {(r,err) in
-                        if let err = err {
-                            print(err)
-                        } else {
-                            print("Saved record to cloud")
+                    ccr?["street1"]=s.street1
+                    ccr?["street2"]=s.street2
+                    ccr?["city"]=s.city
+                    ccr?["state"]=s.state
+                    ccr?["zip"]=s.zip
+                    ccr?["cell"]=s.cell
+                    ccr?["email"]=s.email
+                    if (s.photo != nil) {
+                        do {
+                            try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"), options: .atomic)
+                            let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"))
+                            ccr?["photo"]=asset
+                        } catch  {
+                            print(error)
                         }
-                    })
+                    }
+                    let modificationObject = CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: [])
+                    modificationObject.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
+                        if (error != nil) {
+                            print("ERROR IN MODIFYING CLOUD")
+                            print(error)
+                        } else {
+                            print("MODIFIED CLOUD")
+                        }
+                    }
+
+                    database.add(modificationObject)
+
                     
                 } else {
                     let ccr = s.cloudKitRecord()
@@ -484,7 +543,33 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     ccr?["lastName"]=s.lastName
                     ccr?["phone"]=s.phone
                     ccr?["recordName"]=s.recordName
+                    if (s.photo != nil) {
+                        do {
+                            try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"), options: .atomic)
+                            let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"))
+                            ccr?["photo"]=asset
+                        } catch  {
+                            print(error)
+                        }
+                    }
+                    ccr?["street1"]=s.street1
+                    ccr?["street2"]=s.street2
+                    ccr?["city"]=s.city
+                    ccr?["state"]=s.state
+                    ccr?["zip"]=s.zip
+                    ccr?["cell"]=s.cell
+                    ccr?["email"]=s.email
+                    
                     let modificationObject = CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: [])
+                    modificationObject.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
+                        if (error != nil) {
+                            print("ERROR IN MODIFYING CLOUD")
+                            print(error)
+                        } else {
+                            print("MODIFIED CLOUD")
+                        }
+                    }
+
                     database.add(modificationObject)
 //                    database.save(ccr!, completionHandler: {(r,err) in
 //                        if let err = err {
@@ -530,19 +615,36 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r["lastName"]=s.lastName
                             r["recordName"]=s.cloudKitRecordID()?.recordName
                             r["lastUpdate"]=Date()
-                            self.database.save(r, completionHandler: {(r,err) in
-                                if let err = err {
-                                    print("error from saving update to cloud")
-                                    print(err.localizedDescription)
-                                } else {
-                                    print("saved record to cloud for update")
-                                    print(s.cloudKitRecord()?.recordID.recordName as Any)
+                            r["street1"]=s.street1
+                            r["street2"]=s.street2
+                            r["city"]=s.city
+                            r["state"]=s.state
+                            r["zip"]=s.zip
+                            r["cell"]=s.cell
+                            r["email"]=s.email
+                            if (s.photo != nil) {
+                                do {
+                                    try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"), options: .atomic)
+                                    let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"))
+                                    r["photo"]=asset
+                                } catch  {
+                                    print(error)
                                 }
-                            })
+                            }
+                            let modificationObject = CKModifyRecordsOperation(recordsToSave: [r], recordIDsToDelete: [])
+                            modificationObject.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
+                                if (error != nil) {
+                                    print("ERROR IN MODIFYING CLOUD")
+                                    print(error)
+                                } else {
+                                    print("MODIFIED CLOUD")
+                                }
+                            }
+                            self.database.add(modificationObject)
+
                         }
                     } else {
                         for r:CKRecord in recs! {
-                            if !(r["phone"]==s.phone && r["firstName"]==s.firstName && r["lastName"]==s.lastName) {
 
                             print("Setting Record Values")
                             
@@ -550,24 +652,44 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r["firstName"]=s.firstName
                             r["lastName"]=s.lastName
                             r["recordName"]=s.recordName
-                            r["lastUpdate"]=Date()
-                            
+                            //r["lastUpdate"]=Date()
+                            r["street1"]=s.street1
+                            r["street2"]=s.street2
+                            r["city"]=s.city
+                            r["state"]=s.state
+                            r["zip"]=s.zip
+                            r["cell"]=s.cell
+                            r["email"]=s.email
+                            if (s.photo != nil) {
+                                do {
+                                    try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"), options: .atomic)
+                                    let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto"))
+                                    r["photo"]=asset
+                                } catch  {
+                                    print(error)
+                                }
+                            }
+
                             let recordArray = [r]
-                            print(String(describing: recordArray))
+                            //print(String(describing: recordArray))
                             let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
                             // modifyRecords.recordsToSave = recordArray
                             modifyRecords.savePolicy = .allKeys
+                            modifyRecords.perRecordCompletionBlock  = { (rec,err) in
+                                if (err != nil) {
+                                    print("Error in perRecordCompletionBlock")
+                                    print(err)
+                                }
+                            }
                             modifyRecords.qualityOfService = .background
                             self.database.add(modifyRecords)
-                            self.database.save(r, completionHandler: {(r,err) in
-                                if err != nil {
-                                    print(err as Any)
-                                } else {
-                                    print("Saved record to cloud.")
-                                }
-                            })
-                            }
-
+//                            self.database.save(r, completionHandler: {(r,err) in
+//                                if err != nil {
+//                                    print(err as Any)
+//                                } else {
+//                                    print("Saved record to cloud.")
+//                                }
+//                            })
                         }
                     }
                 })
@@ -588,47 +710,47 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
-    public func save(record: CKRecord, completion: @escaping (Error?) -> Void)
-    {
-        let modifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: [])
-        modifyRecordsOperation.modifyRecordsCompletionBlock = { _, _, error in
-            guard error == nil else {
-                guard let ckerror = error as? CKError else {
-                    completion(error)
-                    return
-                }
-                if ckerror.code == .partialFailure {
-                    // This is a multiple-issue error. Check the underlying array
-                    // of errors to see if it contains a match for the error in question.
-                    guard let errors = ckerror.partialErrorsByItemID else {
-                        completion(error)
-                        return
-                    }
-                    for (_, error) in errors {
-                        if let currentError = error as? CKError {
-                            if currentError.code == CKError.zoneNotFound {
-                                self.createZone() { error in
-                                    guard error == nil else {
-                                        completion(error)
-                                        return
-                                    }
-                                    // Call save after creating the zone
-                                    self.save(record: record, completion: completion)
-                                    return
-                                }
-                                return
-                            }
-                        }
-                    }
-                }
-                completion(error)
-                return
-            }
-            // The record has been saved without errors
-            completion(nil)
-        }
-        self.database.add(modifyRecordsOperation)
-    }
+//    public func save(record: CKRecord, completion: @escaping (Error?) -> Void)
+//    {
+//        let modifyRecordsOperation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: [])
+//        modifyRecordsOperation.modifyRecordsCompletionBlock = { _, _, error in
+//            guard error == nil else {
+//                guard let ckerror = error as? CKError else {
+//                    completion(error)
+//                    return
+//                }
+//                if ckerror.code == .partialFailure {
+//                    // This is a multiple-issue error. Check the underlying array
+//                    // of errors to see if it contains a match for the error in question.
+//                    guard let errors = ckerror.partialErrorsByItemID else {
+//                        completion(error)
+//                        return
+//                    }
+//                    for (_, error) in errors {
+//                        if let currentError = error as? CKError {
+//                            if currentError.code == CKError.zoneNotFound {
+//                                self.createZone() { error in
+//                                    guard error == nil else {
+//                                        completion(error)
+//                                        return
+//                                    }
+//                                    // Call save after creating the zone
+//                                    self.save(record: record, completion: completion)
+//                                    return
+//                                }
+//                                return
+//                            }
+//                        }
+//                    }
+//                }
+//                completion(error)
+//                return
+//            }
+//            // The record has been saved without errors
+//            completion(nil)
+//        }
+//        self.database.add(modifyRecordsOperation)
+//    }
 
     func createZone(completion: @escaping (Error?) -> Void) -> CKRecordZone{
         return CKRecordZone(zoneID: (z?.zoneID)!)
@@ -961,10 +1083,12 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
             let object = fetchedResultsController.object(at: indexPath)
+                
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
                 controller.context = managedObjectContext
                 controller.studentItem = object
+                controller.studentToEdit = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }

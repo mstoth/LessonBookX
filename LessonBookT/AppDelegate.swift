@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print("Received Notification")
-        var recordID:CKRecord.ID
+        //var recordID:CKRecord.ID
         //var recordName:String
         let notification: CKNotification =
             CKNotification(fromRemoteNotificationDictionary:
@@ -140,8 +140,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         if notification.notificationType == CKNotification.NotificationType.query {
             print("query notification")
-            let queryNotification = notification as! CKQueryNotification
-            recordID = queryNotification.recordID!
+            //let queryNotification = notification as! CKQueryNotification
+            //recordID = queryNotification.recordID!
             //recordFields = queryNotification.r
         
             guard let ck = userInfo["ck"] as? [String: AnyObject] else {
@@ -168,26 +168,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             switch options {
             case .firesOnRecordCreation:
                 print("FIRE ON RECORD CREATION")
-                viewController?.fetchAndAddRecordToCoreData(recordID)
+                //viewController?.fetchAndAddRecordToCoreData(recordID)
                 completionHandler(UIBackgroundFetchResult.newData)
 
                 //viewController.addedCloudKitRecord(record)
                 break
             case .firesOnRecordDeletion:
                 print("FIRE ON RECORD DELETE")
-                viewController?.recordRemovedFromCloudKit(recordID)
+                //viewController?.recordRemovedFromCloudKit(recordID)
                 completionHandler(UIBackgroundFetchResult.noData)
 
                 break
             case .firesOnRecordUpdate:
                 print("FIRE ON UPDATE")
                 // NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
-                viewController?.updateRecordInCoreData(recordID)
+                //viewController?.updateRecordInCoreData(recordID)
                 completionHandler(UIBackgroundFetchResult.newData)
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")
-                viewController?.recordRemovedFromCloudKit(recordID)
+                //viewController?.recordRemovedFromCloudKit(recordID)
                 completionHandler(UIBackgroundFetchResult.noData)
 
                 break

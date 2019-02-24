@@ -846,16 +846,20 @@
                         <subviews>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qfQ-0Y-XmQ">
                                 <rect key="frame" x="20" y="268" width="141" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="141" id="nMq-uR-NlO"/>
-                                </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="First Name" drawsBackground="YES" id="ayf-EN-gFS">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.firstName" id="1vd-s5-KKE"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.firstName" id="ikI-7d-F5L">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">First Name</string>
+                                            <string key="NSNoSelectionPlaceholder">First Name</string>
+                                            <string key="NSNotApplicablePlaceholder">First Name</string>
+                                            <string key="NSNullPlaceholder">First Name</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LZD-sN-NQq">
@@ -866,7 +870,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.lastName" id="QgS-AK-plM"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.lastName" id="dIw-uR-wvP">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Last Name</string>
+                                            <string key="NSNoSelectionPlaceholder">Last Name</string>
+                                            <string key="NSNotApplicablePlaceholder">Last Name</string>
+                                            <string key="NSNullPlaceholder">Last Name</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xFT-BY-HBc">
@@ -877,7 +888,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.street1" id="y56-Zb-G9r"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.street1" id="1N8-3d-ppa">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Street</string>
+                                            <string key="NSNoSelectionPlaceholder">Street</string>
+                                            <string key="NSNotApplicablePlaceholder">Street</string>
+                                            <string key="NSNullPlaceholder">Street</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xIY-7F-MQ3">
@@ -888,7 +906,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.street2" id="H8a-rf-RcU"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.street2" id="wbe-Ad-VOt">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Street (apartment, suite, etc.)</string>
+                                            <string key="NSNoSelectionPlaceholder">Street (apartment, suite, etc.)</string>
+                                            <string key="NSNotApplicablePlaceholder">Street (apartment, suite, etc.)</string>
+                                            <string key="NSNullPlaceholder">Street (apartment, suite, etc.)</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="G1d-jF-w4Y">
@@ -899,13 +924,20 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.city" id="dM5-kA-GDy"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.city" id="2qm-e3-Azd">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">City</string>
+                                            <string key="NSNoSelectionPlaceholder">City</string>
+                                            <string key="NSNotApplicablePlaceholder">City</string>
+                                            <string key="NSNullPlaceholder">City</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FuQ-hv-8iR">
                                 <rect key="frame" x="169" y="172" width="53" height="22"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="53" id="ERw-zJ-IYx"/>
+                                    <constraint firstAttribute="width" constant="53" id="UAm-rs-ami"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="State" drawsBackground="YES" id="HR7-Cq-2XD">
                                     <font key="font" metaFont="system"/>
@@ -913,7 +945,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.state" id="eGK-bh-bUw"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.state" id="xOH-6N-mmU">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">State</string>
+                                            <string key="NSNoSelectionPlaceholder">State</string>
+                                            <string key="NSNotApplicablePlaceholder">State</string>
+                                            <string key="NSNullPlaceholder">State</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sVh-cD-9h2">
@@ -924,7 +963,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.zip" id="KQN-RJ-teP"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.zip" id="kax-EB-xWa">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Zip Code</string>
+                                            <string key="NSNoSelectionPlaceholder">Zip Code</string>
+                                            <string key="NSNotApplicablePlaceholder">Zip Code</string>
+                                            <string key="NSNullPlaceholder">Zip Code</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Tf-rm-D4e">
@@ -935,7 +981,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.phone" id="cvk-wh-BGE"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.phone" id="nRt-0G-lZw">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Phone</string>
+                                            <string key="NSNoSelectionPlaceholder">Phone</string>
+                                            <string key="NSNotApplicablePlaceholder">Phone</string>
+                                            <string key="NSNullPlaceholder">Phone</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Nd-4o-1YO">
@@ -946,7 +999,14 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.cell" id="kDx-Rp-DqV"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.cell" id="gMm-Va-e5k">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Cell Phone</string>
+                                            <string key="NSNoSelectionPlaceholder">Cell Phone</string>
+                                            <string key="NSNotApplicablePlaceholder">Cell Phone</string>
+                                            <string key="NSNullPlaceholder">Cell Phone</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J3G-aD-KCF">
@@ -957,59 +1017,79 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.email" id="cfl-hz-vk8"/>
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.email" id="l8l-Yk-Ckv">
+                                        <dictionary key="options">
+                                            <string key="NSMultipleValuesPlaceholder">Email</string>
+                                            <string key="NSNoSelectionPlaceholder">Email</string>
+                                            <string key="NSNotApplicablePlaceholder">Email</string>
+                                            <string key="NSNullPlaceholder">Email</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </textField>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8wP-Gv-NWK">
-                                <rect key="frame" x="20" y="30" width="141" height="123"/>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Nd-no-rd9">
+                                <rect key="frame" x="24" y="17" width="118" height="139"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="123" id="cTJ-2t-kfs"/>
+                                    <constraint firstAttribute="width" constant="112" id="gYe-4U-gXr"/>
                                 </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="blank_avatar" id="ItM-N1-pH2"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="8oK-wh-RhS"/>
                             </imageView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yhT-ka-69Q">
+                                <rect key="frame" x="163" y="13" width="118" height="32"/>
+                                <buttonCell key="cell" type="push" title="Select Photo" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="afC-J8-esZ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="selectPhoto:" target="JHb-Wh-jXT" id="Y4E-tS-bBW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="4Nd-4o-1YO" firstAttribute="trailing" secondItem="J3G-aD-KCF" secondAttribute="trailing" id="4aq-hC-v1g"/>
-                            <constraint firstItem="8wP-Gv-NWK" firstAttribute="top" secondItem="0Tf-rm-D4e" secondAttribute="top" id="6cv-38-BbF"/>
-                            <constraint firstItem="0Tf-rm-D4e" firstAttribute="leading" secondItem="4Nd-4o-1YO" secondAttribute="leading" id="BLC-lI-gVo"/>
-                            <constraint firstItem="0Tf-rm-D4e" firstAttribute="trailing" secondItem="4Nd-4o-1YO" secondAttribute="trailing" id="BPC-ch-B2O"/>
-                            <constraint firstItem="0Tf-rm-D4e" firstAttribute="leading" secondItem="8wP-Gv-NWK" secondAttribute="trailing" constant="8" symbolic="YES" id="E97-cm-WYW"/>
-                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="leading" secondItem="xFT-BY-HBc" secondAttribute="leading" id="I6s-tI-nsl"/>
-                            <constraint firstItem="xFT-BY-HBc" firstAttribute="trailing" secondItem="xIY-7F-MQ3" secondAttribute="trailing" id="IP9-XJ-ofc"/>
-                            <constraint firstItem="4Nd-4o-1YO" firstAttribute="leading" secondItem="J3G-aD-KCF" secondAttribute="leading" id="K11-jj-sJ5"/>
-                            <constraint firstItem="LZD-sN-NQq" firstAttribute="trailing" secondItem="xFT-BY-HBc" secondAttribute="trailing" id="MrK-tp-1um"/>
-                            <constraint firstItem="8wP-Gv-NWK" firstAttribute="top" secondItem="G1d-jF-w4Y" secondAttribute="bottom" constant="19" id="PXE-Od-b79"/>
-                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="baseline" secondItem="LZD-sN-NQq" secondAttribute="baseline" id="QwV-Gh-b2x"/>
-                            <constraint firstItem="G1d-jF-w4Y" firstAttribute="leading" secondItem="8wP-Gv-NWK" secondAttribute="leading" id="ST4-6J-fxr"/>
-                            <constraint firstItem="xIY-7F-MQ3" firstAttribute="top" secondItem="xFT-BY-HBc" secondAttribute="bottom" constant="10" symbolic="YES" id="VVH-Zc-b2L"/>
-                            <constraint firstItem="LZD-sN-NQq" firstAttribute="leading" secondItem="FuQ-hv-8iR" secondAttribute="leading" id="Yuh-sV-TVD"/>
-                            <constraint firstItem="LZD-sN-NQq" firstAttribute="leading" secondItem="qfQ-0Y-XmQ" secondAttribute="trailing" constant="8" symbolic="YES" id="Z97-Of-BH6"/>
-                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="leading" secondItem="Vza-rc-MOp" secondAttribute="leading" constant="20" symbolic="YES" id="bK3-N8-qtD"/>
-                            <constraint firstItem="xFT-BY-HBc" firstAttribute="top" secondItem="qfQ-0Y-XmQ" secondAttribute="bottom" constant="10" symbolic="YES" id="dt9-Lq-PMv"/>
-                            <constraint firstItem="sVh-cD-9h2" firstAttribute="trailing" secondItem="0Tf-rm-D4e" secondAttribute="trailing" id="ePj-OA-Mgz"/>
-                            <constraint firstItem="G1d-jF-w4Y" firstAttribute="top" secondItem="xIY-7F-MQ3" secondAttribute="bottom" constant="10" symbolic="YES" id="f1i-HU-kiv"/>
-                            <constraint firstItem="G1d-jF-w4Y" firstAttribute="baseline" secondItem="FuQ-hv-8iR" secondAttribute="baseline" id="fi9-cu-Wj3"/>
-                            <constraint firstItem="xIY-7F-MQ3" firstAttribute="trailing" secondItem="sVh-cD-9h2" secondAttribute="trailing" id="h5p-ZN-l2U"/>
-                            <constraint firstItem="J3G-aD-KCF" firstAttribute="top" secondItem="4Nd-4o-1YO" secondAttribute="bottom" constant="10" symbolic="YES" id="htn-ap-Ksl"/>
-                            <constraint firstItem="FuQ-hv-8iR" firstAttribute="baseline" secondItem="sVh-cD-9h2" secondAttribute="baseline" id="jGf-En-5QA"/>
-                            <constraint firstItem="xIY-7F-MQ3" firstAttribute="leading" secondItem="G1d-jF-w4Y" secondAttribute="leading" id="m3k-Kr-BsM"/>
-                            <constraint firstItem="FuQ-hv-8iR" firstAttribute="leading" secondItem="G1d-jF-w4Y" secondAttribute="trailing" constant="8" symbolic="YES" id="mOc-qO-EIU"/>
-                            <constraint firstAttribute="trailing" secondItem="LZD-sN-NQq" secondAttribute="trailing" constant="20" symbolic="YES" id="neP-oD-OYR"/>
-                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="top" secondItem="Vza-rc-MOp" secondAttribute="top" constant="20" symbolic="YES" id="oCO-oh-84y"/>
-                            <constraint firstItem="xFT-BY-HBc" firstAttribute="leading" secondItem="xIY-7F-MQ3" secondAttribute="leading" id="pug-Dm-ohp"/>
-                            <constraint firstItem="4Nd-4o-1YO" firstAttribute="top" secondItem="0Tf-rm-D4e" secondAttribute="bottom" constant="10" symbolic="YES" id="r81-MB-Ua8"/>
-                            <constraint firstItem="FuQ-hv-8iR" firstAttribute="leading" secondItem="0Tf-rm-D4e" secondAttribute="leading" id="tpl-2B-6Zf"/>
-                            <constraint firstItem="sVh-cD-9h2" firstAttribute="leading" secondItem="FuQ-hv-8iR" secondAttribute="trailing" constant="8" symbolic="YES" id="xdN-sd-X6T"/>
+                            <constraint firstItem="J3G-aD-KCF" firstAttribute="top" secondItem="4Nd-4o-1YO" secondAttribute="bottom" constant="10" symbolic="YES" id="1rU-mr-VVQ"/>
+                            <constraint firstItem="sVh-cD-9h2" firstAttribute="trailing" secondItem="0Tf-rm-D4e" secondAttribute="trailing" id="2cI-9p-whB"/>
+                            <constraint firstItem="G1d-jF-w4Y" firstAttribute="baseline" secondItem="FuQ-hv-8iR" secondAttribute="baseline" id="6Ix-TU-4Ul"/>
+                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="baseline" secondItem="LZD-sN-NQq" secondAttribute="baseline" id="6jN-Ah-Q6b"/>
+                            <constraint firstItem="0Tf-rm-D4e" firstAttribute="leading" secondItem="1Nd-no-rd9" secondAttribute="trailing" constant="30" id="8lA-Co-YbL"/>
+                            <constraint firstItem="xIY-7F-MQ3" firstAttribute="leading" secondItem="G1d-jF-w4Y" secondAttribute="leading" id="9mG-Z3-fFA"/>
+                            <constraint firstItem="0Tf-rm-D4e" firstAttribute="trailing" secondItem="4Nd-4o-1YO" secondAttribute="trailing" id="ARc-Fv-PNF"/>
+                            <constraint firstItem="G1d-jF-w4Y" firstAttribute="top" secondItem="xIY-7F-MQ3" secondAttribute="bottom" constant="10" symbolic="YES" id="EVL-aR-kB1"/>
+                            <constraint firstItem="xFT-BY-HBc" firstAttribute="top" secondItem="qfQ-0Y-XmQ" secondAttribute="bottom" constant="10" symbolic="YES" id="SZ8-Lf-UJd"/>
+                            <constraint firstItem="1Nd-no-rd9" firstAttribute="leading" secondItem="Vza-rc-MOp" secondAttribute="leading" constant="27" id="T23-jp-Uxm"/>
+                            <constraint firstItem="xFT-BY-HBc" firstAttribute="leading" secondItem="xIY-7F-MQ3" secondAttribute="leading" id="U1I-FU-ACU"/>
+                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="top" secondItem="Vza-rc-MOp" secondAttribute="top" constant="20" symbolic="YES" id="V1B-dw-Px9"/>
+                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="leading" secondItem="xFT-BY-HBc" secondAttribute="leading" id="VJN-4l-df2"/>
+                            <constraint firstItem="1Nd-no-rd9" firstAttribute="top" secondItem="0Tf-rm-D4e" secondAttribute="top" id="VUN-Y2-cwS"/>
+                            <constraint firstItem="4Nd-4o-1YO" firstAttribute="top" secondItem="0Tf-rm-D4e" secondAttribute="bottom" constant="10" symbolic="YES" id="Wdn-bE-Vjg"/>
+                            <constraint firstItem="qfQ-0Y-XmQ" firstAttribute="leading" secondItem="Vza-rc-MOp" secondAttribute="leading" constant="20" symbolic="YES" id="Y16-RQ-lzG"/>
+                            <constraint firstItem="4Nd-4o-1YO" firstAttribute="trailing" secondItem="J3G-aD-KCF" secondAttribute="trailing" id="YHJ-yN-vf7"/>
+                            <constraint firstItem="xIY-7F-MQ3" firstAttribute="top" secondItem="xFT-BY-HBc" secondAttribute="bottom" constant="10" symbolic="YES" id="YpX-OC-zXi"/>
+                            <constraint firstItem="FuQ-hv-8iR" firstAttribute="baseline" secondItem="sVh-cD-9h2" secondAttribute="baseline" id="b7p-CT-JCF"/>
+                            <constraint firstItem="1Nd-no-rd9" firstAttribute="top" secondItem="G1d-jF-w4Y" secondAttribute="bottom" constant="19" id="e8N-ez-yK9"/>
+                            <constraint firstItem="1Nd-no-rd9" firstAttribute="bottom" secondItem="yhT-ka-69Q" secondAttribute="bottom" id="gPr-pt-B2J"/>
+                            <constraint firstItem="LZD-sN-NQq" firstAttribute="trailing" secondItem="xFT-BY-HBc" secondAttribute="trailing" id="ht2-eh-GEj"/>
+                            <constraint firstItem="FuQ-hv-8iR" firstAttribute="leading" secondItem="0Tf-rm-D4e" secondAttribute="leading" id="jGS-fc-KGd"/>
+                            <constraint firstAttribute="trailing" secondItem="LZD-sN-NQq" secondAttribute="trailing" constant="20" symbolic="YES" id="jIn-ho-MV9"/>
+                            <constraint firstItem="LZD-sN-NQq" firstAttribute="leading" secondItem="qfQ-0Y-XmQ" secondAttribute="trailing" constant="8" symbolic="YES" id="kbd-aq-Wus"/>
+                            <constraint firstItem="0Tf-rm-D4e" firstAttribute="leading" secondItem="4Nd-4o-1YO" secondAttribute="leading" id="m0T-Ul-Byd"/>
+                            <constraint firstItem="FuQ-hv-8iR" firstAttribute="leading" secondItem="G1d-jF-w4Y" secondAttribute="trailing" constant="8" symbolic="YES" id="mOn-sl-ycY"/>
+                            <constraint firstItem="sVh-cD-9h2" firstAttribute="leading" secondItem="FuQ-hv-8iR" secondAttribute="trailing" constant="8" symbolic="YES" id="p4j-af-PYQ"/>
+                            <constraint firstItem="4Nd-4o-1YO" firstAttribute="leading" secondItem="J3G-aD-KCF" secondAttribute="leading" id="ppr-Ja-J2a"/>
+                            <constraint firstItem="J3G-aD-KCF" firstAttribute="leading" secondItem="yhT-ka-69Q" secondAttribute="leading" id="qae-r1-bNG"/>
+                            <constraint firstItem="xFT-BY-HBc" firstAttribute="trailing" secondItem="xIY-7F-MQ3" secondAttribute="trailing" id="sTD-O4-ZHj"/>
+                            <constraint firstItem="xIY-7F-MQ3" firstAttribute="trailing" secondItem="sVh-cD-9h2" secondAttribute="trailing" id="vCA-Wt-Ie9"/>
+                            <constraint firstItem="LZD-sN-NQq" firstAttribute="leading" secondItem="FuQ-hv-8iR" secondAttribute="leading" id="xX0-XM-DVM"/>
+                            <constraint firstAttribute="bottom" secondItem="1Nd-no-rd9" secondAttribute="bottom" constant="20" symbolic="YES" id="xfv-NF-pOC"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="studentPhotoView" destination="1Nd-no-rd9" id="Xq6-mD-b8O"/>
+                    </connections>
                 </viewController>
                 <customObject id="d8S-il-ohn" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController id="DaQ-q4-6rr"/>
             </objects>
-            <point key="canvasLocation" x="716" y="655"/>
+            <point key="canvasLocation" x="715.5" y="655"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="blank_avatar" width="1024" height="1024"/>
-    </resources>
 </document>

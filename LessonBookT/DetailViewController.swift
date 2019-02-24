@@ -13,7 +13,8 @@ class DetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
     var context:NSManagedObjectContext? = nil
-
+    var studentToEdit:Student? = nil
+    
     func configureView() {
         // Update the user interface for the detail item.
         if let student = detailItem {
@@ -47,9 +48,8 @@ class DetailViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editDetail" {
-            let student = detailItem
             let controller = segue.destination as!  StudentEditViewController
-            controller.student = student
+            controller.student = studentToEdit
             controller.context = context
             //controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             //controller.navigationItem.leftItemsSupplementBackButton = true
