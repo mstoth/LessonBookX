@@ -169,7 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             case .firesOnRecordCreation:
                 print("FIRE ON RECORD CREATION")
                 //viewController?.fetchAndAddRecordToCoreData(recordID)
-                completionHandler(UIBackgroundFetchResult.newData)
+                completionHandler(UIBackgroundFetchResult.noData)
 
                 //viewController.addedCloudKitRecord(record)
                 break
@@ -183,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 print("FIRE ON UPDATE")
                 // NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
                 //viewController?.updateRecordInCoreData(recordID)
-                completionHandler(UIBackgroundFetchResult.newData)
+                completionHandler(UIBackgroundFetchResult.noData)
                 break
             case [.firesOnRecordCreation, .firesOnRecordUpdate]:
                 print("FIRE ON DELETE")
@@ -206,9 +206,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             // let notificationID = dbNotification.notificationID
             let dict = userInfo as! [String: NSObject]
             guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else { return }
+            viewController!.changesFromCloud = true
             viewController!.fetchChanges(in: notification.databaseScope) {
+                completionHandler(UIBackgroundFetchResult.noData)
             }
-            completionHandler(UIBackgroundFetchResult.noData)
         }
 
         // print(userInfo)

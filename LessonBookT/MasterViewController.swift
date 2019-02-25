@@ -20,7 +20,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     var z:ZoneOperations? = nil
     var subscribedToPrivateChanges:Bool = false
     var createdCustomZone:Bool = false
-    
+    var changesFromCloud:Bool = false
     let privateSubscriptionId = "LessonBook"
 
     
@@ -226,9 +226,11 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     s.zip = record["zip"]
                     s.cell = record["cell"]
                     s.email = record["email"]
-                    if let asset = record["photo"] as? CKAsset,
-                        let data = NSData(contentsOf: (asset.fileURL)) {
-                        s.photo = data
+                    if (record["photo"] != nil) {
+                        if let asset = record["photo"] as? CKAsset,
+                            let data = NSData(contentsOf: (asset.fileURL)) {
+                            s.photo = data
+                        }
                     }
                     s.recordName = recordName
                 }
@@ -424,6 +426,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
         
         print("Context Objects Did Change.")
+        if changesFromCloud {
+            changesFromCloud = false
+            return
+        }
         guard let userInfo = notification.userInfo else { return }
         
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
@@ -494,7 +500,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: [ccr!], recordIDsToDelete: [])
                     // modifyRecords.recordsToSave = recordArray
                     modifyRecords.savePolicy = .allKeys
-                    modifyRecords.qualityOfService = .background
+                    modifyRecords.isAtomic = true
+                    modifyRecords.qualityOfService = .userInitiated
                     modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                         if (error != nil) {
                             print("ERROR IN MODIFYING CLOUD")
@@ -517,13 +524,13 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     //}
                     
                 }
-                DispatchQueue.main.async {
-                    do {
-                        try self.managedObjectContext?.save()
-                    } catch {
-                        print(error)
-                    }
-                }
+//                DispatchQueue.main.async {
+//                    do {
+//                        try self.managedObjectContext?.save()
+//                    } catch {
+//                        print(error)
+//                    }
+//                }
             }
         }
         
@@ -611,6 +618,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             // modifyRecords.recordsToSave = recordArray
                             modifyRecords.savePolicy = .allKeys
                             modifyRecords.isAtomic = true
+                            
                             modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                                 if (error != nil) {
                                     print("ERROR IN MODIFYING CLOUD")
@@ -620,7 +628,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                                 }
                             }
                             
-                            modifyRecords.qualityOfService = .background
+                            modifyRecords.qualityOfService = .userInitiated
                             self.database.add(modifyRecords)
                         }
                     }
@@ -642,10 +650,13 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     }
                 })
             }
-            do {
-                try managedObjectContext!.save()
-            } catch {
-                print(error)
+            DispatchQueue.main.async {
+                do {
+                    try self.managedObjectContext!.save()
+                } catch {
+                    print(error)
+                }
+
             }
         }
 

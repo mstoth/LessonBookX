@@ -32,7 +32,7 @@ class ViewController: NSViewController {
     var z:ZoneOperations? = nil
     var subscribedToPrivateChanges:Bool = false
     var createdCustomZone:Bool = false
-
+    var changesFromCloud:Bool = false
     let privateSubscriptionId = "LessonBook"
 
     @IBOutlet var arrayController: NSArrayController!
@@ -479,6 +479,11 @@ class ViewController: NSViewController {
 
     @objc func contextObjectsDidChange(_ notification:NSNotification) {
         print("Context Objects Did Change.")
+        if changesFromCloud {
+            changesFromCloud = false
+            print("IGNORING")
+            return
+        }
         guard let userInfo = notification.userInfo else { return }
         
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
@@ -548,6 +553,7 @@ class ViewController: NSViewController {
                     let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: [ccr!], recordIDsToDelete: [])
                     // modifyRecords.recordsToSave = recordArray
                     modifyRecords.savePolicy = .allKeys
+                    modifyRecords.isAtomic = true
                     modifyRecords.qualityOfService = .background
                     modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                         if (error != nil) {
@@ -571,13 +577,11 @@ class ViewController: NSViewController {
                     //}
                     
                 }
-                DispatchQueue.main.async {
-                    do {
-                        try self.context?.save()
-                    } catch {
-                        print(error)
-                    }
-                }
+//                do {
+//                    try self.context?.save()
+//                } catch {
+//                    print(error)
+//                }
             }
         }
 
@@ -636,33 +640,35 @@ class ViewController: NSViewController {
                     } else {
                         for r:CKRecord in recs! {
                             //if !(r["phone"]==s.phone && r["firstName"]==s.firstName && r["lastName"]==s.lastName) {
-                                print("Setting Record Values for \(recs!.count) records")
-                                
-                                r["phone"]=s.phone
-                                r["firstName"]=s.firstName
-                                r["lastName"]=s.lastName
-                                r["recordName"]=s.recordName
-                                //r["lastUpdate"]=Date()
-                                r.setValue("",forKey: "street1")
-                                r.setValue("",forKey: "street2")
-                                r.setValue("",forKey: "city")
-                                r.setValue("",forKey: "state")
-                                r.setValue("",forKey: "zip")
-                                r.setValue("",forKey: "email")
-                                r.setValue("",forKey: "cell")
-                            do {
-                                try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"), options: .atomic)
-                                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"))
-                                r["photo"]=asset
-                            } catch  {
-                                print(error)
+                            print("Setting Record Values for \(recs!.count) records")
+                            
+                            r["phone"]=s.phone
+                            r["firstName"]=s.firstName
+                            r["lastName"]=s.lastName
+                            r["recordName"]=s.recordName
+                            //r["lastUpdate"]=Date()
+                            r.setValue("",forKey: "street1")
+                            r.setValue("",forKey: "street2")
+                            r.setValue("",forKey: "city")
+                            r.setValue("",forKey: "state")
+                            r.setValue("",forKey: "zip")
+                            r.setValue("",forKey: "email")
+                            r.setValue("",forKey: "cell")
+                            if (s.photo != nil) {
+                                do {
+                                    try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"), options: .atomic)
+                                    let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"))
+                                    r["photo"]=asset
+                                } catch  {
+                                    print(error)
+                                }
                             }
 
-                                let recordArray = [r]
-                                // print(String(describing: recordArray))
-                                let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
-                                // modifyRecords.recordsToSave = recordArray
-                                modifyRecords.savePolicy = .allKeys
+                            let recordArray = [r]
+                            // print(String(describing: recordArray))
+                            let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
+                            // modifyRecords.recordsToSave = recordArray
+                            modifyRecords.savePolicy = .allKeys
                             modifyRecords.isAtomic = true
                             modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                                 if (error != nil) {
@@ -673,8 +679,8 @@ class ViewController: NSViewController {
                                 }
                             }
 
-                                modifyRecords.qualityOfService = .background
-                                self.database.add(modifyRecords)
+                            modifyRecords.qualityOfService = .background
+                            self.database.add(modifyRecords)
                         }
                     }
                 })

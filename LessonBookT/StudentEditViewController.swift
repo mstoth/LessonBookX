@@ -38,6 +38,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var context:NSManagedObjectContext? = nil
     var asset:CKAsset? = nil
     var smallImage:UIImage? = nil
+    var selectingPhoto:Bool = false
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
@@ -130,11 +131,6 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         // asset = CKAsset(fileURL: fileURL)
         let data2 = NSData(contentsOf: fileURL)
         student?.photo = data2
-        do {
-            try context?.save()
-        } catch  {
-            print(error)
-        }
     }
     
     
@@ -150,6 +146,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     }
     
     @IBAction func selectPhoto(_ sender: Any) {
+        
         let documentViewController = UIDocumentPickerViewController(documentTypes: [kUTTypeBMP as String,kUTTypeGIF as String,kUTTypePNG as String,kUTTypeJPEG as String], in: .import)
         documentViewController.delegate = self
         documentViewController.modalPresentationStyle = .formSheet

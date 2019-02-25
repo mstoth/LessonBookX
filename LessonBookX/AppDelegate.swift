@@ -101,7 +101,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // let notificationID = dbNotification.notificationID
             let dict = userInfo as! [String: NSObject]
             guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else { return }
-             viewController!.fetchChanges(in: notification.databaseScope) {
+            viewController!.changesFromCloud = true
+            viewController!.fetchChanges(in: notification.databaseScope) {
             }
             
         }
