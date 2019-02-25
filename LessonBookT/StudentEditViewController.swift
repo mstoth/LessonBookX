@@ -37,6 +37,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var student:Student? = nil
     var context:NSManagedObjectContext? = nil
     var asset:CKAsset? = nil
+    var smallImage:UIImage? = nil
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
@@ -46,12 +47,27 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
+    @IBOutlet weak var street1TextField: UITextField!
+    @IBOutlet weak var street2TextField: UITextField!
+    @IBOutlet weak var cityTextField: UITextField!
+    @IBOutlet weak var stateTextField: UITextField!
+    @IBOutlet weak var zipTextField: UITextField!
+    @IBOutlet weak var cellTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         firstNameTextField.text = student?.firstName
         lastNameTextField.text = student?.lastName
         phoneTextField.text = student?.phone
+        street1TextField.text = student?.street1
+        street2TextField.text = student?.street2
+        cityTextField.text = student?.city
+        stateTextField.text = student?.state
+        zipTextField.text = student?.zip
+        cellTextField.text = student?.cell
+        emailTextField.text = student?.email
+
         let imageData = student?.photo
         if (imageData != nil) {
             let tmpDir = FileManager.init().temporaryDirectory
@@ -67,13 +83,27 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         firstNameTextField.delegate = self
         // Do any additional setup after loading the view.
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         student?.firstName = firstNameTextField.text
         student?.lastName = lastNameTextField.text
         student?.phone = phoneTextField.text
+        student?.street1 = street1TextField.text
+        student?.street2 = street2TextField.text
+        student?.city = cityTextField.text
+        student?.state = stateTextField.text
+        student?.zip = zipTextField.text
+        student?.cell = cellTextField.text
+        student?.email = emailTextField.text
         
+        guard let data = photoView.image?.pngData() else {
+            return
+        }
+        student?.photo = data as NSData
+
         do {
             try context!.save()
+            print("Saved edited student to core data.")
         } catch  {
             print(error)
         }
@@ -84,7 +114,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         let myURL = url as URL
         print("import result : \(myURL)")
         let image = UIImage(contentsOfFile: myURL.path)
-        let smallImage = image?.resizeImageWith(newSize: CGSize(width: 200, height: 266))
+        smallImage = image?.resizeImageWith(newSize: CGSize(width: 200, height: 266))
         photoView.image = smallImage
         
         guard let data = smallImage!.pngData() else {
@@ -97,7 +127,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         } catch {
             print(error)
         }
-        asset = CKAsset(fileURL: fileURL)
+        // asset = CKAsset(fileURL: fileURL)
         let data2 = NSData(contentsOf: fileURL)
         student?.photo = data2
         do {
@@ -105,7 +135,6 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         } catch  {
             print(error)
         }
-
     }
     
     

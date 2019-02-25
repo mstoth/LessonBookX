@@ -24,12 +24,14 @@ class EditStudentProfileController: NSViewController {
         super.viewDidLoad()
         // Do view setup here.
         let imageData = studentToEdit?.photo
+        
         if (imageData != nil) {
             let tmpDir = FileManager.init().temporaryDirectory
             let photoUrl = tmpDir.appendingPathComponent("studentPhoto.png")
             do {
                 try imageData?.write(to: photoUrl, options: .atomic)
-                studentPhotoView.image = NSImage(contentsOf: photoUrl)
+                let image = NSImage(contentsOf: photoUrl)
+                studentPhotoView.image = image
             } catch  {
                 print(error)
             }

@@ -10,6 +10,7 @@ import Foundation
 import NotificationCenter
 import CloudKit
 
+
 public enum CKErrorCode : Int {
     case InternalError /* CloudKit.framework encountered an error.  This is a non-recoverable error. */
     case PartialFailure /* Some items failed, but the operation succeeded overall */
@@ -40,6 +41,7 @@ public enum CKErrorCode : Int {
     case LimitExceeded /* The request to the server was too large. Retry this request as a smaller batch. */
     case UserDeletedZone /* The user deleted this zone through the settings UI. Your client should either remove its local data or prompt the user before attempting to re-upload any data to this zone. */
 }
+
 
 class ZoneOperations {
     var zoneID:CKRecordZone.ID? = nil
