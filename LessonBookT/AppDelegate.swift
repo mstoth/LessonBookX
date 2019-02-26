@@ -208,8 +208,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else { return }
             viewController!.changesFromCloud = true
             viewController!.fetchChanges(in: notification.databaseScope) {
-                completionHandler(UIBackgroundFetchResult.noData)
             }
+            completionHandler(UIBackgroundFetchResult.noData)
+
         }
 
         // print(userInfo)
