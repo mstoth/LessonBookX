@@ -27,7 +27,7 @@ class EditStudentProfileController: NSViewController {
         
         if (imageData != nil) {
             let tmpDir = FileManager.init().temporaryDirectory
-            let photoUrl = tmpDir.appendingPathComponent("studentPhoto.png")
+            let photoUrl = tmpDir.appendingPathComponent("\(studentToEdit?.recordName).jpg")
             do {
                 try imageData?.write(to: photoUrl, options: .atomic)
                 let image = NSImage(contentsOf: photoUrl)
@@ -61,7 +61,7 @@ class EditStudentProfileController: NSViewController {
                 let tmp = fm.temporaryDirectory
                 
                 studentPhotoView.image = smallImage
-                let url = tmp.appendingPathComponent("smallImage.png")
+                let url = tmp.appendingPathComponent("\(studentToEdit?.recordName).jpg")
                 do {
                     try smallImage?.savePngTo(url: url)
                 } catch  {

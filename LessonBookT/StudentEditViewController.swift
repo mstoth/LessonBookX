@@ -72,7 +72,9 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         let imageData = student?.photo
         if (imageData != nil) {
             let tmpDir = FileManager.init().temporaryDirectory
-            let photoUrl = tmpDir.appendingPathComponent("studentPhoto.png")
+            let name = student!.recordName
+            let fileName = "\(name).png"
+            let photoUrl = tmpDir.appendingPathComponent(fileName)
             do {
                 try imageData?.write(to: photoUrl, options: .atomic)
                 photoView.image = UIImage(contentsOfFile: photoUrl.path)
@@ -122,7 +124,9 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             return
         }
         let docURL = FileManager.default.temporaryDirectory
-        let fileURL = docURL.appendingPathComponent("studentPhoto.png")
+        let name = student!.recordName
+        let fileName = "\(name).png"
+        let fileURL = docURL.appendingPathComponent(fileName)
         do {
             try data.write(to: fileURL)
         } catch {

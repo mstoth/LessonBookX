@@ -454,8 +454,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     ccr?["email"]=s.email
                     if (s.photo != nil) {
                         do {
-                            try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"), options: .atomic)
-                            let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"))
+                            try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
+                            let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))
                             ccr?["photo"]=asset
                         } catch  {
                             print(error)
@@ -490,8 +490,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                     ccr?["email"]=s.email
                     if (s.photo != nil) {
                         do {
-                            try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"), options: .atomic)
-                            let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"))
+                            try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
+                            let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))
                             ccr?["photo"]=asset
                         } catch  {
                             print(error)
@@ -563,8 +563,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r.setValue("",forKey: "email")
                             r.setValue("",forKey: "cell")
                             do {
-                                try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"), options: .atomic)
-                                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"))
+                                try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
+                                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))
                                 r["photo"]=asset
                             } catch  {
                                 print(error)
@@ -605,8 +605,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r.setValue("",forKey: "email")
                             r.setValue("",forKey: "cell")
                             do {
-                                try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"), options: .atomic)
-                                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("studentPhoto.png"))
+                                try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
+                                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))
                                 r["photo"]=asset
                             } catch  {
                                 print(error)
