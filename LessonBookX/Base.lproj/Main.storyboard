@@ -870,7 +870,7 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.lastName" id="dIw-uR-wvP">
+                                    <binding destination="JHb-Wh-jXT" name="value" keyPath="self.studentToEdit.lastName" id="olk-zt-GO3">
                                         <dictionary key="options">
                                             <string key="NSMultipleValuesPlaceholder">Last Name</string>
                                             <string key="NSNoSelectionPlaceholder">Last Name</string>
@@ -1083,7 +1083,18 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cellTextField" destination="4Nd-4o-1YO" id="Wmv-Ls-Y6a"/>
+                        <outlet property="cityTextField" destination="G1d-jF-w4Y" id="W23-Rd-c3i"/>
+                        <outlet property="emailTextField" destination="J3G-aD-KCF" id="blR-cj-aN9"/>
+                        <outlet property="firstNameTextField" destination="qfQ-0Y-XmQ" id="2Hv-yH-iK4"/>
+                        <outlet property="lastNameTextField" destination="LZD-sN-NQq" id="l0e-Ib-OcF"/>
+                        <outlet property="phoneTextField" destination="0Tf-rm-D4e" id="xbU-1f-y3G"/>
+                        <outlet property="selectPhotoButton" destination="yhT-ka-69Q" id="IJT-Qa-TJa"/>
+                        <outlet property="stateTextField" destination="FuQ-hv-8iR" id="ZoE-a6-vgG"/>
+                        <outlet property="street1TextField" destination="xFT-BY-HBc" id="9oc-gj-Iud"/>
+                        <outlet property="street2TextField" destination="xIY-7F-MQ3" id="qO8-FB-hYP"/>
                         <outlet property="studentPhotoView" destination="1Nd-no-rd9" id="Xq6-mD-b8O"/>
+                        <outlet property="zipTextField" destination="sVh-cD-9h2" id="LF1-1y-Kv1"/>
                     </connections>
                 </viewController>
                 <customObject id="d8S-il-ohn" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

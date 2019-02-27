@@ -50,6 +50,21 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>A450C65E2205ADE000BA4047</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A450C6762205AE1200BA4047</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A450C6812205AE1200BA4047</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A4C1C8DD21FDA95100A88255</key>
 		<dict>
 			<key>primary</key>

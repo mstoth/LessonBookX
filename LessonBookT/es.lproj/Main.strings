@@ -1,0 +1,51 @@
+
+/* Class = "UILabel"; text = "Last Name"; ObjectID = "7Yr-mk-4Pe"; */
+"7Yr-mk-4Pe.text" = "Last Name";
+
+/* Class = "UITableViewController"; title = "Master"; ObjectID = "7bK-jq-Zjz"; */
+"7bK-jq-Zjz.title" = "Master";
+
+/* Class = "UILabel"; text = "City"; ObjectID = "9Qb-Iq-rtx"; */
+"9Qb-Iq-rtx.text" = "City";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "Arm-wq-HPj"; */
+"Arm-wq-HPj.text" = "Title";
+
+/* Class = "UILabel"; text = "Cell"; ObjectID = "DLK-Su-lSt"; */
+"DLK-Su-lSt.text" = "Cell";
+
+/* Class = "UIViewController"; title = "Detail"; ObjectID = "JEX-9P-axG"; */
+"JEX-9P-axG.title" = "Detail";
+
+/* Class = "UILabel"; text = "Phone"; ObjectID = "RBK-mA-ZtA"; */
+"RBK-mA-ZtA.text" = "Phone";
+
+/* Class = "UINavigationController"; title = "Master"; ObjectID = "RMx-3f-FxP"; */
+"RMx-3f-FxP.title" = "Master";
+
+/* Class = "UIButton"; normalTitle = "Select Photo"; ObjectID = "Sv3-AJ-ncf"; */
+"Sv3-AJ-ncf.normalTitle" = "Select Photo";
+
+/* Class = "UIButton"; normalTitle = "Edit Student"; ObjectID = "Un3-4l-35i"; */
+"Un3-4l-35i.normalTitle" = "Edit Student";
+
+/* Class = "UINavigationItem"; title = "Students"; ObjectID = "Zdf-7t-Un8"; */
+"Zdf-7t-Un8.title" = "Students";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "cBG-Lf-F6R"; */
+"cBG-Lf-F6R.text" = "Email";
+
+/* Class = "UILabel"; text = "First Name"; ObjectID = "eFM-xv-JaB"; */
+"eFM-xv-JaB.text" = "First Name";
+
+/* Class = "UILabel"; text = "Apt., Suite, etc."; ObjectID = "kvb-95-Sgn"; */
+"kvb-95-Sgn.text" = "Apt., Suite, etc.";
+
+/* Class = "UINavigationItem"; title = "Detail"; ObjectID = "mOI-FS-AaM"; */
+"mOI-FS-AaM.title" = "Detail";
+
+/* Class = "UILabel"; text = "Street"; ObjectID = "pTF-7n-EBY"; */
+"pTF-7n-EBY.text" = "Street";
+
+/* Class = "UILabel"; text = "State, Zip"; ObjectID = "wnz-tl-7kd"; */
+"wnz-tl-7kd.text" = "State, Zip";

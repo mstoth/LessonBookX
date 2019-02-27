@@ -19,7 +19,18 @@ class EditStudentProfileController: NSViewController {
     var context:NSManagedObjectContext? = nil
     @IBOutlet weak var studentPhotoView: NSImageView!
     var asset:CKAsset? = nil
+    @IBOutlet weak var firstNameTextField: NSTextField!
+    @IBOutlet weak var lastNameTextField: NSTextField!
+    @IBOutlet weak var street1TextField: NSTextField!
+    @IBOutlet weak var cellTextField: NSTextField!
+    @IBOutlet weak var street2TextField: NSTextField!
+    @IBOutlet weak var emailTextField: NSTextField!
+    @IBOutlet weak var cityTextField: NSTextField!
+    @IBOutlet weak var phoneTextField: NSTextField!
+    @IBOutlet weak var stateTextField: NSTextField!
+    @IBOutlet weak var zipTextField: NSTextField!
     
+    @IBOutlet weak var selectPhotoButton: NSButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
@@ -36,6 +47,18 @@ class EditStudentProfileController: NSViewController {
                 print(error)
             }
         }
+        
+        firstNameTextField.placeholderString = NSLocalizedString("first-name", comment: "First Name")
+        lastNameTextField.placeholderString = NSLocalizedString("last-name", comment: "Last Name")
+        street1TextField.placeholderString = NSLocalizedString("street1", comment: "Street")
+        street2TextField.placeholderString = NSLocalizedString("street2", comment: "Apartment")
+        cityTextField.placeholderString = NSLocalizedString("city", comment: "City")
+        stateTextField.placeholderString = NSLocalizedString("state", comment: "State")
+        zipTextField.placeholderString = NSLocalizedString("zip", comment: "Zip Code")
+        phoneTextField.placeholderString = NSLocalizedString("phone", comment: "Phone")
+        cellTextField.placeholderString = NSLocalizedString("cell", comment: "Cell Phone")
+        emailTextField.placeholderString = NSLocalizedString("email", comment: "Email")
+        selectPhotoButton.title = NSLocalizedString("select-photo", comment: "Select Photo")
     }
     
     @IBAction func selectPhoto(_ sender: Any) {

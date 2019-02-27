@@ -1,4 +1,16 @@
 
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Street"; ObjectID = "1N8-3d-ppa"; */
+"1N8-3d-ppa.ibShadowedIsNilPlaceholder" = "Street";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Street"; ObjectID = "1N8-3d-ppa"; */
+"1N8-3d-ppa.ibShadowedMultipleValuesPlaceholder" = "Street";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Street"; ObjectID = "1N8-3d-ppa"; */
+"1N8-3d-ppa.ibShadowedNoSelectionPlaceholder" = "Street";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Street"; ObjectID = "1N8-3d-ppa"; */
+"1N8-3d-ppa.ibShadowedNotApplicablePlaceholder" = "Street";
+
 /* Class = "NSMenuItem"; title = "Customize Toolbar…"; ObjectID = "1UK-8n-QPP"; */
 "1UK-8n-QPP.title" = "Customize Toolbar…";
 
@@ -16,6 +28,18 @@
 
 /* Class = "NSMenuItem"; title = "Transformations"; ObjectID = "2oI-Rn-ZJC"; */
 "2oI-Rn-ZJC.title" = "Transformations";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "City"; ObjectID = "2qm-e3-Azd"; */
+"2qm-e3-Azd.ibShadowedIsNilPlaceholder" = "City";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "City"; ObjectID = "2qm-e3-Azd"; */
+"2qm-e3-Azd.ibShadowedMultipleValuesPlaceholder" = "City";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "City"; ObjectID = "2qm-e3-Azd"; */
+"2qm-e3-Azd.ibShadowedNoSelectionPlaceholder" = "City";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "City"; ObjectID = "2qm-e3-Azd"; */
+"2qm-e3-Azd.ibShadowedNotApplicablePlaceholder" = "City";
 
 /* Class = "NSMenu"; title = "Spelling"; ObjectID = "3IN-sU-3Bg"; */
 "3IN-sU-3Bg.title" = "Spelling";
@@ -53,17 +77,29 @@
 /* Class = "NSMenuItem"; title = "Correct Spelling Automatically"; ObjectID = "78Y-hA-62v"; */
 "78Y-hA-62v.title" = "Correct Spelling Automatically";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Last Name"; ObjectID = "7fV-YL-3W1"; */
+"7fV-YL-3W1.placeholderString" = "Last Name";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Cell Phone"; ObjectID = "8KK-5Z-9xh"; */
+"8KK-5Z-9xh.placeholderString" = "Cell Phone";
+
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "8ho-wm-MSH"; */
 "8ho-wm-MSH.title" = "Text Cell";
 
 /* Class = "NSMenu"; title = "Writing Direction"; ObjectID = "8mr-sm-Yjd"; */
 "8mr-sm-Yjd.title" = "Writing Direction";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Zip Code"; ObjectID = "9i7-Kw-5BG"; */
+"9i7-Kw-5BG.placeholderString" = "Zip Code";
+
 /* Class = "NSMenuItem"; title = "Substitutions"; ObjectID = "9ic-FL-obx"; */
 "9ic-FL-obx.title" = "Substitutions";
 
 /* Class = "NSMenuItem"; title = "Smart Copy/Paste"; ObjectID = "9yt-4B-nSM"; */
 "9yt-4B-nSM.title" = "Smart Copy/Paste";
+
+/* Class = "NSButtonCell"; title = "+"; ObjectID = "AQc-4f-fVD"; */
+"AQc-4f-fVD.title" = "+";
 
 /* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
 "AYu-sK-qS6.title" = "Main Menu";
@@ -124,6 +160,9 @@
 
 /* Class = "NSMenuItem"; title = "Show Spelling and Grammar"; ObjectID = "HFo-cy-zxI"; */
 "HFo-cy-zxI.title" = "Show Spelling and Grammar";
+
+/* Class = "NSTextFieldCell"; placeholderString = "State"; ObjectID = "HR7-Cq-2XD"; */
+"HR7-Cq-2XD.placeholderString" = "State";
 
 /* Class = "NSMenu"; title = "View"; ObjectID = "HyV-fh-RgO"; */
 "HyV-fh-RgO.title" = "View";
@@ -209,6 +248,9 @@
 /* Class = "NSMenuItem"; title = "Capitalize"; ObjectID = "UEZ-Bs-lqG"; */
 "UEZ-Bs-lqG.title" = "Capitalize";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Email"; ObjectID = "UVA-KY-oCT"; */
+"UVA-KY-oCT.placeholderString" = "Email";
+
 /* Class = "NSMenuItem"; title = "Center"; ObjectID = "VIY-Ag-zcb"; */
 "VIY-Ag-zcb.title" = "Center";
 
@@ -248,6 +290,9 @@
 /* Class = "NSMenuItem"; title = "Paragraph"; ObjectID = "ZvO-Gk-QUH"; */
 "ZvO-Gk-QUH.title" = "Paragraph";
 
+/* Class = "NSButtonCell"; title = "-"; ObjectID = "aBH-v4-VVl"; */
+"aBH-v4-VVl.title" = "-";
+
 /* Class = "NSMenuItem"; title = "Print…"; ObjectID = "aTl-1u-JFS"; */
 "aTl-1u-JFS.title" = "Print…";
 
@@ -257,8 +302,14 @@
 /* Class = "NSMenu"; title = "Font"; ObjectID = "aXa-aM-Jaq"; */
 "aXa-aM-Jaq.title" = "Font";
 
+/* Class = "NSButtonCell"; title = "Select Photo"; ObjectID = "afC-J8-esZ"; */
+"afC-J8-esZ.title" = "Select Photo";
+
 /* Class = "NSMenuItem"; title = "Use Default"; ObjectID = "agt-UL-0e3"; */
 "agt-UL-0e3.title" = "Use Default";
+
+/* Class = "NSTextFieldCell"; placeholderString = "First Name"; ObjectID = "ayf-EN-gFS"; */
+"ayf-EN-gFS.placeholderString" = "First Name";
 
 /* Class = "NSMenuItem"; title = "Show Colors"; ObjectID = "bgn-CT-cEk"; */
 "bgn-CT-cEk.title" = "Show Colors";
@@ -293,6 +344,21 @@
 /* Class = "NSMenuItem"; title = "Undo"; ObjectID = "dRJ-4n-Yzg"; */
 "dRJ-4n-Yzg.title" = "Undo";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Phone"; ObjectID = "fWb-X2-Ao3"; */
+"fWb-X2-Ao3.placeholderString" = "Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Cell Phone"; ObjectID = "gMm-Va-e5k"; */
+"gMm-Va-e5k.ibShadowedIsNilPlaceholder" = "Cell Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Cell Phone"; ObjectID = "gMm-Va-e5k"; */
+"gMm-Va-e5k.ibShadowedMultipleValuesPlaceholder" = "Cell Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Cell Phone"; ObjectID = "gMm-Va-e5k"; */
+"gMm-Va-e5k.ibShadowedNoSelectionPlaceholder" = "Cell Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Cell Phone"; ObjectID = "gMm-Va-e5k"; */
+"gMm-Va-e5k.ibShadowedNotApplicablePlaceholder" = "Cell Phone";
+
 /* Class = "NSMenuItem"; title = "Paste"; ObjectID = "gVA-U4-sdL"; */
 "gVA-U4-sdL.title" = "Paste";
 
@@ -314,11 +380,26 @@
 /* Class = "NSMenu"; title = "Baseline"; ObjectID = "ijk-EB-dga"; */
 "ijk-EB-dga.title" = "Baseline";
 
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "First Name"; ObjectID = "ikI-7d-F5L"; */
+"ikI-7d-F5L.ibShadowedIsNilPlaceholder" = "First Name";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "First Name"; ObjectID = "ikI-7d-F5L"; */
+"ikI-7d-F5L.ibShadowedMultipleValuesPlaceholder" = "First Name";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "First Name"; ObjectID = "ikI-7d-F5L"; */
+"ikI-7d-F5L.ibShadowedNoSelectionPlaceholder" = "First Name";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "First Name"; ObjectID = "ikI-7d-F5L"; */
+"ikI-7d-F5L.ibShadowedNotApplicablePlaceholder" = "First Name";
+
 /* Class = "NSMenuItem"; title = "Kern"; ObjectID = "jBQ-r6-VK2"; */
 "jBQ-r6-VK2.title" = "Kern";
 
 /* Class = "NSMenuItem"; title = "\tRight to Left"; ObjectID = "jFq-tB-4Kx"; */
 "jFq-tB-4Kx.title" = "\tRight to Left";
+
+/* Class = "NSTextFieldCell"; placeholderString = "City"; ObjectID = "jZc-Fj-BKF"; */
+"jZc-Fj-BKF.placeholderString" = "City";
 
 /* Class = "NSMenuItem"; title = "Format"; ObjectID = "jxT-CU-nIS"; */
 "jxT-CU-nIS.title" = "Format";
@@ -326,8 +407,44 @@
 /* Class = "NSMenuItem"; title = "Show Sidebar"; ObjectID = "kIP-vf-haE"; */
 "kIP-vf-haE.title" = "Show Sidebar";
 
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Zip Code"; ObjectID = "kax-EB-xWa"; */
+"kax-EB-xWa.ibShadowedIsNilPlaceholder" = "Zip Code";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Zip Code"; ObjectID = "kax-EB-xWa"; */
+"kax-EB-xWa.ibShadowedMultipleValuesPlaceholder" = "Zip Code";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Zip Code"; ObjectID = "kax-EB-xWa"; */
+"kax-EB-xWa.ibShadowedNoSelectionPlaceholder" = "Zip Code";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Zip Code"; ObjectID = "kax-EB-xWa"; */
+"kax-EB-xWa.ibShadowedNotApplicablePlaceholder" = "Zip Code";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Email"; ObjectID = "l8l-Yk-Ckv"; */
+"l8l-Yk-Ckv.ibShadowedIsNilPlaceholder" = "Email";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Email"; ObjectID = "l8l-Yk-Ckv"; */
+"l8l-Yk-Ckv.ibShadowedMultipleValuesPlaceholder" = "Email";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Email"; ObjectID = "l8l-Yk-Ckv"; */
+"l8l-Yk-Ckv.ibShadowedNoSelectionPlaceholder" = "Email";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Email"; ObjectID = "l8l-Yk-Ckv"; */
+"l8l-Yk-Ckv.ibShadowedNotApplicablePlaceholder" = "Email";
+
 /* Class = "NSMenuItem"; title = "Check Grammar With Spelling"; ObjectID = "mK6-2p-4JG"; */
 "mK6-2p-4JG.title" = "Check Grammar With Spelling";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Phone"; ObjectID = "nRt-0G-lZw"; */
+"nRt-0G-lZw.ibShadowedIsNilPlaceholder" = "Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Phone"; ObjectID = "nRt-0G-lZw"; */
+"nRt-0G-lZw.ibShadowedMultipleValuesPlaceholder" = "Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Phone"; ObjectID = "nRt-0G-lZw"; */
+"nRt-0G-lZw.ibShadowedNoSelectionPlaceholder" = "Phone";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Phone"; ObjectID = "nRt-0G-lZw"; */
+"nRt-0G-lZw.ibShadowedNotApplicablePlaceholder" = "Phone";
 
 /* Class = "NSMenuItem"; title = "Ligatures"; ObjectID = "o6e-r0-MWq"; */
 "o6e-r0-MWq.title" = "Ligatures";
@@ -337,6 +454,18 @@
 
 /* Class = "NSMenuItem"; title = "Loosen"; ObjectID = "ogc-rX-tC1"; */
 "ogc-rX-tC1.title" = "Loosen";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Last Name"; ObjectID = "olk-zt-GO3"; */
+"olk-zt-GO3.ibShadowedIsNilPlaceholder" = "Last Name";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Last Name"; ObjectID = "olk-zt-GO3"; */
+"olk-zt-GO3.ibShadowedMultipleValuesPlaceholder" = "Last Name";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Last Name"; ObjectID = "olk-zt-GO3"; */
+"olk-zt-GO3.ibShadowedNoSelectionPlaceholder" = "Last Name";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Last Name"; ObjectID = "olk-zt-GO3"; */
+"olk-zt-GO3.ibShadowedNotApplicablePlaceholder" = "Last Name";
 
 /* Class = "NSMenuItem"; title = "Delete"; ObjectID = "pa3-QI-u2k"; */
 "pa3-QI-u2k.title" = "Delete";
@@ -358,6 +487,9 @@
 
 /* Class = "NSMenuItem"; title = "Show Toolbar"; ObjectID = "snW-S8-Cw5"; */
 "snW-S8-Cw5.title" = "Show Toolbar";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Street"; ObjectID = "tFL-9k-pM5"; */
+"tFL-9k-pM5.placeholderString" = "Street";
 
 /* Class = "NSMenuItem"; title = "Data Detectors"; ObjectID = "tRr-pd-1PS"; */
 "tRr-pd-1PS.title" = "Data Detectors";
@@ -389,8 +521,23 @@
 /* Class = "NSMenu"; title = "Ligatures"; ObjectID = "w0m-vy-SC9"; */
 "w0m-vy-SC9.title" = "Ligatures";
 
+/* Class = "NSButtonCell"; title = "Edit"; ObjectID = "wNd-f4-1wZ"; */
+"wNd-f4-1wZ.title" = "Edit";
+
 /* Class = "NSMenuItem"; title = "Align Right"; ObjectID = "wb2-vD-lq4"; */
 "wb2-vD-lq4.title" = "Align Right";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "Street (apartment, suite, etc.)"; ObjectID = "wbe-Ad-VOt"; */
+"wbe-Ad-VOt.ibShadowedIsNilPlaceholder" = "Street (apartment, suite, etc.)";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "Street (apartment, suite, etc.)"; ObjectID = "wbe-Ad-VOt"; */
+"wbe-Ad-VOt.ibShadowedMultipleValuesPlaceholder" = "Street (apartment, suite, etc.)";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "Street (apartment, suite, etc.)"; ObjectID = "wbe-Ad-VOt"; */
+"wbe-Ad-VOt.ibShadowedNoSelectionPlaceholder" = "Street (apartment, suite, etc.)";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "Street (apartment, suite, etc.)"; ObjectID = "wbe-Ad-VOt"; */
+"wbe-Ad-VOt.ibShadowedNotApplicablePlaceholder" = "Street (apartment, suite, etc.)";
 
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
 "wpr-3q-Mcd.title" = "Help";
@@ -398,22 +545,37 @@
 /* Class = "NSMenuItem"; title = "Copy"; ObjectID = "x3v-GG-iWU"; */
 "x3v-GG-iWU.title" = "Copy";
 
+/* Class = "CocoaBindingsConnection"; ibShadowedIsNilPlaceholder = "State"; ObjectID = "xOH-6N-mmU"; */
+"xOH-6N-mmU.ibShadowedIsNilPlaceholder" = "State";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedMultipleValuesPlaceholder = "State"; ObjectID = "xOH-6N-mmU"; */
+"xOH-6N-mmU.ibShadowedMultipleValuesPlaceholder" = "State";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNoSelectionPlaceholder = "State"; ObjectID = "xOH-6N-mmU"; */
+"xOH-6N-mmU.ibShadowedNoSelectionPlaceholder" = "State";
+
+/* Class = "CocoaBindingsConnection"; ibShadowedNotApplicablePlaceholder = "State"; ObjectID = "xOH-6N-mmU"; */
+"xOH-6N-mmU.ibShadowedNotApplicablePlaceholder" = "State";
+
 /* Class = "NSMenuItem"; title = "Use All"; ObjectID = "xQD-1f-W4t"; */
 "xQD-1f-W4t.title" = "Use All";
 
 /* Class = "NSMenuItem"; title = "Speech"; ObjectID = "xrE-MZ-jX0"; */
 "xrE-MZ-jX0.title" = "Speech";
 
+/* Class = "NSTextFieldCell"; placeholderString = "Street (if needed)"; ObjectID = "yqs-Kh-pis"; */
+"yqs-Kh-pis.placeholderString" = "Street (if needed)";
+
 /* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
 "z6F-FW-3nz.title" = "Show Substitutions";
 
-"first-name" = "Nombre de pila";
-"last-name" = "Apellido";
-"street1" = "Calle";
-"street2" = "apartamento"
-"city" = "Ciudad";
-"zip" = "Código postal";
-"phone" = "Teléfono";
-"cell" = "Teléfono móvil";
-"email" = "Correo Electrónico";
-"edit-student" = "Editar estudiante";
+"first-name" = "First Name";
+"last-name" = "Last Name"
+"street1" = "Street";
+"street2" = "Apartment"
+"city" = "City";
+"zip" = "Zip Code";
+"phone" = "Phone";
+"cell" = "Cell Phone";
+"email" = "Email";
+"edit-student" = "Edit Student";

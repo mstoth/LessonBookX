@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A42C6E93222613E0009712C4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A42C6E95222613E0009712C4 /* Localizable.strings */; };
 		A450C6622205ADE100BA4047 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6612205ADE100BA4047 /* AppDelegate.swift */; };
 		A450C6652205ADE100BA4047 /* LessonBookT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */; };
 		A450C6672205ADE100BA4047 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6662205ADE100BA4047 /* MasterViewController.swift */; };
@@ -84,6 +85,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A42C6E8E22260314009712C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		A42C6E9022261160009712C4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		A42C6E94222613E0009712C4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A42C6E96222613E3009712C4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A450C65F2205ADE000BA4047 /* LessonBookT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A450C6612205ADE100BA4047 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A450C6642205ADE100BA4047 /* LessonBookT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LessonBookT.xcdatamodel; sourceTree = "<group>"; };
@@ -213,6 +218,7 @@
 				A450C6722205AE0F00BA4047 /* Info.plist */,
 				A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */,
 				A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */,
+				A42C6E95222613E0009712C4 /* Localizable.strings */,
 			);
 			path = LessonBookT;
 			sourceTree = "<group>";
@@ -542,6 +548,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A42C6E93222613E0009712C4 /* Localizable.strings in Resources */,
 				A450C6712205AE0F00BA4047 /* LaunchScreen.storyboard in Resources */,
 				A450C66E2205AE0F00BA4047 /* Assets.xcassets in Resources */,
 				A450C66C2205ADE200BA4047 /* Main.storyboard in Resources */,
@@ -703,10 +710,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A42C6E95222613E0009712C4 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A42C6E94222613E0009712C4 /* en */,
+				A42C6E96222613E3009712C4 /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		A450C66A2205ADE200BA4047 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A450C66B2205ADE200BA4047 /* Base */,
+				A42C6E9022261160009712C4 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -724,6 +741,7 @@
 			children = (
 				A4C1C8EB21FDA95500A88255 /* Base */,
 				A4C1C9652202836A00A88255 /* es */,
+				A42C6E8E22260314009712C4 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

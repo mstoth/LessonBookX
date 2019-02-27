@@ -44,6 +44,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         textField.resignFirstResponder()
     }
     
+    @IBOutlet weak var selectPhotoButton: UIButton!
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -83,6 +84,20 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             }
         }
 
+        firstNameTextField.placeholder =  NSLocalizedString("first-name", comment: "First Name")
+        lastNameTextField.placeholder = NSLocalizedString("last-name", comment: "Last Name")
+        street1TextField.placeholder = NSLocalizedString("street1", comment: "Street")
+        street2TextField.placeholder = NSLocalizedString("street2", comment: "Apartment")
+        cityTextField.placeholder = NSLocalizedString("city", comment: "City")
+        stateTextField.placeholder = NSLocalizedString("state", comment: "State")
+        zipTextField.placeholder = NSLocalizedString("zip", comment: "Zip Code")
+        phoneTextField.placeholder = NSLocalizedString("phone", comment: "Phone")
+        cellTextField.placeholder = NSLocalizedString("cell", comment: "Cell Phone")
+        emailTextField.placeholder = NSLocalizedString("email", comment: "Email")
+        
+        
+        selectPhotoButton.setTitle(NSLocalizedString("select-photo", comment: "Select Photo"), for: .normal)
+        
         firstNameTextField.delegate = self
         // Do any additional setup after loading the view.
     }

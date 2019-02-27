@@ -2,7 +2,7 @@
   Localizable.strings
   LessonBookX
 
-  Created by Michael Toth on 1/30/19.
+  Created by Michael Toth on 2/26/19.
   Copyright © 2019 Michael Toth. All rights reserved.
 */
 
@@ -18,3 +18,4 @@
 "cell" = "Teléfono móvil";
 "email" = "Correo Electrónico";
 "select-photo" = "Seleccione Foto";
+"state-zip" = "Estado, Código postal";

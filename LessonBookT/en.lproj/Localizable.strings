@@ -2,13 +2,13 @@
   Localizable.strings
   LessonBookX
 
-  Created by Michael Toth on 1/30/19.
+  Created by Michael Toth on 2/26/19.
   Copyright © 2019 Michael Toth. All rights reserved.
 */
 
 "new-student" = "New Student";
 "first-name" = "First Name";
-"last-name" = "Last Name"
+"last-name" = "Last Name";
 "street1" = "Street";
 "street2" = "Apartment";
 "city" = "City";
@@ -16,5 +16,6 @@
 "zip" = "Zip Code";
 "phone" = "Phone";
 "cell" = "Cell Phone";
+"state-zip" = "State Zip";
 "email" = "Email";
 "select-photo" = "Select Photo";
