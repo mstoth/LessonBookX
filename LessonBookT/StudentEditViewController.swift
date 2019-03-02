@@ -44,9 +44,10 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         textField.resignFirstResponder()
     }
     
-    @IBOutlet weak var selectPhotoButton: UIButton!
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var selectPhotoButton: UIButton!
+
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var phoneTextField: UITextField!
     @IBOutlet weak var street1TextField: UITextField!
@@ -59,72 +60,80 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         firstNameTextField.text = student?.firstName
-        lastNameTextField.text = student?.lastName
-        phoneTextField.text = student?.phone
-        street1TextField.text = student?.street1
-        street2TextField.text = student?.street2
-        cityTextField.text = student?.city
-        stateTextField.text = student?.state
-        zipTextField.text = student?.zip
-        cellTextField.text = student?.cell
-        emailTextField.text = student?.email
+//        lastNameTextField.text = student?.lastName
+//        phoneTextField.text = student?.phone
+//        street1TextField.text = student?.street1
+//        street2TextField.text = student?.street2
+//        cityTextField.text = student?.city
+//        stateTextField.text = student?.state
+//        zipTextField.text = student?.zip
+//        cellTextField.text = student?.cell
+//        emailTextField.text = student?.email
 
-        let imageData = student?.photo
-        if (imageData != nil) {
-            let tmpDir = FileManager.init().temporaryDirectory
-            let name = student!.recordName
-            let fileName = "\(name).png"
-            let photoUrl = tmpDir.appendingPathComponent(fileName)
-            do {
-                try imageData?.write(to: photoUrl, options: .atomic)
-                photoView.image = UIImage(contentsOfFile: photoUrl.path)
-            } catch  {
-                print(error)
-            }
-        }
-
+//        let imageData = student?.photo
+//        if (imageData != nil) {
+//            let tmpDir = FileManager.init().temporaryDirectory
+//            let name = student!.recordName
+//            let fileName = "\(name).png"
+//            let photoUrl = tmpDir.appendingPathComponent(fileName)
+//            do {
+//                try imageData?.write(to: photoUrl, options: .atomic)
+//                photoView.image = UIImage(contentsOfFile: photoUrl.path)
+//            } catch  {
+//                print(error)
+//            }
+//        }
+//
         firstNameTextField.placeholder =  NSLocalizedString("first-name", comment: "First Name")
-        lastNameTextField.placeholder = NSLocalizedString("last-name", comment: "Last Name")
-        street1TextField.placeholder = NSLocalizedString("street1", comment: "Street")
-        street2TextField.placeholder = NSLocalizedString("street2", comment: "Apartment")
-        cityTextField.placeholder = NSLocalizedString("city", comment: "City")
-        stateTextField.placeholder = NSLocalizedString("state", comment: "State")
-        zipTextField.placeholder = NSLocalizedString("zip", comment: "Zip Code")
-        phoneTextField.placeholder = NSLocalizedString("phone", comment: "Phone")
-        cellTextField.placeholder = NSLocalizedString("cell", comment: "Cell Phone")
-        emailTextField.placeholder = NSLocalizedString("email", comment: "Email")
+//        lastNameTextField.placeholder = NSLocalizedString("last-name", comment: "Last Name")
+//        street1TextField.placeholder = NSLocalizedString("street1", comment: "Street")
+//        street2TextField.placeholder = NSLocalizedString("street2", comment: "Apartment")
+//        cityTextField.placeholder = NSLocalizedString("city", comment: "City")
+//        stateTextField.placeholder = NSLocalizedString("state", comment: "State")
+//        zipTextField.placeholder = NSLocalizedString("zip", comment: "Zip Code")
+//        phoneTextField.placeholder = NSLocalizedString("phone", comment: "Phone")
+//        cellTextField.placeholder = NSLocalizedString("cell", comment: "Cell Phone")
+//        emailTextField.placeholder = NSLocalizedString("email", comment: "Email")
         
         
         selectPhotoButton.setTitle(NSLocalizedString("select-photo", comment: "Select Photo"), for: .normal)
-        
-        firstNameTextField.delegate = self
+//
+//        firstNameTextField.delegate = self
         // Do any additional setup after loading the view.
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        if selectingPhoto {
+            selectingPhoto = false
+            return
+        }
         student?.firstName = firstNameTextField.text
-        student?.lastName = lastNameTextField.text
-        student?.phone = phoneTextField.text
-        student?.street1 = street1TextField.text
-        student?.street2 = street2TextField.text
-        student?.city = cityTextField.text
-        student?.state = stateTextField.text
-        student?.zip = zipTextField.text
-        student?.cell = cellTextField.text
-        student?.email = emailTextField.text
+//        student?.lastName = lastNameTextField.text
+//        student?.phone = phoneTextField.text
+//        student?.street1 = street1TextField.text
+//        student?.street2 = street2TextField.text
+//        student?.city = cityTextField.text
+//        student?.state = stateTextField.text
+//        student?.zip = zipTextField.text
+//        student?.cell = cellTextField.text
+//        student?.email = emailTextField.text
         
         guard let data = photoView.image?.pngData() else {
             return
         }
         student?.photo = data as NSData
-
-        do {
-            try context!.save()
-            print("Saved edited student to core data.")
-        } catch  {
-            print(error)
-        }
+//
+//        do {
+//            try context!.save()
+//            print("Saved edited student to core data.")
+//        } catch  {
+//            print(error)
+//        }
     }
 
 
@@ -165,12 +174,24 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     }
     
     @IBAction func selectPhoto(_ sender: Any) {
-        
+        selectingPhoto = true
         let documentViewController = UIDocumentPickerViewController(documentTypes: [kUTTypeBMP as String,kUTTypeGIF as String,kUTTypePNG as String,kUTTypeJPEG as String], in: .import)
         documentViewController.delegate = self
         documentViewController.modalPresentationStyle = .formSheet
         self.present(documentViewController, animated: true, completion: nil)
         
+    }
+    
+    
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            //let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            
+            var frame = self.view.frame
+            frame.origin.y = frame.origin.y - keyboardSize.height + 167
+            self.view.frame = frame
+        }
     }
     
     /*

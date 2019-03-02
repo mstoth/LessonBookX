@@ -7,6 +7,11 @@
         </attribute>
         <userInfo/>
     </entity>
+    <entity name="Lesson" representedClassName="Lesson" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="fee" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="student" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Student" inverseName="lessons" inverseEntity="Student" syncable="YES"/>
+    </entity>
     <entity name="Student" representedClassName="Student" syncable="YES">
         <attribute name="balance" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -26,9 +31,11 @@
         <attribute name="street2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lessons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Lesson" inverseName="student" inverseEntity="Lesson" syncable="YES"/>
     </entity>
     <elements>
         <element name="Event" positionX="261" positionY="189" width="128" height="75"/>
-        <element name="Student" positionX="261" positionY="198" width="128" height="315"/>
+        <element name="Student" positionX="-35.125" positionY="92.39453125" width="128" height="330"/>
+        <element name="Lesson" positionX="261" positionY="333" width="128" height="90"/>
     </elements>
 </model>
