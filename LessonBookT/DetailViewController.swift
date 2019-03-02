@@ -14,42 +14,26 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var detailDescriptionLabel: UILabel!
     var context:NSManagedObjectContext? = nil
     var studentToEdit:Student? = nil
+    var recordName:String? = nil
     
     func configureView() {
         // Update the user interface for the detail item.
-        if let student = detailItem {
-            if let label = detailDescriptionLabel {
-                label.text = student.fullName()
-                self.title = student.fullName()
-            }
-        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        configureView()
     }
 
-    var detailItem: Student? {
-        didSet {
-            // Update the view.
-            configureView()
-        }
-    }
-    
-    var studentItem:  Student? {
-        didSet {
-            configureView()
-        }
-    }
+
 
     // MARK: - Segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "editDetail" {
-            let controller = segue.destination as!  StudentEditViewController
-            controller.student = studentToEdit
+        if segue.identifier == "editDetailTabBarController" {
+            let controller = segue.destination as!  EditStudentTabBarController
+            controller.studentToEdit = studentToEdit
+            controller.recordName = recordName
             controller.context = context
             //controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             //controller.navigationItem.leftItemsSupplementBackButton = true

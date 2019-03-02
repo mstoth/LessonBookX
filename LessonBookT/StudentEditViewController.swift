@@ -11,8 +11,19 @@ import CoreData
 import MobileCoreServices
 import Foundation
 import CloudKit
+import iOSUtilitiesSource
+import SkyFloatingLabelTextField
+
+class EntryTextField:UITextField {
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.placeholder = "PlaceHolder"
+        self.text = "Text"
+    }
 
 
+
+}
 extension UIImage{
     
     func resizeImageWith(newSize: CGSize) -> UIImage {
@@ -39,32 +50,80 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var asset:CKAsset? = nil
     var smallImage:UIImage? = nil
     var selectingPhoto:Bool = false
+    var keyboardHeight:CGFloat = 0
+    var recordName:String? = nil
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
     }
     
     @IBOutlet weak var photoView: UIImageView!
-    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var firstNameTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var selectPhotoButton: UIButton!
-
-    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var stackView: UIStackView!
+    
+    @IBOutlet weak var lastNameTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var phoneTextField: UITextField!
-    @IBOutlet weak var street1TextField: UITextField!
-    @IBOutlet weak var street2TextField: UITextField!
-    @IBOutlet weak var cityTextField: UITextField!
-    @IBOutlet weak var stateTextField: UITextField!
-    @IBOutlet weak var zipTextField: UITextField!
+    @IBOutlet weak var street1TextField: SkyFloatingLabelTextField!
+    @IBOutlet weak var street2TextField: SkyFloatingLabelTextField!
+    @IBOutlet weak var cityTextField: SkyFloatingLabelTextField!
+    @IBOutlet weak var stateTextField: SkyFloatingLabelTextField!
+    @IBOutlet weak var zipTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var cellTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        if recordName != nil {
+            let predicate = NSPredicate(format: "recordName == %@", recordName!)
+            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+            fetchRequest.predicate = predicate
+            do {
+                let results = try context?.fetch(fetchRequest)
+                
+                student = results?.first
+                
+                firstNameTextField.text = student?.firstName
+                lastNameTextField.text = student?.lastName
+                street1TextField.text = student?.street1
+                street2TextField.text = student?.street2
+                cityTextField.text = student?.city
+                stateTextField.text = student?.state
+                zipTextField.text = student?.zip
+
+                firstNameTextField.title = NSLocalizedString("first-name", comment: "First Name")
+                lastNameTextField.title = NSLocalizedString("last-name", comment: "Last Name")
+                street1TextField.title = NSLocalizedString("street1", comment: "Street")
+                street2TextField.title = NSLocalizedString("street2", comment: "Apartment")
+                street2TextField.title = NSLocalizedString("city", comment: "City")
+                street2TextField.title = NSLocalizedString("state", comment: "State")
+                street2TextField.title = NSLocalizedString("zip", comment: "Zip Code")
+                
+                
+                firstNameTextField.placeholder = NSLocalizedString("first-name", comment: "First Name")
+                lastNameTextField.placeholder = NSLocalizedString("last-name", comment: "Last Name")
+                street1TextField.placeholder = NSLocalizedString("street1", comment: "Street")
+                street2TextField.placeholder = NSLocalizedString("street2", comment: "Apartment")
+                cityTextField.placeholder = NSLocalizedString("city", comment: "City")
+                stateTextField.placeholder = NSLocalizedString("state", comment: "State")
+                zipTextField.placeholder = NSLocalizedString("zip", comment: "Zip Code")
+                
+                hideKeyboardWhenTappedAround()
+                //iOSKeyboardShared.shared.keyBoardShowHide(view: zipTextField)
+                
+                
+            } catch {
+                print(error)
+                return
+            }
+
+
+            
+        }
         
-        firstNameTextField.text = student?.firstName
 //        lastNameTextField.text = student?.lastName
 //        phoneTextField.text = student?.phone
 //        street1TextField.text = student?.street1
@@ -101,7 +160,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
 //        emailTextField.placeholder = NSLocalizedString("email", comment: "Email")
         
         
-        selectPhotoButton.setTitle(NSLocalizedString("select-photo", comment: "Select Photo"), for: .normal)
+//        selectPhotoButton.setTitle(NSLocalizedString("select-photo", comment: "Select Photo"), for: .normal)
 //
 //        firstNameTextField.delegate = self
         // Do any additional setup after loading the view.
@@ -112,6 +171,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             selectingPhoto = false
             return
         }
+        NotificationCenter.default.removeObserver(self)
         student?.firstName = firstNameTextField.text
 //        student?.lastName = lastNameTextField.text
 //        student?.phone = phoneTextField.text
@@ -182,17 +242,28 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         
     }
     
-    
-
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             //let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
             
-            var frame = self.view.frame
-            frame.origin.y = frame.origin.y - keyboardSize.height + 167
-            self.view.frame = frame
+            var frame = stackView.frame
+            keyboardHeight = 0
+            frame.origin.y = frame.origin.y - keyboardHeight
+            stackView.frame = frame
         }
     }
+
+
+//    @objc func keyboardWillShow(notification: NSNotification) {
+//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//            //let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+//
+//            var frame = stackView.frame
+//            keyboardHeight = keyboardSize.height
+//            frame.origin.y = frame.origin.y - keyboardHeight
+//            stackView.frame = frame
+//        }
+//    }
     
     /*
     // MARK: - Navigation
