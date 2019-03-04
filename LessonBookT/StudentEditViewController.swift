@@ -52,6 +52,16 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var selectingPhoto:Bool = false
     var keyboardHeight:CGFloat = 0
     var recordName:String? = nil
+    var activeField:UITextField? = nil
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+            
+        }
+    }
+    
+    @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
@@ -61,6 +71,9 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     @IBOutlet weak var firstNameTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var selectPhotoButton: UIButton!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollHeight: NSLayoutConstraint!
     
     @IBOutlet weak var lastNameTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var phoneTextField: UITextField!
@@ -74,9 +87,11 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.enableAllOrientations = false
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         if recordName != nil {
             let predicate = NSPredicate(format: "recordName == %@", recordName!)
             let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
@@ -93,16 +108,16 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
                 cityTextField.text = student?.city
                 stateTextField.text = student?.state
                 zipTextField.text = student?.zip
-
+//
                 firstNameTextField.title = NSLocalizedString("first-name", comment: "First Name")
                 lastNameTextField.title = NSLocalizedString("last-name", comment: "Last Name")
                 street1TextField.title = NSLocalizedString("street1", comment: "Street")
                 street2TextField.title = NSLocalizedString("street2", comment: "Apartment")
-                street2TextField.title = NSLocalizedString("city", comment: "City")
-                street2TextField.title = NSLocalizedString("state", comment: "State")
-                street2TextField.title = NSLocalizedString("zip", comment: "Zip Code")
-                
-                
+                cityTextField.title = NSLocalizedString("city", comment: "City")
+                stateTextField.title = NSLocalizedString("state", comment: "State")
+                zipTextField.title = NSLocalizedString("zip", comment: "Zip Code")
+//
+//
                 firstNameTextField.placeholder = NSLocalizedString("first-name", comment: "First Name")
                 lastNameTextField.placeholder = NSLocalizedString("last-name", comment: "Last Name")
                 street1TextField.placeholder = NSLocalizedString("street1", comment: "Street")
@@ -112,7 +127,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
                 zipTextField.placeholder = NSLocalizedString("zip", comment: "Zip Code")
                 
                 hideKeyboardWhenTappedAround()
-                //iOSKeyboardShared.shared.keyBoardShowHide(view: zipTextField)
+                //iOSKeyboardShared.shared.keyBoardShowHide(view: self.scrollView)
                 
                 
             } catch {
@@ -124,69 +139,41 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             
         }
         
-//        lastNameTextField.text = student?.lastName
+        firstNameTextField.text = student?.firstName
+        lastNameTextField.text = student?.lastName
 //        phoneTextField.text = student?.phone
-//        street1TextField.text = student?.street1
-//        street2TextField.text = student?.street2
-//        cityTextField.text = student?.city
-//        stateTextField.text = student?.state
-//        zipTextField.text = student?.zip
-//        cellTextField.text = student?.cell
-//        emailTextField.text = student?.email
-
-//        let imageData = student?.photo
-//        if (imageData != nil) {
-//            let tmpDir = FileManager.init().temporaryDirectory
-//            let name = student!.recordName
-//            let fileName = "\(name).png"
-//            let photoUrl = tmpDir.appendingPathComponent(fileName)
-//            do {
-//                try imageData?.write(to: photoUrl, options: .atomic)
-//                photoView.image = UIImage(contentsOfFile: photoUrl.path)
-//            } catch  {
-//                print(error)
-//            }
-//        }
-//
-        firstNameTextField.placeholder =  NSLocalizedString("first-name", comment: "First Name")
-//        lastNameTextField.placeholder = NSLocalizedString("last-name", comment: "Last Name")
-//        street1TextField.placeholder = NSLocalizedString("street1", comment: "Street")
-//        street2TextField.placeholder = NSLocalizedString("street2", comment: "Apartment")
-//        cityTextField.placeholder = NSLocalizedString("city", comment: "City")
-//        stateTextField.placeholder = NSLocalizedString("state", comment: "State")
-//        zipTextField.placeholder = NSLocalizedString("zip", comment: "Zip Code")
-//        phoneTextField.placeholder = NSLocalizedString("phone", comment: "Phone")
-//        cellTextField.placeholder = NSLocalizedString("cell", comment: "Cell Phone")
-//        emailTextField.placeholder = NSLocalizedString("email", comment: "Email")
-        
-        
-//        selectPhotoButton.setTitle(NSLocalizedString("select-photo", comment: "Select Photo"), for: .normal)
-//
-//        firstNameTextField.delegate = self
-        // Do any additional setup after loading the view.
+        street1TextField.text = student?.street1
+        street2TextField.text = student?.street2
+        cityTextField.text = student?.city
+        stateTextField.text = student?.state
+        zipTextField.text = student?.zip
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         if selectingPhoto {
             selectingPhoto = false
             return
         }
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.enableAllOrientations = true
+
         NotificationCenter.default.removeObserver(self)
         student?.firstName = firstNameTextField.text
-//        student?.lastName = lastNameTextField.text
+        student?.lastName = lastNameTextField.text
 //        student?.phone = phoneTextField.text
-//        student?.street1 = street1TextField.text
-//        student?.street2 = street2TextField.text
-//        student?.city = cityTextField.text
-//        student?.state = stateTextField.text
-//        student?.zip = zipTextField.text
+        student?.street1 = street1TextField.text
+        student?.street2 = street2TextField.text
+        student?.city = cityTextField.text
+        student?.state = stateTextField.text
+        student?.zip = zipTextField.text
 //        student?.cell = cellTextField.text
 //        student?.email = emailTextField.text
         
-        guard let data = photoView.image?.pngData() else {
-            return
-        }
-        student?.photo = data as NSData
+//        guard let data = photoView.image?.pngData() else {
+//            return
+//        }
+//        student?.photo = data as NSData
 //
 //        do {
 //            try context!.save()
@@ -196,6 +183,15 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
 //        }
     }
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("Setting active field")
+        activeField = textField
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        print("clearing active field")
+        activeField = nil
+    }
 
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         let myURL = url as URL
@@ -245,25 +241,46 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     @objc func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             //let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-            
-            var frame = stackView.frame
-            keyboardHeight = 0
-            frame.origin.y = frame.origin.y - keyboardHeight
-            stackView.frame = frame
+            scrollHeight.constant = 562
+            view.setNeedsLayout()
         }
     }
 
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            //UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+            let contentInsets:UIEdgeInsets = UIEdgeInsets(top: 0.0,left: 0.0,bottom: keyboardSize.height, right: 0.0)
+            scrollView.contentInset = contentInsets;
+            scrollView.scrollIndicatorInsets = contentInsets;
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
+            
+            //CGRect aRect = self.view.frame;
+            var aRect:CGRect = self.view.frame;
+            aRect.size.height -= keyboardSize.height;
+            print("Height is \(keyboardSize.height)")
+            print("Origin is ",activeField?.frame.origin)
+            print("aRect is ",aRect)
+//            if (!aRect.contains((activeField?.frame.origin)!)) {
+                //[self.scrollView scrollRectToVisible:activeField.frame animated:YES];
+                //self.scrollView.scrollRectToVisible((activeField?.frame)!, animated: true)
+                self.scrollView.scrollRectToVisible((activeField?.frame)!, animated: true)
+                view.setNeedsLayout()
+//            }
+            //let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
 
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            //let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-//
-//            var frame = stackView.frame
+            //let keyboardEndFrame:CGRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+            //let curve = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as! UInt
+            //let options:UIView.AnimationOptions = UIView.AnimationOptions(rawValue: (curve << 16)  | UIView.AnimationOptions.beginFromCurrentState.rawValue)
+            //let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
+            
 //            keyboardHeight = keyboardSize.height
-//            frame.origin.y = frame.origin.y - keyboardHeight
-//            stackView.frame = frame
-//        }
-//    }
+//            scrollHeight.constant = 562 - keyboardHeight
+//            view.setNeedsLayout()
+        }
+    }
     
     /*
     // MARK: - Navigation

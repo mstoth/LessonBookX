@@ -56,6 +56,7 @@
 		A4EDB83C2220AD9F00412A47 /* blank-avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */; };
 		A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */; };
 		A4F536D8222AF562005AA505 /* EditStudentTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */; };
+		A4F536DE222B6E97005AA505 /* AddressTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */; };
 		B14D280287C4B75F92F57658 /* Pods_LessonBookXTTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1552AAC815D1DAB569399F /* Pods_LessonBookXTTests.framework */; };
 		CAF3629B0EC9E9A0ED794600 /* Pods_LessonBookTUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4A992F35AC2ADAFEB2F800 /* Pods_LessonBookTUITests.framework */; };
 		F21F870400E25AAFEE061E93 /* Pods_LessonBookTTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0F82041FBF17629C13F8871 /* Pods_LessonBookTTests.framework */; };
@@ -166,6 +167,7 @@
 		A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "blank-avatar.jpg"; path = "Assets.xcassets/blank-avatar.jpg"; sourceTree = "<group>"; };
 		A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStudentProfileController.swift; sourceTree = "<group>"; };
 		A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStudentTabBarController.swift; sourceTree = "<group>"; };
+		A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewController.swift; sourceTree = "<group>"; };
 		AE49671509116FC45C80E726 /* Pods-LessonBookXUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LessonBookXUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LessonBookXUITests/Pods-LessonBookXUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B760DD46A53BAA95AB46984C /* Pods-LessonBookXTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LessonBookXTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LessonBookXTTests/Pods-LessonBookXTTests.release.xcconfig"; sourceTree = "<group>"; };
 		BD7EBC31B00630B94194CF6A /* Pods_LessonBookX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LessonBookX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,6 +273,7 @@
 				A450C6682205ADE100BA4047 /* DetailViewController.swift */,
 				A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */,
 				A4D3AD942215161700D48A64 /* StudentEditViewController.swift */,
+				A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */,
 				A450C66A2205ADE200BA4047 /* Main.storyboard */,
 				A450C66D2205AE0F00BA4047 /* Assets.xcassets */,
 				A450C66F2205AE0F00BA4047 /* LaunchScreen.storyboard */,
@@ -870,6 +873,7 @@
 				A450C6652205ADE100BA4047 /* LessonBookT.xcdatamodeld in Sources */,
 				A450C69E22063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */,
 				A450C6672205ADE100BA4047 /* MasterViewController.swift in Sources */,
+				A4F536DE222B6E97005AA505 /* AddressTableViewController.swift in Sources */,
 				A4D3AD952215161800D48A64 /* StudentEditViewController.swift in Sources */,
 				A450C69B22063F0200BA4047 /* Student+CoreDataClass.swift in Sources */,
 				A450C6692205ADE100BA4047 /* DetailViewController.swift in Sources */,

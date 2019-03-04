@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     private var database = CKContainer.default().privateCloudDatabase
     private var container = CKContainer.default()
     var viewController:MasterViewController? = nil
+    var enableAllOrientations = true
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -122,6 +123,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return true
     }
 
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if enableAllOrientations {
+            return UIInterfaceOrientationMask([.portrait,.landscapeRight,.landscapeLeft])
+        }
+        return UIInterfaceOrientationMask([.portrait])
+    }
 //    func application(application: UIApplication!, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]!)
 //    {
 //        // <- this method will invoked
