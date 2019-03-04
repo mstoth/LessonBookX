@@ -20,8 +20,13 @@ class EditStudentTabBarController: UITabBarController {
         let controllers = self.viewControllers
         for controller in controllers! {
         
+            
+            if controller.restorationIdentifier == "studentPhoto" {
+                (controller as! StudentPhotoViewController).student = studentToEdit
+                (controller as! StudentPhotoViewController).context = context
+                (controller as! StudentPhotoViewController).recordName = recordName
+            }
             if controller.restorationIdentifier == "address" {
-                print(studentToEdit)
                 (controller as! StudentEditViewController).student = studentToEdit
                 (controller as! StudentEditViewController).context = context
                 (controller as! StudentEditViewController).recordName = recordName

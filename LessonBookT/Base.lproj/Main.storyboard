@@ -93,18 +93,44 @@
         <!--Item 1-->
         <scene sceneID="Qr8-cq-ouf">
             <objects>
-                <viewController id="tRL-da-ccx" sceneMemberID="viewController">
+                <viewController restorationIdentifier="studentPhoto" id="tRL-da-ccx" customClass="StudentPhotoViewController" customModule="LessonBookT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IHy-xt-LE5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="toK-Vd-ciG">
+                                <rect key="frame" x="87" y="127" width="240" height="334"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="334" id="vC7-ab-SWG"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTl-gm-3G1">
+                                <rect key="frame" x="141" y="498" width="132" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Select Photo"/>
+                                <connections>
+                                    <action selector="selectPhoto:" destination="tRL-da-ccx" eventType="touchUpInside" id="N4b-3Y-39d"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="toK-Vd-ciG" firstAttribute="top" secondItem="QdX-DK-IoP" secondAttribute="top" constant="39" id="975-AG-80e"/>
+                            <constraint firstItem="aTl-gm-3G1" firstAttribute="centerX" secondItem="IHy-xt-LE5" secondAttribute="centerX" id="KFL-Ib-L3i"/>
+                            <constraint firstItem="QdX-DK-IoP" firstAttribute="trailing" secondItem="toK-Vd-ciG" secondAttribute="trailing" constant="87" id="X3i-ZB-59p"/>
+                            <constraint firstItem="aTl-gm-3G1" firstAttribute="top" secondItem="toK-Vd-ciG" secondAttribute="bottom" constant="37" id="fwD-2z-DGk"/>
+                            <constraint firstItem="toK-Vd-ciG" firstAttribute="leading" secondItem="QdX-DK-IoP" secondAttribute="leading" constant="87" id="zlD-kY-oN3"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="QdX-DK-IoP"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="iUE-eW-WNH"/>
+                    <connections>
+                        <outlet property="studentPhoto" destination="toK-Vd-ciG" id="aLd-hP-yu4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vv8-hC-OQU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2303" y="-245"/>
+            <point key="canvasLocation" x="2302.898550724638" y="-245.08928571428569"/>
         </scene>
         <!--Item-->
         <scene sceneID="gJ7-cO-ggk">
