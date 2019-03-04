@@ -45,6 +45,8 @@ class StudentPhotoViewController: UIViewController,UINavigationControllerDelegat
             }
         }
         // Do any additional setup after loading the view.
+        hideKeyboardWhenTappedAround()
+
     }
 
     

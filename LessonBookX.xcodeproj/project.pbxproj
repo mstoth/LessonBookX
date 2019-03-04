@@ -278,6 +278,7 @@
 				A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */,
 				A4D3AD942215161700D48A64 /* StudentEditViewController.swift */,
 				A4F1BF31222CE87800860DFD /* StudentPhotoViewController.swift */,
+				A4F1BF33222CF55700860DFD /* StudentPhoneViewController.swift */,
 				A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */,
 				A450C66A2205ADE200BA4047 /* Main.storyboard */,
 				A450C66D2205AE0F00BA4047 /* Assets.xcassets */,
@@ -286,7 +287,6 @@
 				A450C6632205ADE100BA4047 /* LessonBookT.xcdatamodeld */,
 				A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */,
 				A42C6E95222613E0009712C4 /* Localizable.strings */,
-				A4F1BF33222CF55700860DFD /* StudentPhoneViewController.swift */,
 			);
 			path = LessonBookT;
 			sourceTree = "<group>";

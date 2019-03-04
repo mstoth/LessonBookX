@@ -168,8 +168,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="toK-Vd-ciG">
-                                <rect key="frame" x="87" y="127" width="240" height="334"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="toK-Vd-ciG">
+                                <rect key="frame" x="59" y="127" width="296" height="334"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="334" id="vC7-ab-SWG"/>
                                 </constraints>
@@ -187,9 +187,9 @@
                         <constraints>
                             <constraint firstItem="toK-Vd-ciG" firstAttribute="top" secondItem="QdX-DK-IoP" secondAttribute="top" constant="39" id="975-AG-80e"/>
                             <constraint firstItem="aTl-gm-3G1" firstAttribute="centerX" secondItem="IHy-xt-LE5" secondAttribute="centerX" id="KFL-Ib-L3i"/>
-                            <constraint firstItem="QdX-DK-IoP" firstAttribute="trailing" secondItem="toK-Vd-ciG" secondAttribute="trailing" constant="87" id="X3i-ZB-59p"/>
+                            <constraint firstItem="QdX-DK-IoP" firstAttribute="trailing" secondItem="toK-Vd-ciG" secondAttribute="trailing" constant="59" id="X3i-ZB-59p"/>
                             <constraint firstItem="aTl-gm-3G1" firstAttribute="top" secondItem="toK-Vd-ciG" secondAttribute="bottom" constant="37" id="fwD-2z-DGk"/>
-                            <constraint firstItem="toK-Vd-ciG" firstAttribute="leading" secondItem="QdX-DK-IoP" secondAttribute="leading" constant="87" id="zlD-kY-oN3"/>
+                            <constraint firstItem="toK-Vd-ciG" firstAttribute="leading" secondItem="QdX-DK-IoP" secondAttribute="leading" constant="59" id="zlD-kY-oN3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QdX-DK-IoP"/>
                     </view>
