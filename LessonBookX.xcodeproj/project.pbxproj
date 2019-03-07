@@ -32,6 +32,10 @@
 		A450C6A022063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */; };
 		A450C6A1220646BC00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A450C6A2220646BD00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
+		A4725908222DE6F700F3E398 /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4725907222DE6F700F3E398 /* LessonViewController.swift */; };
+		A4725910222DEAED00F3E398 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A472590E222DEAED00F3E398 /* Student+CoreDataProperties.swift */; };
+		A4725914222DEBD300F3E398 /* Lesson+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4725912222DEBD300F3E398 /* Lesson+CoreDataProperties.swift */; };
+		A4725915222DEBD300F3E398 /* Lesson+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4725913222DEBD300F3E398 /* Lesson+CoreDataClass.swift */; };
 		A49CC7982221D24E00D9FA1F /* ImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */; };
 		A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E121FDA95100A88255 /* AppDelegate.swift */; };
 		A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E321FDA95100A88255 /* ViewController.swift */; };
@@ -40,11 +44,9 @@
 		A4C1C8EC21FDA95500A88255 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C8EA21FDA95500A88255 /* Main.storyboard */; };
 		A4C1C8F821FDA95500A88255 /* LessonBookXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8F721FDA95500A88255 /* LessonBookXTests.swift */; };
 		A4C1C90321FDA95500A88255 /* LessonBookXUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C90221FDA95500A88255 /* LessonBookXUITests.swift */; };
-		A4C1C91221FDA97400A88255 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C91121FDA97400A88255 /* CloudKit.framework */; };
 		A4C1C91421FDA9B900A88255 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C91321FDA9B900A88255 /* StoreKit.framework */; };
 		A4C1C91621FDA9C200A88255 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4C1C91521FDA9C200A88255 /* MapKit.framework */; };
 		A4C1C95B21FDBC2900A88255 /* Student+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95921FDBC2900A88255 /* Student+CoreDataClass.swift */; };
-		A4C1C95C21FDBC2900A88255 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */; };
 		A4C1C970220284CC00A88255 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C972220284CC00A88255 /* Localizable.strings */; };
 		A4D3AD492207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A4D3AD4A2207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
@@ -57,6 +59,7 @@
 		A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */; };
 		A4F1BF32222CE87800860DFD /* StudentPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F1BF31222CE87800860DFD /* StudentPhotoViewController.swift */; };
 		A4F1BF34222CF55700860DFD /* StudentPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F1BF33222CF55700860DFD /* StudentPhoneViewController.swift */; };
+		A4F1BF36222D171A00860DFD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F1BF35222D171A00860DFD /* CloudKit.framework */; };
 		A4F536D8222AF562005AA505 /* EditStudentTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */; };
 		A4F536DE222B6E97005AA505 /* AddressTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */; };
 		B14D280287C4B75F92F57658 /* Pods_LessonBookXTTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1552AAC815D1DAB569399F /* Pods_LessonBookXTTests.framework */; };
@@ -134,6 +137,10 @@
 		A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManagedObject.swift; sourceTree = "<group>"; };
 		A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4725907222DE6F700F3E398 /* LessonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
+		A472590E222DEAED00F3E398 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4725912222DEBD300F3E398 /* Lesson+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Lesson+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A4725913222DEBD300F3E398 /* Lesson+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Lesson+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtensions.swift; sourceTree = "<group>"; };
 		A4BA9C3E221A170D00A65642 /* LessonBookT 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LessonBookT 2.xcdatamodel"; sourceTree = "<group>"; };
 		A4C1C8DE21FDA95100A88255 /* LessonBookX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookX.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,14 +157,12 @@
 		A4C1C8FE21FDA95500A88255 /* LessonBookXUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LessonBookXUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4C1C90221FDA95500A88255 /* LessonBookXUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBookXUITests.swift; sourceTree = "<group>"; };
 		A4C1C90421FDA95500A88255 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4C1C91121FDA97400A88255 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A4C1C91321FDA9B900A88255 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A4C1C91521FDA9C200A88255 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A4C1C94F21FDAD6000A88255 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		A4C1C95121FDAD6800A88255 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		A4C1C95321FDAD6E00A88255 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
 		A4C1C95921FDBC2900A88255 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
-		A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A4C1C9652202836A00A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
 		A4C1C971220284CC00A88255 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A4C1C973220284D000A88255 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -170,6 +175,7 @@
 		A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStudentProfileController.swift; sourceTree = "<group>"; };
 		A4F1BF31222CE87800860DFD /* StudentPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPhotoViewController.swift; sourceTree = "<group>"; };
 		A4F1BF33222CF55700860DFD /* StudentPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPhoneViewController.swift; sourceTree = "<group>"; };
+		A4F1BF35222D171A00860DFD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStudentTabBarController.swift; sourceTree = "<group>"; };
 		A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTableViewController.swift; sourceTree = "<group>"; };
 		AE49671509116FC45C80E726 /* Pods-LessonBookXUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LessonBookXUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LessonBookXUITests/Pods-LessonBookXUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -211,8 +217,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4C1C91221FDA97400A88255 /* CloudKit.framework in Frameworks */,
 				A4C1C91621FDA9C200A88255 /* MapKit.framework in Frameworks */,
+				A4F1BF36222D171A00860DFD /* CloudKit.framework in Frameworks */,
 				A4C1C91421FDA9B900A88255 /* StoreKit.framework in Frameworks */,
 				4309DC64F170964FA62E9F46 /* Pods_LessonBookX.framework in Frameworks */,
 			);
@@ -277,9 +283,9 @@
 				A450C6682205ADE100BA4047 /* DetailViewController.swift */,
 				A4F536D7222AF562005AA505 /* EditStudentTabBarController.swift */,
 				A4D3AD942215161700D48A64 /* StudentEditViewController.swift */,
-				A4F1BF31222CE87800860DFD /* StudentPhotoViewController.swift */,
 				A4F1BF33222CF55700860DFD /* StudentPhoneViewController.swift */,
 				A4F536DD222B6E97005AA505 /* AddressTableViewController.swift */,
+				A4F1BF31222CE87800860DFD /* StudentPhotoViewController.swift */,
 				A450C66A2205ADE200BA4047 /* Main.storyboard */,
 				A450C66D2205AE0F00BA4047 /* Assets.xcassets */,
 				A450C66F2205AE0F00BA4047 /* LaunchScreen.storyboard */,
@@ -344,9 +350,12 @@
 			isa = PBXGroup;
 			children = (
 				A4C1C95921FDBC2900A88255 /* Student+CoreDataClass.swift */,
-				A4C1C95A21FDBC2900A88255 /* Student+CoreDataProperties.swift */,
+				A472590E222DEAED00F3E398 /* Student+CoreDataProperties.swift */,
+				A4725913222DEBD300F3E398 /* Lesson+CoreDataClass.swift */,
+				A4725912222DEBD300F3E398 /* Lesson+CoreDataProperties.swift */,
 				A4C1C8E121FDA95100A88255 /* AppDelegate.swift */,
 				A4C1C8E321FDA95100A88255 /* ViewController.swift */,
+				A4725907222DE6F700F3E398 /* LessonViewController.swift */,
 				A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */,
 				A4C1C8E821FDA95500A88255 /* Assets.xcassets */,
 				A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */,
@@ -382,12 +391,12 @@
 		A4C1C91021FDA97400A88255 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A4F1BF35222D171A00860DFD /* CloudKit.framework */,
 				A4C1C95321FDAD6E00A88255 /* MapKit.framework */,
 				A4C1C95121FDAD6800A88255 /* StoreKit.framework */,
 				A4C1C94F21FDAD6000A88255 /* CloudKit.framework */,
 				A4C1C91521FDA9C200A88255 /* MapKit.framework */,
 				A4C1C91321FDA9B900A88255 /* StoreKit.framework */,
-				A4C1C91121FDA97400A88255 /* CloudKit.framework */,
 				C46D67FFF905790D5A918F96 /* Pods_LessonBookT.framework */,
 				A0F82041FBF17629C13F8871 /* Pods_LessonBookTTests.framework */,
 				CE4A992F35AC2ADAFEB2F800 /* Pods_LessonBookTUITests.framework */,
@@ -919,12 +928,15 @@
 				A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */,
 				A4D3AD492207A55B00D48A64 /* CloudKitManagedObject.swift in Sources */,
 				A4C1C95B21FDBC2900A88255 /* Student+CoreDataClass.swift in Sources */,
+				A4725914222DEBD300F3E398 /* Lesson+CoreDataProperties.swift in Sources */,
 				A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */,
+				A4725915222DEBD300F3E398 /* Lesson+CoreDataClass.swift in Sources */,
 				A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */,
 				A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */,
 				A49CC7982221D24E00D9FA1F /* ImageExtensions.swift in Sources */,
 				A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */,
-				A4C1C95C21FDBC2900A88255 /* Student+CoreDataProperties.swift in Sources */,
+				A4725908222DE6F700F3E398 /* LessonViewController.swift in Sources */,
+				A4725910222DEAED00F3E398 /* Student+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1297,6 +1309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LessonBookX/LessonBookX.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9E7Y9QZC52;
@@ -1307,6 +1320,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -1317,6 +1331,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LessonBookX/LessonBookX.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9E7Y9QZC52;
@@ -1327,6 +1342,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.virtualpianist.LessonBookX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;

@@ -572,7 +572,7 @@
 "first-name" = "First Name";
 "last-name" = "Last Name"
 "street1" = "Street";
-"street2" = "Apartment"
+"street2" = "Apartment";
 "city" = "City";
 "zip" = "Zip Code";
 "phone" = "Phone";

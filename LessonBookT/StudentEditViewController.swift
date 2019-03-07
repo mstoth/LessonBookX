@@ -53,6 +53,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var keyboardHeight:CGFloat = 0
     var recordName:String? = nil
     var activeField:UITextField? = nil
+    var objectID:NSManagedObjectID? = nil
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
@@ -90,17 +91,18 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.enableAllOrientations = false
 
+        student = context?.object(with: objectID!) as? Student
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        if recordName != nil {
-            let predicate = NSPredicate(format: "recordName == %@", recordName!)
-            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
-            fetchRequest.predicate = predicate
-            do {
-                let results = try context?.fetch(fetchRequest)
-                
-                student = results?.first
-                
+//        if recordName != nil {
+//            let predicate = NSPredicate(format: "recordName == %@", recordName!)
+//            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
+//            fetchRequest.predicate = predicate
+//            do {
+//                let results = try context?.fetch(fetchRequest)
+//
+//                student = results?.first
+        
                 firstNameTextField.text = student?.firstName
                 lastNameTextField.text = student?.lastName
                 street1TextField.text = student?.street1
@@ -130,25 +132,22 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
                 //iOSKeyboardShared.shared.keyBoardShowHide(view: self.scrollView)
                 
                 
-            } catch {
-                print(error)
-                return
-            }
-
-
-            
-        }
+//            } catch {
+//                print(error)
+//                return
+//            }
         
-        firstNameTextField.text = student?.firstName
-        lastNameTextField.text = student?.lastName
-//        phoneTextField.text = student?.phone
-        street1TextField.text = student?.street1
-        street2TextField.text = student?.street2
-        cityTextField.text = student?.city
-        stateTextField.text = student?.state
-        zipTextField.text = student?.zip
+//        }
+        
+//        firstNameTextField.text = student?.firstName
+//        lastNameTextField.text = student?.lastName
+////        phoneTextField.text = student?.phone
+//        street1TextField.text = student?.street1
+//        street2TextField.text = student?.street2
+//        cityTextField.text = student?.city
+//        stateTextField.text = student?.state
+//        zipTextField.text = student?.zip
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         if selectingPhoto {
@@ -158,15 +157,32 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.enableAllOrientations = true
 
-        NotificationCenter.default.removeObserver(self)
+//        do {
+//            let predicate = NSPredicate(format: "recordName == %@", recordName!)
+//            let fetchReq = NSFetchRequest<Student>(entityName: "Student")
+//            fetchReq.predicate = predicate
+//            let results = try context?.fetch(fetchReq)
+//            if results!.count > 0 {
+//                student = results?.first
+        student = context?.object(with: objectID!) as? Student
         student?.firstName = firstNameTextField.text
         student?.lastName = lastNameTextField.text
-//        student?.phone = phoneTextField.text
+        //        student?.phone = phoneTextField.text
         student?.street1 = street1TextField.text
         student?.street2 = street2TextField.text
         student?.city = cityTextField.text
         student?.state = stateTextField.text
         student?.zip = zipTextField.text
+//            }
+//            try context?.save()
+//            print("Saved address to core data")
+//        } catch {
+//            print(error)
+//        }
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        
 //        student?.cell = cellTextField.text
 //        student?.email = emailTextField.text
         
@@ -175,12 +191,15 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
 //        }
 //        student?.photo = data as NSData
 //
-//        do {
-//            try context!.save()
-//            print("Saved edited student to core data.")
-//        } catch  {
-//            print(error)
-//        }
+        
+        DispatchQueue.main.async {
+            do {
+                try self.context!.save()
+                print("Saved edited student to core data.")
+            } catch  {
+                print(error)
+            }
+        }
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -260,9 +279,9 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             //CGRect aRect = self.view.frame;
             var aRect:CGRect = self.view.frame;
             aRect.size.height -= keyboardSize.height;
-            print("Height is \(keyboardSize.height)")
-            print("Origin is ",activeField?.frame.origin)
-            print("aRect is ",aRect)
+//            print("Height is \(keyboardSize.height)")
+//            print("Origin is ",activeField?.frame.origin)
+//            print("aRect is ",aRect)
 //            if (!aRect.contains((activeField?.frame.origin)!)) {
                 //[self.scrollView scrollRectToVisible:activeField.frame animated:YES];
                 //self.scrollView.scrollRectToVisible((activeField?.frame)!, animated: true)

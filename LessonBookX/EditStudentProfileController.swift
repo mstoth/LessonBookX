@@ -17,6 +17,7 @@ class EditStudentProfileController: NSViewController {
 
     @objc dynamic var studentToEdit:Student? = nil
     var context:NSManagedObjectContext? = nil
+    var recordName:String? = nil
     @IBOutlet weak var studentPhotoView: NSImageView!
     var asset:CKAsset? = nil
     @IBOutlet weak var firstNameTextField: NSTextField!
@@ -29,8 +30,9 @@ class EditStudentProfileController: NSViewController {
     @IBOutlet weak var phoneTextField: NSTextField!
     @IBOutlet weak var stateTextField: NSTextField!
     @IBOutlet weak var zipTextField: NSTextField!
-    
     @IBOutlet weak var selectPhotoButton: NSButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
@@ -61,6 +63,24 @@ class EditStudentProfileController: NSViewController {
         selectPhotoButton.title = NSLocalizedString("select-photo", comment: "Select Photo")
     }
     
+    override func viewWillDisappear() {
+        studentToEdit?.firstName = firstNameTextField.stringValue
+        studentToEdit?.lastName = lastNameTextField.stringValue
+        studentToEdit?.street1 = street1TextField.stringValue
+        studentToEdit?.street2 = street2TextField.stringValue
+        studentToEdit?.city = cityTextField.stringValue
+        studentToEdit?.state = stateTextField.stringValue
+        studentToEdit?.zip = zipTextField.stringValue
+        studentToEdit?.email = emailTextField.stringValue
+        studentToEdit?.cell = cellTextField.stringValue
+        studentToEdit?.phone = phoneTextField.stringValue
+        
+        do {
+            try context?.save()
+        } catch {
+            print(error)
+        }
+    }
     @IBAction func selectPhoto(_ sender: Any) {
         let dialog = NSOpenPanel();
         

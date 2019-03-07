@@ -107,7 +107,7 @@ class ViewController: NSViewController {
             NotificationCenter.default.addObserver(self, selector: #selector(self.contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
 
         }
-        
+        // changesFromCloud = true
         fetchChangesInDataBase()
 //        fetchZoneChanges(database: database, databaseTokenKey: "private", zoneIDs: [(z?.zoneID)!]) {
 //            print("In fetchZoneChanges completion.")
@@ -342,7 +342,7 @@ class ViewController: NSViewController {
         let context = delegate.persistentContainer.viewContext
         let newStudent = Student(context:context)
         newStudent.prepareForCloudKit()
-        let ccr = newStudent.cloudKitRecord()
+        // let ccr = newStudent.cloudKitRecord()
         print("Adding New Student.")
         newStudent.firstName = "New"
         newStudent.lastName = "Student"
@@ -357,16 +357,16 @@ class ViewController: NSViewController {
         newStudent.recordID = newStudent.ckrecordID
         newStudent.recordName = newStudent.cloudKitRecordID()?.recordName
         //newStudent.lastUpdate = Date()
-        ccr!.setValue("New",forKey: "firstName")
-        ccr!.setValue("Student",forKey: "lastName")
-        ccr!.setValue("",forKey: "street1")
-        ccr!.setValue("",forKey: "street2")
-        ccr!.setValue("",forKey: "city")
-        ccr!.setValue("",forKey: "state")
-        ccr!.setValue("",forKey: "zip")
-        ccr!.setValue("",forKey: "email")
-        ccr!.setValue("",forKey: "cell")
-        ccr!.setValue("", forKey: "phone")
+//        ccr!.setValue("New",forKey: "firstName")
+//        ccr!.setValue("Student",forKey: "lastName")
+//        ccr!.setValue("",forKey: "street1")
+//        ccr!.setValue("",forKey: "street2")
+//        ccr!.setValue("",forKey: "city")
+//        ccr!.setValue("",forKey: "state")
+//        ccr!.setValue("",forKey: "zip")
+//        ccr!.setValue("",forKey: "email")
+//        ccr!.setValue("",forKey: "cell")
+//        ccr!.setValue("", forKey: "phone")
         do {
             try context.save()
             print("New student saved to core data")
@@ -377,17 +377,17 @@ class ViewController: NSViewController {
         } catch {
             print(error.localizedDescription)
         }
-        let modificationObject = CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil)
-        modificationObject.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
-            if (error != nil) {
-                print("ERROR IN MODIFYING CLOUD")
-                print(error)
-            } else {
-                print("MODIFIED CLOUD")
-            }
-        }
-        
-        database.add(modificationObject)
+//        let modificationObject = CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil)
+//        modificationObject.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
+//            if (error != nil) {
+//                print("ERROR IN MODIFYING CLOUD")
+//                print(error)
+//            } else {
+//                print("MODIFIED CLOUD")
+//            }
+//        }
+//
+//        database.add(modificationObject)
 
     }
     
@@ -517,6 +517,7 @@ class ViewController: NSViewController {
                     }
                     let modificationObject = CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil)
                     modificationObject.isAtomic = true
+
                     modificationObject.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                         if (error != nil) {
                             print("ERROR IN MODIFYING CLOUD")
@@ -633,7 +634,7 @@ class ViewController: NSViewController {
                             }
                             modifyRecords.isAtomic = true
                             modifyRecords.savePolicy = .allKeys
-                            modifyRecords.qualityOfService = .background
+                            modifyRecords.qualityOfService = .userInitiated
                             self.database.add(modifyRecords)
 
                         }
@@ -647,13 +648,12 @@ class ViewController: NSViewController {
                             r["lastName"]=s.lastName
                             r["recordName"]=s.recordName
                             //r["lastUpdate"]=Date()
-                            r.setValue("",forKey: "street1")
-                            r.setValue("",forKey: "street2")
-                            r.setValue("",forKey: "city")
-                            r.setValue("",forKey: "state")
-                            r.setValue("",forKey: "zip")
-                            r.setValue("",forKey: "email")
-                            r.setValue("",forKey: "cell")
+                            r["street1"]=s.street1
+                            r["street2"]=s.street2
+                            r["city"]=s.city
+                            r["state"]=s.state
+                            r["zip"]=s.zip
+
                             if (s.photo != nil) {
                                 do {
                                     try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
@@ -679,7 +679,7 @@ class ViewController: NSViewController {
                                 }
                             }
 
-                            modifyRecords.qualityOfService = .background
+                            modifyRecords.qualityOfService = .userInitiated
                             self.database.add(modifyRecords)
                         }
                     }
@@ -710,12 +710,25 @@ class ViewController: NSViewController {
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        let controller = segue.destinationController as! EditStudentProfileController
-        if tableView.selectedRow >= 0 {
-            let selectedStudents = arrayController.selectedObjects
-            controller.studentToEdit = selectedStudents?.first as? Student
-            controller.context = context
+        
+        let students = arrayController.selectedObjects
+        let student = students?.first as! Student
+        let recordName = student.recordName
+        
+        
+        if segue.identifier == "editStudent" {
+            (segue.destinationController as! EditStudentProfileController).context = context
+            (segue.destinationController as! EditStudentProfileController).recordName = student.recordName
+            (segue.destinationController as! EditStudentProfileController).studentToEdit = student
         }
+        
+        if segue.identifier == "lessons" {
+            (segue.destinationController as! LessonViewController).context = context
+            (segue.destinationController as! LessonViewController).recordName = recordName
+            (segue.destinationController as! LessonViewController).student = student
+        }
+        
+        
     }
     
     

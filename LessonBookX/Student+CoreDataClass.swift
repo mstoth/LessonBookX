@@ -44,7 +44,7 @@ public class Student: NSManagedObject, CloudKitManagedObject {
         firstName = record["firstName"] as? String
         lastName = record["lastName"] as? String
         phone = record["phone"] as? String
-        lastUpdate = record["lastUpdate"] as? Date
+        lastUpdate = record["lastUpdate"] as? NSDate
         recordName = record.recordID.recordName
         // recordID = try? NSKeyedArchiver.archivedData(withRootObject: record.recordID, requiringSecureCoding: false)
         do {

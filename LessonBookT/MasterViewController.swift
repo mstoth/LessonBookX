@@ -69,11 +69,11 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         // NotificationCenter.default.addObserver(self, selector: #selector(newCloudData), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
         if let managedObjectContext = managedObjectContext {
             // Add Observer
+            fetchChangesInDataBase()
             let notificationCenter = NotificationCenter.default
             notificationCenter.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: managedObjectContext)
         }
         
-        fetchChangesInDataBase()
     }
 
 
@@ -992,12 +992,14 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let student = fetchedResultsController.object(at: indexPath) 
+                let student = fetchedResultsController.object(at: indexPath)
                 
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.context = managedObjectContext
                 controller.studentToEdit = student
                 controller.recordName = student.recordName
+                controller.masterViewController = self
+                controller.objectID = student.objectID
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }

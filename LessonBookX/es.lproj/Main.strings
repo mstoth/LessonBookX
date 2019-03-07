@@ -410,7 +410,7 @@
 "first-name" = "Nombre de pila";
 "last-name" = "Apellido";
 "street1" = "Calle";
-"street2" = "apartamento"
+"street2" = "apartamento";
 "city" = "Ciudad";
 "zip" = "Código postal";
 "phone" = "Teléfono";
