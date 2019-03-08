@@ -213,8 +213,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             print(String(describing: dbNotification))
             // let notificationID = dbNotification.notificationID
             let dict = userInfo as! [String: NSObject]
-            guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else { return }
-            viewController!.changesFromCloud = true
+            guard let notification:CKDatabaseNotification = CKNotification(fromRemoteNotificationDictionary:dict) as? CKDatabaseNotification else {
+                completionHandler(UIBackgroundFetchResult.noData)
+                return
+            }
+            //viewController!.changesFromCloud = true
             viewController!.fetchChanges(in: notification.databaseScope) {
             }
             completionHandler(UIBackgroundFetchResult.noData)

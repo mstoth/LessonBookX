@@ -15,22 +15,28 @@ class StudentPhotoViewController: UIViewController,UINavigationControllerDelegat
     var recordName:String? = nil
     var context:NSManagedObjectContext? = nil
     var student:Student? = nil
+    var objectID:NSManagedObjectID? = nil
     @IBOutlet weak var studentPhoto: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        if recordName != nil {
-            let predicate = NSPredicate(format: "recordName == %@", recordName!)
-            let fetchReq = NSFetchRequest<Student>(entityName: "Student")
-            fetchReq.predicate = predicate
-            do {
-                let results = try context?.fetch(fetchReq)
-                student = results?.first
+        if context == nil {
+            print("Context is nil")
+        }
+        if objectID == nil {
+            print("objectID is nil")
+        }
+        student = context?.object(with: objectID!) as? Student
+//        if recordName != nil {
+//            let predicate = NSPredicate(format: "recordName == %@", recordName!)
+//            let fetchReq = NSFetchRequest<Student>(entityName: "Student")
+//            fetchReq.predicate = predicate
+//            do {
+//                let results = try context?.fetch(fetchReq)
+//                student = results?.first
                 if student?.photo != nil {
                     let fileURL = FileManager.default.temporaryDirectory
-                    let filePath = fileURL.appendingPathComponent(recordName! + ".png")
+                    let filePath = fileURL.appendingPathComponent((student?.recordName)! + ".png")
                     do {
                         try student?.photo?.write(to: URL(fileURLWithPath: filePath.path), options: .atomic)
                         studentPhoto.image = UIImage(contentsOfFile: filePath.path)
@@ -39,11 +45,11 @@ class StudentPhotoViewController: UIViewController,UINavigationControllerDelegat
                     }
                     
                 }
-            } catch {
-                print(error)
-                return
-            }
-        }
+//            } catch {
+//                print(error)
+//                return
+//            }
+//        }
         // Do any additional setup after loading the view.
         hideKeyboardWhenTappedAround()
 

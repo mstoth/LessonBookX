@@ -11,25 +11,32 @@ import CoreData
 import SkyFloatingLabelTextField
 
 
-class StudentPhoneViewController: UIViewController {
+class StudentPhoneViewController: UIViewController, UITextFieldDelegate {
 
     var student:Student? = nil
     var context:NSManagedObjectContext? = nil
     var recordName:String? = nil
-
+    var changesWereMade:Bool = false
+    var objectID:NSManagedObjectID? = nil
+    
     @IBOutlet weak var cellTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var emailTextField: SkyFloatingLabelTextField!
     @IBOutlet weak var phoneTextField: SkyFloatingLabelTextField!
+
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if recordName != nil {
-            let predicate = NSPredicate(format: "recordName == %@", recordName!)
-            let fetchReq = NSFetchRequest<Student>(entityName: "Student")
-            fetchReq.predicate = predicate
-            do {
-                let results = try context?.fetch(fetchReq)
-                student = results?.first
+        student = context?.object(with: objectID!) as? Student
+        
+//        if recordName != nil {
+//            let predicate = NSPredicate(format: "recordName == %@", recordName!)
+//            let fetchReq = NSFetchRequest<Student>(entityName: "Student")
+//            fetchReq.predicate = predicate
+//            do {
+//                let results = try context?.fetch(fetchReq)
+//                student = results?.first
                 phoneTextField.title = NSLocalizedString("phone", comment: "Phone")
                 cellTextField.title = NSLocalizedString("cell", comment: "Cell Phone")
                 emailTextField.title = NSLocalizedString("email", comment: "Email")
@@ -41,25 +48,35 @@ class StudentPhoneViewController: UIViewController {
                 phoneTextField.text = student?.phone
                 cellTextField.text = student?.cell
                 emailTextField.text = student?.email
-            } catch {
-                print(error)
-            }
-        }
+//            } catch {
+//                print(error)
+//            }
+//        }
         // Do any additional setup after loading the view.
         hideKeyboardWhenTappedAround()
 
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        changesWereMade = true
+    }
+
+    @objc func saveChanges() {
+
+        //if changesWereMade {
+            student?.phone = phoneTextField.text
+            student?.cell = cellTextField.text
+            student?.email = emailTextField.text
+            do {
+                try context?.save()
+            } catch {
+                print(error)
+            }
+        //}
+    }
 
     override func viewWillDisappear(_ animated: Bool) {
-        student?.phone = phoneTextField.text
-        student?.cell = cellTextField.text
-        student?.email = emailTextField.text
-        do {
-            try context?.save()
-        } catch {
-            print(error)
-        }
+        saveChanges()
     }
     /*
     // MARK: - Navigation

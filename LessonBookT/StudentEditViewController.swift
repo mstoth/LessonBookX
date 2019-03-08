@@ -54,6 +54,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var recordName:String? = nil
     var activeField:UITextField? = nil
     var objectID:NSManagedObjectID? = nil
+    var changesWereMade:Bool = false
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
@@ -67,6 +68,9 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
     }
+
+    
+
     
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var firstNameTextField: SkyFloatingLabelTextField!
@@ -90,10 +94,13 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         super.viewDidLoad()
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.enableAllOrientations = false
-
+        self.navigationItem.rightBarButtonItem?.action = #selector(saveChanges)
+        
         student = context?.object(with: objectID!) as? Student
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
 //        if recordName != nil {
 //            let predicate = NSPredicate(format: "recordName == %@", recordName!)
 //            let fetchRequest = NSFetchRequest<Student>(entityName: "Student")
@@ -149,6 +156,43 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
 //        zipTextField.text = student?.zip
     }
     
+    
+    @objc func saveChanges() {
+        print("in saveChanges")
+        if changesWereMade {
+            //student = context?.object(with: objectID!) as? Student
+            if (firstNameTextField.text != nil) {
+                student?.firstName = firstNameTextField.text
+            }
+            if (lastNameTextField.text != nil) {
+                student?.lastName = lastNameTextField.text
+            }
+            //        student?.phone = phoneTextField.text
+            if (street1TextField.text != nil) {
+                student?.street1 = street1TextField.text
+            }
+            if (street2TextField.text != nil) {
+                student?.street2 = street2TextField.text
+            }
+            if (cityTextField.text != nil) {
+                student?.city = cityTextField.text
+            }
+            if (stateTextField.text != nil) {
+                student?.state = stateTextField.text
+            }
+            if (zipTextField.text != nil) {
+                student?.zip = zipTextField.text
+            }
+            do {
+                try context?.save()
+                print("StudentEditViewController saved address to core data.")
+            } catch {
+                print(error)
+            }
+        }
+    }
+
+    
     override func viewWillDisappear(_ animated: Bool) {
         if selectingPhoto {
             selectingPhoto = false
@@ -174,12 +218,13 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
         student?.state = stateTextField.text
         student?.zip = zipTextField.text
 //            }
-//            try context?.save()
-//            print("Saved address to core data")
-//        } catch {
-//            print(error)
-//        }
-        
+        do {
+            try context?.save()
+            print("StudentEditViewController saved address to core data")
+        } catch {
+            print(error)
+        }
+    
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -192,19 +237,21 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
 //        student?.photo = data as NSData
 //
         
-        DispatchQueue.main.async {
-            do {
-                try self.context!.save()
-                print("Saved edited student to core data.")
-            } catch  {
-                print(error)
-            }
-        }
+//        DispatchQueue.main.async {
+//            do {
+//                try self.context!.save()
+//                print("Saved edited student to core data.")
+//            } catch  {
+//                print(error)
+//            }
+//        }
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("Setting active field")
+        changesWereMade = true
         activeField = textField
+        showToast(message: "Tap on edge of screen to lower keyboard.")
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
@@ -268,7 +315,9 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            
+            DispatchQueue.main.async {
+                self.showToast(message: "Tap anywhere near the edge to lower keyboard")
+            }
             //UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
             let contentInsets:UIEdgeInsets = UIEdgeInsets(top: 0.0,left: 0.0,bottom: keyboardSize.height, right: 0.0)
             scrollView.contentInset = contentInsets;

@@ -20,7 +20,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     var z:ZoneOperations? = nil
     var subscribedToPrivateChanges:Bool = false
     var createdCustomZone:Bool = false
-    var changesFromCloud:Bool = false
+    //var changesFromCloud:Bool = false
     let privateSubscriptionId = "LessonBook"
 
     
@@ -166,8 +166,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let tokenData = try! NSKeyedArchiver.archivedData(withRootObject: serverChangeToken as Any, requiringSecureCoding: true)
             UserDefaults.standard.set(tokenData, forKey: "\(self.zoneID.zoneName) databaseChangeToken")
             DispatchQueue.main.async {
-                let notificationCenter = NotificationCenter.default
-                notificationCenter.removeObserver(self)
+                //let notificationCenter = NotificationCenter.default
+                //notificationCenter.removeObserver(self)
 
                 do {
                     try self.managedObjectContext?.save()
@@ -175,7 +175,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 } catch {
                     print(error)
                 }
-                notificationCenter.addObserver(self, selector: #selector(self.managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: self.managedObjectContext)
+                //notificationCenter.addObserver(self, selector: #selector(self.managedObjectContextObjectsDidChange), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: self.managedObjectContext)
 
             }
 
@@ -195,6 +195,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             fetchRequest.predicate = predicate
             let students = try! self.managedObjectContext?.fetch(fetchRequest)
             if students?.count == 0 {
+                print("Did not find student in core data.")
                 let s=Student(context: self.managedObjectContext!)
                 s.prepareForCloudKitWithCloudKitRecord(record.recordID)
                 s.firstName = record["firstName"]
@@ -216,11 +217,27 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 
             } else {
                 for s:Student in students! {
+                    print("Setting attributes on core data object.")
                     s.firstName = record["firstName"]
                     s.lastName = record["lastName"]
                     s.phone = record["phone"]
                     s.street1 = record["street1"]
                     s.street2 = record["street2"]
+                    s.city = record["city"]
+                    s.state = record["state"]
+                    s.zip = record["zip"]
+                    s.cell = record["cell"]
+                    s.email = record["email"]
+                    
+                    print(s.firstName as Any)
+                    print(s.lastName as Any)
+                    print(s.phone as Any)
+                    print(s.street1 as Any)
+                    print(s.street2 as Any)
+                    print(s.city as Any)
+                    print(s.state as Any)
+                    print(s.zip as Any)
+                    
                     s.city = record["city"]
                     s.state = record["state"]
                     s.zip = record["zip"]
@@ -426,10 +443,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
         
         print("Context Objects Did Change.")
-        if changesFromCloud {
-            changesFromCloud = false
-            return
-        }
+//        if changesFromCloud {
+//            changesFromCloud = false
+//            return
+//        }
         guard let userInfo = notification.userInfo else { return }
         
         if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
@@ -510,7 +527,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             print("MODIFIED CLOUD")
                         }
                     }
-                    
+                    print("Adding modifyRecords operation.")
                     self.database.add(modifyRecords)
                     
                     //database.add(CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: nil))
@@ -596,14 +613,17 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r["firstName"]=s.firstName
                             r["lastName"]=s.lastName
                             r["recordName"]=s.recordName
+                            r["street1"]=s.street1
+                            r["street2"]=s.street2
+                            r["city"]=s.city
+                            r["state"]=s.state
+                            r["zip"]=s.zip
+                            
+                            r["phone"]=s.phone
+                            r["cell"]=s.cell
+                            r["email"]=s.email
+                            
                             //r["lastUpdate"]=Date()
-                            r.setValue("",forKey: "street1")
-                            r.setValue("",forKey: "street2")
-                            r.setValue("",forKey: "city")
-                            r.setValue("",forKey: "state")
-                            r.setValue("",forKey: "zip")
-                            r.setValue("",forKey: "email")
-                            r.setValue("",forKey: "cell")
                             do {
                                 try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
                                 let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))

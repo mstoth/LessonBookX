@@ -34,18 +34,14 @@ class DetailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editDetailTabBarController" {
             let controller = segue.destination as!  EditStudentTabBarController
-            let predicate = NSPredicate(format: "recordName == %@", recordName!)
-            let fetchReq = NSFetchRequest<Student>(entityName: "Student")
-            do {
-                studentToEdit = try context?.fetch(fetchReq).first
-            } catch {
-                print(error)
-            }
-            controller.studentToEdit = studentToEdit
-            controller.recordName = recordName
+//            controller.recordName = recordName
             controller.context = context
-            controller.masterViewController = masterViewController
+            print("Set context of EditStudentTabBarController")
+            print(context as Any)
+//            controller.masterViewController = masterViewController
             controller.objectID = objectID
+            print("Set objectID of EditStudentTabBarController")
+            print(objectID as Any)
             //controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             //controller.navigationItem.leftItemsSupplementBackButton = true
         }

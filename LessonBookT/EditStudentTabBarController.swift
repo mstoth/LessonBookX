@@ -15,50 +15,61 @@ class EditStudentTabBarController: UITabBarController {
     var recordName:String? = nil
     var masterViewController:MasterViewController? = nil
     var objectID:NSManagedObjectID? = nil
+    var photoController:StudentPhotoViewController? = nil
+    var addressController:StudentEditViewController? = nil
+    var phoneController:StudentPhoneViewController? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //tabBar.items?.first?.image = UIImage(imageLiteralResourceName: "phoneIconSmall")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .save, target: self, action: #selector(saveChanges))
-
+        studentToEdit = context?.object(with: objectID!) as? Student
         tabBar.items?.first?.image = UIImage(named: "photoIconSmall")
         tabBar.items?[1].image = UIImage(named: "phoneIconSmall")
         tabBar.items?[2].image = UIImage(named: "homeIconSmall")
+
         let controllers = self.viewControllers
+
         for controller in controllers! {
             if controller.restorationIdentifier == "studentPhone" {
-                (controller as! StudentPhoneViewController).student = studentToEdit
-                (controller as! StudentPhoneViewController).context = context
-                (controller as! StudentPhoneViewController).recordName = recordName
+                phoneController = controller as? StudentPhoneViewController
+                //phoneController?.student = studentToEdit
+                phoneController?.context = context
+                //phoneController?.recordName = recordName
+                phoneController?.objectID = objectID
+                phoneController?.changesWereMade = false
             }
             if controller.restorationIdentifier == "studentPhoto" {
-                (controller as! StudentPhotoViewController).student = studentToEdit
-                (controller as! StudentPhotoViewController).context = context
-                (controller as! StudentPhotoViewController).recordName = recordName
+                photoController = controller as? StudentPhotoViewController
+                photoController?.student = studentToEdit
+                photoController?.context = context
+                photoController?.objectID = objectID
+                photoController?.recordName = recordName
+                
             }
             if controller.restorationIdentifier == "address" {
-                (controller as! StudentEditViewController).student = studentToEdit
-                (controller as! StudentEditViewController).context = context
-                (controller as! StudentEditViewController).recordName = recordName
-                (controller as! StudentEditViewController).objectID = objectID
+                addressController = controller as? StudentEditViewController
+                //addressController?.student = studentToEdit
+                addressController?.context = context
+                //addressController?.recordName = recordName
+                addressController?.objectID = objectID
+                addressController?.changesWereMade = false
             }
         }
     }
     
     @objc func saveChanges() {
         print("in saveChanges")
+        addressController?.saveChanges()
+        phoneController?.saveChanges()
     }
 
     
     // MARK: - Navigation
     override func viewWillDisappear(_ animated: Bool) {
-        do {
-            try context?.save()
-            print("Saved core data")
-        } catch {
-            print(error)
-        }
+        addressController?.saveChanges()
+        phoneController?.saveChanges()
     }
     // In a storyboard-based application, you will often want to do a little preparation before navigation
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
