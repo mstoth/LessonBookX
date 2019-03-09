@@ -112,5 +112,46 @@ class ZoneOperations {
         database?.add(fetchZonesOperation)
 
     }
+    
+    func saveStudentToCloud(_ student:Student) {
+        let ccr = student.cloudKitRecord()
+        //if !(ccr?["firstName"]==s.firstName && ccr?["lastName"]==s.lastName && ccr?["phone"]==s.phone ) {
+        ccr?["firstName"]=student.firstName
+        ccr?["lastName"]=student.lastName
+        ccr?["phone"]=student.phone
+        ccr?["recordName"]=student.recordName
+        ccr?["street1"]=student.street1
+        ccr?["street2"]=student.street2
+        ccr?["city"]=student.city
+        ccr?["state"]=student.state
+        ccr?["zip"]=student.zip
+        ccr?["cell"]=student.cell
+        ccr?["email"]=student.email
+        if (student.photo != nil) {
+            do {
+                try student.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: student.recordName)).png"), options: .atomic)
+                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: student.recordName)).png"))
+                ccr?["photo"]=asset
+            } catch  {
+                print(error)
+            }
+        }
+        let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: [ccr!], recordIDsToDelete: [])
+        // modifyRecords.recordsToSave = recordArray
+        modifyRecords.savePolicy = .allKeys
+        modifyRecords.isAtomic = true
+        modifyRecords.qualityOfService = .utility
+        modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
+            if (error != nil) {
+                print("ERROR IN MODIFYING CLOUD")
+                print(error as Any)
+            } else {
+                print("MODIFIED CLOUD")
+            }
+        }
+        print("Adding modifyRecords operation.")        
+        database?.add(modifyRecords)
+
+    }
 }
 

@@ -592,10 +592,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             modifyRecords.isAtomic = true
                             modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                                 if (error != nil) {
-                                    print("ERROR IN MODIFYING CLOUD")
+                                    print("managedObjectContextObjectsDidChange1: ERROR IN MODIFYING CLOUD")
                                     print(error)
                                 } else {
-                                    print("MODIFIED CLOUD")
+                                    print("managedObjectContextObjectsDidChange1: MODIFIED CLOUD")
                                 }
                             }
                             
@@ -624,14 +624,15 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             r["email"]=s.email
                             
                             //r["lastUpdate"]=Date()
-                            do {
-                                try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
-                                let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))
-                                r["photo"]=asset
-                            } catch  {
-                                print(error)
+                            if (s.photo != nil) {
+                                do {
+                                    try s.photo?.write(to: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"), options: .atomic)
+                                    let asset = CKAsset(fileURL: FileManager.default.temporaryDirectory.appendingPathComponent("\(String(describing: s.recordName)).png"))
+                                    r["photo"]=asset
+                                } catch  {
+                                    print(error)
+                                }
                             }
-                            
                             let recordArray = [r]
                             // print(String(describing: recordArray))
                             let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: recordArray, recordIDsToDelete: [])
@@ -641,10 +642,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                             
                             modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
                                 if (error != nil) {
-                                    print("ERROR IN MODIFYING CLOUD")
+                                    print("managedObjectContextObjectsDidChange2: ERROR IN MODIFYING CLOUD")
                                     print(error)
                                 } else {
-                                    print("MODIFIED CLOUD")
+                                    print("managedObjectContextObjectsDidChange2: MODIFIED CLOUD")
                                 }
                             }
                             

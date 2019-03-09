@@ -7,6 +7,7 @@
 //
 import CoreData
 import UIKit
+import CloudKit
 
 class EditStudentTabBarController: UITabBarController {
 
@@ -61,15 +62,18 @@ class EditStudentTabBarController: UITabBarController {
     
     @objc func saveChanges() {
         print("in saveChanges")
+        print("Telling addressController to save.")
         addressController?.saveChanges()
+        print("Telling phoneController to save.")
         phoneController?.saveChanges()
     }
 
     
     // MARK: - Navigation
     override func viewWillDisappear(_ animated: Bool) {
-        addressController?.saveChanges()
-        phoneController?.saveChanges()
+        //addressController?.saveChanges()
+        //phoneController?.saveChanges()
+
     }
     // In a storyboard-based application, you will often want to do a little preparation before navigation
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -55,6 +55,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     var activeField:UITextField? = nil
     var objectID:NSManagedObjectID? = nil
     var changesWereMade:Bool = false
+    var z:ZoneOperations? = nil
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
@@ -91,6 +92,7 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     @IBOutlet weak var emailTextField: UITextField!
     
     override func viewDidLoad() {
+        z = ZoneOperations()
         super.viewDidLoad()
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.enableAllOrientations = false
@@ -159,7 +161,10 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
     
     @objc func saveChanges() {
         print("in saveChanges")
-        if changesWereMade {
+        if (firstNameTextField == nil) {
+            return
+        }
+        //if changesWereMade {
             //student = context?.object(with: objectID!) as? Student
             if (firstNameTextField.text != nil) {
                 student?.firstName = firstNameTextField.text
@@ -189,15 +194,13 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             } catch {
                 print(error)
             }
-        }
+            print("Saving to cloud through ZoneOperations")
+        //}
+        z?.saveStudentToCloud(student!)
     }
 
     
     override func viewWillDisappear(_ animated: Bool) {
-        if selectingPhoto {
-            selectingPhoto = false
-            return
-        }
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.enableAllOrientations = true
 
@@ -225,6 +228,8 @@ class StudentEditViewController: UIViewController, UITextFieldDelegate,UIDocumen
             print(error)
         }
     
+        saveChanges()
+        
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         
