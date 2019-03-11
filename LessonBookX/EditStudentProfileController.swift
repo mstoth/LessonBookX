@@ -64,23 +64,25 @@ class EditStudentProfileController: NSViewController {
     }
     
     override func viewWillDisappear() {
-        studentToEdit?.firstName = firstNameTextField.stringValue
-        studentToEdit?.lastName = lastNameTextField.stringValue
-        studentToEdit?.street1 = street1TextField.stringValue
-        studentToEdit?.street2 = street2TextField.stringValue
-        studentToEdit?.city = cityTextField.stringValue
-        studentToEdit?.state = stateTextField.stringValue
-        studentToEdit?.zip = zipTextField.stringValue
-        studentToEdit?.email = emailTextField.stringValue
-        studentToEdit?.cell = cellTextField.stringValue
-        studentToEdit?.phone = phoneTextField.stringValue
+//        studentToEdit?.firstName = firstNameTextField.stringValue
+//        studentToEdit?.lastName = lastNameTextField.stringValue
+//        studentToEdit?.street1 = street1TextField.stringValue
+//        studentToEdit?.street2 = street2TextField.stringValue
+//        studentToEdit?.city = cityTextField.stringValue
+//        studentToEdit?.state = stateTextField.stringValue
+//        studentToEdit?.zip = zipTextField.stringValue
+//        studentToEdit?.email = emailTextField.stringValue
+//        studentToEdit?.cell = cellTextField.stringValue
+//        studentToEdit?.phone = phoneTextField.stringValue
         
-        do {
-            try context?.save()
-        } catch {
-            print(error)
-        }
+//        do {
+//            try context?.save()
+//        } catch {
+//            print(error)
+//        }
     }
+    
+    
     @IBAction func selectPhoto(_ sender: Any) {
         let dialog = NSOpenPanel();
         
