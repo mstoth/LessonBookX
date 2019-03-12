@@ -45,6 +45,11 @@ class DetailViewController: UIViewController {
             //controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             //controller.navigationItem.leftItemsSupplementBackButton = true
         }
+        if segue.identifier == "lessonEdit" {
+            let controller = segue.destination as! LessonTableViewController
+            controller.context = context
+            controller.student = studentToEdit
+        }
     }
 }
 

@@ -34,5 +34,6 @@ extension Student {
     @NSManaged public var recordName: String?
     @NSManaged public var lastUpdate: Date?
     @NSManaged public var birthday: Date?
+    @NSManaged public var lessons: NSSet?
     
 }

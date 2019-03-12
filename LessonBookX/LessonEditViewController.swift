@@ -8,6 +8,7 @@
 
 import Cocoa
 
+
 class LessonEditViewController: NSViewController, NSDatePickerCellDelegate {
 
     public var context:NSManagedObjectContext? = nil
@@ -15,6 +16,7 @@ class LessonEditViewController: NSViewController, NSDatePickerCellDelegate {
     @IBOutlet weak var datePicker: NSDatePicker!
     @objc dynamic var currentDate:NSDate? = nil
     @objc dynamic var currentComment:String? = nil
+    @IBOutlet weak var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,4 +42,7 @@ class LessonEditViewController: NSViewController, NSDatePickerCellDelegate {
         currentDate = proposedDateValue.pointee
     }
     
+    @IBAction func dateChanged(_ sender: Any) {
+        lesson.date = datePicker
+    }
 }
