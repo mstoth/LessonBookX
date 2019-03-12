@@ -545,10 +545,17 @@ class ViewController: NSViewController, NSTableViewDelegate {
             (segue.destinationController as! EditStudentProfileController).studentToEdit = student
         }
         
-        if segue.identifier == "lessons" {
-            (segue.destinationController as! LessonViewController).context = context
-            (segue.destinationController as! LessonViewController).recordName = recordName
-            (segue.destinationController as! LessonViewController).student = student
+//        if segue.identifier == "lessons" {
+//            (segue.destinationController as! LessonViewController).context = context
+//            (segue.destinationController as! LessonViewController).recordName = recordName
+//            (segue.destinationController as! LessonViewController).student = student
+//        }
+        
+        if segue.identifier == "editLesson" {
+            let c = segue.destinationController as! LessonEditViewController
+            c.context = context
+            let selectedLesson = lessonArrayController.selectedObjects.first
+            c.lesson = selectedLesson as? Lesson
         }
     }
     

@@ -32,10 +32,10 @@
 		A450C6A022063F0200BA4047 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */; };
 		A450C6A1220646BC00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
 		A450C6A2220646BD00BA4047 /* CloudKitManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */; };
-		A4725908222DE6F700F3E398 /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4725907222DE6F700F3E398 /* LessonViewController.swift */; };
 		A4725910222DEAED00F3E398 /* Student+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A472590E222DEAED00F3E398 /* Student+CoreDataProperties.swift */; };
 		A4725914222DEBD300F3E398 /* Lesson+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4725912222DEBD300F3E398 /* Lesson+CoreDataProperties.swift */; };
 		A4725915222DEBD300F3E398 /* Lesson+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4725913222DEBD300F3E398 /* Lesson+CoreDataClass.swift */; };
+		A4891E0C22370A5100CA966A /* LessonEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4891E0B22370A5000CA966A /* LessonEditViewController.swift */; };
 		A49CC7982221D24E00D9FA1F /* ImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */; };
 		A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E121FDA95100A88255 /* AppDelegate.swift */; };
 		A4C1C8E421FDA95100A88255 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C1C8E321FDA95100A88255 /* ViewController.swift */; };
@@ -136,10 +136,10 @@
 		A450C6952205BFE400BA4047 /* CloudKitManagedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManagedObject.swift; sourceTree = "<group>"; };
 		A450C69922063F0200BA4047 /* Student+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A450C69A22063F0200BA4047 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		A4725907222DE6F700F3E398 /* LessonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
 		A472590E222DEAED00F3E398 /* Student+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Student+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A4725912222DEBD300F3E398 /* Lesson+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Lesson+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A4725913222DEBD300F3E398 /* Lesson+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Lesson+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A4891E0B22370A5000CA966A /* LessonEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonEditViewController.swift; sourceTree = "<group>"; };
 		A49CC7972221D24E00D9FA1F /* ImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtensions.swift; sourceTree = "<group>"; };
 		A4BA9C3E221A170D00A65642 /* LessonBookT 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LessonBookT 2.xcdatamodel"; sourceTree = "<group>"; };
 		A4C1C8DE21FDA95100A88255 /* LessonBookX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LessonBookX.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -352,7 +352,7 @@
 				A4725912222DEBD300F3E398 /* Lesson+CoreDataProperties.swift */,
 				A4C1C8E121FDA95100A88255 /* AppDelegate.swift */,
 				A4C1C8E321FDA95100A88255 /* ViewController.swift */,
-				A4725907222DE6F700F3E398 /* LessonViewController.swift */,
+				A4891E0B22370A5000CA966A /* LessonEditViewController.swift */,
 				A4EDB83D2220B7C900412A47 /* EditStudentProfileController.swift */,
 				A4C1C8E821FDA95500A88255 /* Assets.xcassets */,
 				A4EDB83A2220AD9C00412A47 /* blank-avatar.jpg */,
@@ -928,10 +928,10 @@
 				A4EDB83E2220B7C900412A47 /* EditStudentProfileController.swift in Sources */,
 				A4725915222DEBD300F3E398 /* Lesson+CoreDataClass.swift in Sources */,
 				A4C1C8E221FDA95100A88255 /* AppDelegate.swift in Sources */,
+				A4891E0C22370A5100CA966A /* LessonEditViewController.swift in Sources */,
 				A4C1C8E721FDA95100A88255 /* LessonBookX.xcdatamodeld in Sources */,
 				A49CC7982221D24E00D9FA1F /* ImageExtensions.swift in Sources */,
 				A4D3AD92221330E100D48A64 /* ZoneOperations.swift in Sources */,
-				A4725908222DE6F700F3E398 /* LessonViewController.swift in Sources */,
 				A4725910222DEAED00F3E398 /* Student+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

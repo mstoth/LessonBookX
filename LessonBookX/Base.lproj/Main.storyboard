@@ -891,14 +891,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-Rs-5v7">
-                                <rect key="frame" x="22" y="389" width="37" height="17"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="fZu-TJ-shI">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vaz-Cw-AfL">
                                 <rect key="frame" x="417" y="42" width="49" height="32"/>
                                 <buttonCell key="cell" type="push" title="+" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nqy-rB-MNC">
@@ -927,6 +919,24 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-Rs-5v7">
+                                <rect key="frame" x="22" y="389" width="37" height="17"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="fZu-TJ-shI">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LvJ-Hn-exG">
+                                <rect key="frame" x="260" y="42" width="110" height="32"/>
+                                <buttonCell key="cell" type="push" title="Edit Lesson" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JKh-Lr-DqP">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <segue destination="1JP-4j-VtN" kind="show" identifier="editLesson" id="jHe-vF-fHY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="uYh-vP-VLp" secondAttribute="trailing" constant="20" id="0il-MR-7e6"/>
@@ -937,6 +947,8 @@
                             <constraint firstItem="uYh-vP-VLp" firstAttribute="top" secondItem="c5y-ey-8Zp" secondAttribute="bottom" constant="42" id="EXK-DN-Qlq"/>
                             <constraint firstAttribute="trailing" secondItem="Vaz-Cw-AfL" secondAttribute="trailing" constant="20" id="OMt-3W-8CJ"/>
                             <constraint firstItem="Vaz-Cw-AfL" firstAttribute="top" secondItem="BA1-4i-89C" secondAttribute="bottom" constant="36" id="PIf-PK-mHv"/>
+                            <constraint firstItem="LvJ-Hn-exG" firstAttribute="firstBaseline" secondItem="BA1-4i-89C" secondAttribute="baseline" constant="51" id="Rsb-Yv-jdG"/>
+                            <constraint firstItem="K15-04-R0X" firstAttribute="leading" secondItem="LvJ-Hn-exG" secondAttribute="trailing" constant="12" id="SXl-OC-DFd"/>
                             <constraint firstItem="uYh-vP-VLp" firstAttribute="leading" secondItem="VP9-xb-CX8" secondAttribute="trailing" constant="12" id="aGS-0j-ife"/>
                             <constraint firstItem="KXp-ks-kaM" firstAttribute="top" secondItem="BA1-4i-89C" secondAttribute="bottom" constant="40" id="aWF-Qk-GvG"/>
                             <constraint firstAttribute="trailing" secondItem="hFf-RA-ysJ" secondAttribute="trailing" constant="20" id="ed3-6o-K73"/>
@@ -976,6 +988,54 @@
                 </arrayController>
             </objects>
             <point key="canvasLocation" x="-91" y="826.5"/>
+        </scene>
+        <!--Lesson Edit View Controller-->
+        <scene sceneID="yhb-Yg-MzP">
+            <objects>
+                <viewController id="1JP-4j-VtN" customClass="LessonEditViewController" customModule="LessonBookX" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="GJQ-9h-1Xc">
+                        <rect key="frame" x="0.0" y="0.0" width="840" height="255"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x1H-hG-mp2">
+                                <rect key="frame" x="20" y="87" width="277" height="148"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <datePickerCell key="cell" state="on" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" id="f1Y-wq-5II">
+                                    <font key="font" metaFont="system"/>
+                                    <date key="date" timeIntervalSinceReferenceDate="-595843200">
+                                        <!--1982-02-13 16:00:00 +0000-->
+                                    </date>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <datePickerElements key="datePickerElements" year="YES" month="YES" day="YES" hour="YES" minute="YES"/>
+                                    <connections>
+                                        <binding destination="1JP-4j-VtN" name="value" keyPath="self.currentDate" id="hXB-zN-2CU"/>
+                                        <outlet property="delegate" destination="1JP-4j-VtN" id="l6u-QY-zMP"/>
+                                    </connections>
+                                </datePickerCell>
+                            </datePicker>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cP-0C-PIY">
+                                <rect key="frame" x="347" y="87" width="473" height="148"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="X11-Q6-8zI">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <binding destination="1JP-4j-VtN" name="value" keyPath="self.currentComment" id="Iyn-yU-vTy"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="datePicker" destination="x1H-hG-mp2" id="Uje-ph-v83"/>
+                    </connections>
+                </viewController>
+                <customObject id="ad9-zV-5l8" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController id="XdB-HV-86p"/>
+            </objects>
+            <point key="canvasLocation" x="-178" y="1465.5"/>
         </scene>
         <!--Edit Student Profile Controller-->
         <scene sceneID="VVa-l4-nJz">
