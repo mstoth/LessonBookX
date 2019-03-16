@@ -76,6 +76,7 @@ class LessonTableViewController: UITableViewController, NSFetchedResultsControll
         newLesson.prepareForCloudKit()
         newLesson.date = NSDate()
         newLesson.comment = "No Comment"
+        newLesson.recordName = newLesson.cloudKitRecordID().recordName
         lessonArray?.append(newLesson)
         student?.addToLessons(newLesson)
         // newStudent.lastUpdate = Date()

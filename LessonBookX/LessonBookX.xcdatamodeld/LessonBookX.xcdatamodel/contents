@@ -7,6 +7,7 @@
         <attribute name="fee" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="paid" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="place" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="student" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Student" inverseName="lessons" inverseEntity="Student" syncable="YES"/>
     </entity>
     <entity name="Student" representedClassName="Student" syncable="YES">
@@ -27,10 +28,10 @@
         <attribute name="street2" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="uniqueIdenfier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zip" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="lessons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Lesson" inverseName="student" inverseEntity="Lesson" syncable="YES"/>
+        <relationship name="lessons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Lesson" inverseName="student" inverseEntity="Lesson" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Lesson" positionX="-47.22265625" positionY="133.3671875" width="128" height="148"/>
-        <element name="Student" positionX="-288.29296875" positionY="-46.37890625" width="128" height="315"/>
+        <element name="Lesson" positionX="-47.22265625" positionY="133.3671875" width="128" height="163"/>
+        <element name="Student" positionX="-288.29296875" positionY="-46.37890625" width="128" height="313"/>
     </elements>
 </model>

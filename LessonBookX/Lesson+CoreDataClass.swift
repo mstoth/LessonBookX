@@ -16,7 +16,7 @@ public class Lesson: NSManagedObject, CloudKitManagedObject {
     
     var ckrecordName: String?
     
-    var recordType: String = "Lesson"
+    var recordType: String? = "Lesson"
     
     func managedObjectToRecord() -> CKRecord {
         guard let date = date, let comment = comment else {

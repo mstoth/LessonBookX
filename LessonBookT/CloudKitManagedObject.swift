@@ -13,7 +13,7 @@ import CloudKit
     var ckrecordID: Data? { get set }
     //@NSManaged public var recordID: NSData?
     var ckrecordName: String? { get set }
-    var recordType: String { get }
+    var recordType: String? { get set }
     //var lastUpdate: Data? { get set }
     
     func managedObjectToRecord() -> CKRecord
@@ -27,7 +27,7 @@ extension CloudKitManagedObject {
     
     func prepareForCloudKit() {
         let uuid = UUID()
-        ckrecordName = recordType + "." + uuid.uuidString
+        ckrecordName = recordType! + "." + uuid.uuidString
         let _recordID = CKRecord.ID(recordName: ckrecordName!, zoneID: customZone.zoneID)
         do {
             self.ckrecordID = try NSKeyedArchiver.archivedData(withRootObject: _recordID, requiringSecureCoding: false)
@@ -65,7 +65,7 @@ extension CloudKitManagedObject {
     }
     
     func cloudKitRecord() -> CKRecord? {
-        return CKRecord(recordType: recordType, recordID: cloudKitRecordID()!)
+        return CKRecord(recordType: recordType!, recordID: cloudKitRecordID()!)
     }
     
     func cloudKitRecordID() -> CKRecord.ID? {

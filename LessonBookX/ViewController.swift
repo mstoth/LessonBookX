@@ -102,19 +102,46 @@ class ViewController: NSViewController, NSTableViewDelegate {
 
     @IBAction func addLesson(_ sender: Any) {
         let newLesson = Lesson(context:context!)
+        newLesson.prepareForCloudKit()
+        newLesson.recordName = newLesson.ckrecordName
+        newLesson.date = NSDate()
+        newLesson.comment = "No Comment"
         lessonArray?.append(newLesson)
         let student = studentArrayController.selectedObjects.first as! Student
         student.addToLessons(newLesson)
+        let ref = CKRecord.Reference(recordID: CKRecord.ID(recordName: student.recordName!), action: .none)
+        
+        let ccr = newLesson.cloudKitRecord()
+        ccr?["date"]=newLesson.date
+        ccr?["comment"]=newLesson.comment
+        ccr?["student"] = ref
+        let modifyOp = CKModifyRecordsOperation(recordsToSave: [ccr!], recordIDsToDelete: [])
+        database.add(modifyOp)
+        
         do {
             try context?.save()
         } catch {
+            print("In ViewController:addLesson")
             print(error)
         }
+        //z?.saveLessonToCloud(newLesson,calledBy:"ViewController:addLesson")
     }
     @IBAction func removeLesson(_ sender: Any) {
+        if lessonArrayController.selectedObjects.count == 0 {
+            return
+        }
         let lessonToRemove = lessonArrayController.selectedObjects.first as! Lesson
         context?.delete(lessonToRemove)
-        lessonArray?.remove(at: lessonTableView.selectedRow)
+        if (lessonArray?.count)! > lessonTableView.selectedRow {
+            lessonArray?.remove(at: lessonTableView.selectedRow)
+            selectedStudent?.removeFromLessons(lessonToRemove)
+            database.delete(withRecordID: lessonToRemove.cloudKitRecordID()!, completionHandler: {(id,err) in
+                if let err = err {
+                    print(err.localizedDescription)
+                }
+            })
+        }
+        
         do {
             try context?.save()
         } catch {
@@ -429,7 +456,11 @@ class ViewController: NSViewController, NSTableViewDelegate {
                 }
             })
             tableView.reloadData()
-
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -464,70 +495,113 @@ class ViewController: NSViewController, NSTableViewDelegate {
             return
         }
         guard let userInfo = notification.userInfo else { return }
-        
-        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
-            print("Inserting Student")
-            for s:Student in inserts {
-                //addCoreDataRecordToCloud(s)
-                if s.recordName == nil {
-                    s.prepareForCloudKit()
-                    s.recordName = s.cloudKitRecordID()?.recordName
-                    self.z?.saveStudentToCloud(s)
+//        if let inserts = userInfo[NSInsertedObjectsKey] as? Set<Student>, inserts.count > 0 {
+        if (userInfo[NSInsertedObjectsKey] != nil) {
+            let inserts = userInfo[NSInsertedObjectsKey] as! Set<NSManagedObject>
+            for r:NSManagedObject in inserts {
+                if r.value(forKey: "recordType") as! String == "Lesson" {
+                    print("Inserting Lesson.")
 
-                } else {
-                    self.z?.saveStudentToCloud(s)
+                    let ckr = CKRecord(recordType: "Lesson")
+                    ckr["date"]=r.value(forKey: "date") as! NSDate
+                    ckr["comment"]=r.value(forKey: "comment") as! String
+                    let selectedStudent = studentArrayController.selectedObjects.first as! Student
+                    selectedStudent.addToLessons(r as! Lesson)
+                    let ref = CKRecord.Reference(record: selectedStudent.cloudKitRecord()!, action: .none)
+                    ckr["student"]=ref
+                    database.save(ckr, completionHandler: {(rec,err) in
+                        if (err == nil) {
+                            print("Success saving lesson to cloud.")
+                        } else {
+                            print(err!)
+                        }
+                    })
+//                    let lessonToSave = r as! Lesson
+//                    lessonToSave.recordType = "Lesson"
+//                    lessonToSave.prepareForCloudKit()
+//                    lessonToSave.recordName = lessonToSave.ckrecordName
+//                    let selectedStudent = studentArrayController.selectedObjects.first as! Student
+//                     let ref = CKRecord.Reference(record: selectedStudent.cloudKitRecord()!, action: .none)
+//                    DispatchQueue.main.async {
+//                    do {
+//                        try self.context?.save()
+//                    } catch {
+//                        print(error.localizedDescription)
+//                    }
+//                    }
+                    
+//                    print("attempting to save lesson")
+//                    print(lessonToSave.recordName)
+//                    z?.saveLessonToCloud(lessonToSave,student:selectedStudent,calledBy: "ViewController:contextObjectsDidChange (inserts)")
+                }
+                if r.value(forKey: "recordType") as! String == "Student" {
+                    print("Inserting Student.")
+                    let studentToSave = r as! Student
+                    studentToSave.recordType = "Student"
+                    studentToSave.prepareForCloudKit()
+                    studentToSave.recordName = studentToSave.ckrecordName
+                    
+                    z?.saveStudentToCloud(studentToSave,calledBy: "ViewController:contextObjectsDidChange (inserts)")
                 }
             }
         }
 
-        if let updates = userInfo[NSUpdatedObjectsKey] as? Set<Student>, updates.count > 0 {
-            print("Core Data Changed Notification")
-            for s:Student in updates {
-                self.z?.saveStudentToCloud(s)
-//                let recordName = s.recordName
-//                // let recordID = CKRecord.ID(recordName: recordName)
-//                // let recordID=s.cloudKitRecordID()
-//                let predicate = NSPredicate(format: "recordName == %@", recordName!)
-//                let query = CKQuery(recordType: "Student", predicate: predicate)
-//                database.perform(query, inZoneWith: z?.zoneID, completionHandler: {(recs,err) in
-//                    if err != nil {
-//                        let ckerror = err as! CKError
-//                        if ckerror.code == CKError.unknownItem {
-//                            print("Unknown Item")
-//                            //let recordID = CKRecord.ID(recordName: s.recordName!, zoneID: s.zoneID())
-//
-//                            self.z?.saveStudentToCloud(s)
-//                        }
-//                    } else {
-//                        for r:CKRecord in recs! {
-//                            //if !(r["phone"]==s.phone && r["firstName"]==s.firstName && r["lastName"]==s.lastName) {
-//                            print("Setting Record Values for \(recs!.count) records")
-//                            self.z?.saveStudentToCloud(s)
-////
-//                        }
-//                    }
-//                })
+        if (userInfo[NSUpdatedObjectsKey] != nil) {
+            let updates = userInfo[NSUpdatedObjectsKey] as! Set<NSManagedObject>
+            for r:NSManagedObject in updates {
+                if r.value(forKey: "recordType") as! String == "Lesson" {
+                    print("Updating Lesson.")
+                    if studentArrayController.selectedObjects.count == 0 {
+                        return
+                    }
+                    let selectedStudent = studentArrayController.selectedObjects.first as! Student
+                    let lsn = r as! Lesson
+                    lsn.prepareForCloudKitWithCloudKitRecord(lsn.cloudKitRecordID()!)
+                    print("saving to cloud.")
+                    print(lsn.recordName!)
+                    z?.saveLessonToCloud(lsn, student:selectedStudent, calledBy: "ViewController:contextObjectsDidChange (updates)")
+                }
+                if r.value(forKey: "recordType") as! String == "Student" {
+                    print("Updating Student.")
+                    
+                    let s = r as! Student
+                    s.prepareForCloudKitWithCloudKitRecord(CKRecord.ID(recordName: s.recordName!))
+                    z?.saveStudentToCloud(s, calledBy: "ViewController:contextObjectsDidChange (updates)")
+                }
             }
         }
 
-        if let deletes = userInfo[NSDeletedObjectsKey] as? Set<Student>, deletes.count > 0 {
-            // print(deletes)
-            for s:Student in deletes {
-                let recordName=s.recordName
-                let recordID = CKRecord.ID.init(recordName: recordName!, zoneID: s.zoneID())
-
-                database.delete(withRecordID: recordID, completionHandler: {(rid,err) in
-                    if let err = err {
-                        print(err.localizedDescription)
-                    } else {
-                        print("student deleted from cloud")
-                    }
-                })
+        if (userInfo[NSDeletedObjectsKey] != nil) {
+            let deletes = userInfo[NSDeletedObjectsKey] as! Set<NSManagedObject>
+            for r:NSManagedObject in deletes {
+                if r.value(forKey: "recordType") as! String == "Lesson" {
+                    print("Deleting Lesson.")
+                    let lsn = r as! Lesson
+                    database.delete(withRecordID: lsn.cloudKitRecordID()!, completionHandler: {(rec,err) in
+                        if let err = err {
+                            print(err.localizedDescription)
+                        } else {
+                            print("Deleted Lesson from Cloud.")
+                        }
+                    })
+                }
+                if r.value(forKey: "recordType") as! String == "Student" {
+                    print("Deleting Student.")
+                    let sdnt = r as! Student
+                    let ckid = CKRecord.ID(recordName: sdnt.recordName!, zoneID: (z?.zoneID)!)
+                    database.delete(withRecordID: ckid, completionHandler: {(rec,err) in
+                        if let err = err {
+                            print(err.localizedDescription)
+                        } else {
+                            print("Deleted Student from Cloud.")
+                        }
+                    })
+                }
             }
             do {
-                try context!.save()
+                try context?.save()
             } catch {
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }

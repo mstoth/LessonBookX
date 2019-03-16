@@ -43,6 +43,7 @@ public enum CKErrorCode : Int {
 }
 
 
+
 class ZoneOperations {
     var zoneID:CKRecordZone.ID? = nil
     var container:CKContainer? = nil
@@ -66,6 +67,68 @@ class ZoneOperations {
 
         }
     
+    func errorCodeToString(_ errorCode:CKErrorCode) -> String {
+        switch errorCode {
+        case CKErrorCode.InternalError:
+            return "CloudKit.framework encountered an error.  This is a non-recoverable error."
+        case CKErrorCode.PartialFailure:
+            return "Some items failed, but the operation succeeded overall "
+        case CKErrorCode.NetworkUnavailable:
+            return "Some items failed, but the operation succeeded overall "
+        case CKErrorCode.NetworkFailure:
+            return "Network error (available but CFNetwork gave us an error)"
+        case CKErrorCode.BadContainer:
+            return "Un-provisioned or unauthorized container. Try provisioning the container before retrying the operation."
+        case CKErrorCode.ServiceUnavailable:
+            return "Service unavailable"
+        case CKErrorCode.RequestRateLimited:
+            return "Client is being rate limited "
+        case CKErrorCode.MissingEntitlement:
+            return "Client is being rate limited "
+        case CKErrorCode.NotAuthenticated: /* Not authenticated (writing without being logged in, no user record) */
+            return "Not authenticated (writing without being logged in, no user record)"
+        case CKErrorCode.PermissionFailure: /* Access failure (save or fetch) */
+            return " /* Access failure (save or fetch) */"
+        case CKErrorCode.UnknownItem: /* Record does not exist */
+            return " /* Record does not exist */"
+        case CKErrorCode.InvalidArguments: /* Bad client request (bad record graph, malformed predicate) */
+            return " /* Bad client request (bad record graph, malformed predicate) */"
+        case CKErrorCode.ResultsTruncated: /* Query results were truncated by the server */
+            return " /* Query results were truncated by the server */"
+        case CKErrorCode.ServerRecordChanged: /* The record was rejected because the version on the server was different */
+            return " /* The record was rejected because the version on the server was different */"
+        case CKErrorCode.ServerRejectedRequest: /* The server rejected this request.  This is a non-recoverable error */
+            return " /* The server rejected this request.  This is a non-recoverable error */"
+        case CKErrorCode.AssetFileNotFound: /* Asset file was not found */
+            return " /* Asset file was not found */"
+        case CKErrorCode.AssetFileModified:  /* Asset file content was modified while being saved */
+            return " /* Asset file content was modified while being saved */"
+        case CKErrorCode.IncompatibleVersion: /* App version is less than the minimum allowed version */
+            return " /* App version is less than the minimum allowed version */"
+        case CKErrorCode.ConstraintViolation: /* The server rejected the request because there was a conflict with a unique field. */
+            return " /* The server rejected the request because there was a conflict with a unique field. */"
+        case CKErrorCode.OperationCancelled: /* A CKOperation was explicitly cancelled */
+            return " /* A CKOperation was explicitly cancelled */"
+        case CKErrorCode.ChangeTokenExpired: /* The previousServerChangeToken value is too old and the client must re-sync from scratch */
+            return " /* The previousServerChangeToken value is too old and the client must re-sync from scratch */"
+        case CKErrorCode.BatchRequestFailed: /* One of the items in this batch operation failed in a zone with atomic updates, so the entire batch was rejected. */
+            return " /* One of the items in this batch operation failed in a zone with atomic updates, so the entire batch was rejected. */"
+        case CKErrorCode.ZoneBusy: /* The server is too busy to handle this zone operation. Try the operation again in a few seconds. */
+            return " /* The server is too busy to handle this zone operation. Try the operation again in a few seconds. */"
+        case CKErrorCode.BadDatabase: /* Operation could not be completed on the given database. Likely caused by attempting to modify zones in the public database. */
+            return " /* Operation could not be completed on the given database. Likely caused by attempting to modify zones in the public database. */"
+        case CKErrorCode.QuotaExceeded: /* Saving a record would exceed quota */
+            return " /* Saving a record would exceed quota */"
+        case CKErrorCode.ZoneNotFound: /* The specified zone does not exist on the server */
+            return " /* The specified zone does not exist on the server */"
+        case CKErrorCode.LimitExceeded: /* The request to the server was too large. Retry this request as a smaller batch. */
+            return " /* The request to the server was too large. Retry this request as a smaller batch. */"
+        case CKErrorCode.UserDeletedZone: /* The user deleted this zone through the settings UI. Your client should either remove its local data or prompt the user before attempting to re-upload any data to this zone. */
+            return " /* The user deleted this zone through the settings UI. Your client should either remove its local data or prompt the user before attempting to re-upload any data to this zone. */"
+//        default:
+//            return "unknown error code"
+        }
+    }
 
     func fetchAllZones(completion: @escaping (Error?) -> Void)
     {
@@ -95,7 +158,9 @@ class ZoneOperations {
                     self.database?.save(zone, completionHandler: {(z,err) in
                         if let err = err {
                             print(err.localizedDescription)
-                            
+                            let cke = err as! CKError
+                            let code = CKErrorCode(rawValue: cke.errorCode)
+                            print(self.errorCodeToString(code!))
                         } else {
                             print("Zone saved.")
                             print(zone.zoneID.zoneName)
@@ -113,7 +178,41 @@ class ZoneOperations {
 
     }
     
-    func saveStudentToCloud(_ student:Student) {
+    func saveLessonToCloud(_ lesson:Lesson, student:Student, calledBy:String = "Unknown") {
+        let predicate = NSPredicate(format: "recordName == %@", lesson.recordName!)
+        let req = NSFetchRequest<Lesson>(entityName: "Lesson")
+        req.predicate = predicate
+        let z = ZoneOperations()
+        let ckid = CKRecord.ID(recordName: lesson.recordName!, zoneID: z.zoneID!)
+        database?.fetch(withRecordID: ckid, completionHandler: {(rec,err) in
+            if let err = err {
+                print(err)
+            } else {
+                rec?["date"]=lesson.date
+                rec?["comment"]=lesson.comment
+                let ckid = CKRecord.ID(recordName: student.recordName!)
+                let ref = CKRecord.Reference(recordID: ckid, action: .none)
+                rec?["student"]=ref
+                let modifyRec = CKModifyRecordsOperation(recordsToSave: [rec!], recordIDsToDelete: [])
+                modifyRec.modifyRecordsCompletionBlock = { (recs,ids,err) in
+                    if (err == nil) {
+                        print("Modify Records Success.")
+                    } else {
+                        print(err as Any)
+                    }
+                }
+                print("Attempting to modify lesson.")
+                self.database?.add(modifyRec)
+            }
+        })
+    }
+    
+    func saveStudentToCloud(_ student:Student, calledBy:String = "Unknown") {
+        if student.recordName == nil {
+            student.recordType = "Student"
+            student.prepareForCloudKit()
+            student.ckrecordName = student.recordName
+        }
         let ccr = student.cloudKitRecord()
         //if !(ccr?["firstName"]==s.firstName && ccr?["lastName"]==s.lastName && ccr?["phone"]==s.phone ) {
         ccr?["firstName"]=student.firstName
@@ -139,19 +238,26 @@ class ZoneOperations {
         let modifyRecords = CKModifyRecordsOperation.init(recordsToSave: [ccr!], recordIDsToDelete: [])
         // modifyRecords.recordsToSave = recordArray
         modifyRecords.savePolicy = .allKeys
+        
         modifyRecords.isAtomic = true
         modifyRecords.qualityOfService = .utility
         modifyRecords.modifyRecordsCompletionBlock = { (recs,rIDs,error) in
+            print("Called by ",calledBy)
             if (error != nil) {
                 print("ERROR IN MODIFYING CLOUD")
-                print(error as Any)
+                let cke = error as! CKError
+                let code = CKErrorCode(rawValue: cke.errorCode)
+                print(self.errorCodeToString(code!))
             } else {
+                print(recs?.count as Any," Students")
+                print(recs?.first?.value(forKey: "recordName") as Any)
                 print("MODIFIED CLOUD")
             }
         }
-        print("Adding modifyRecords operation.")        
+        print("Adding modifyRecords operation.")
+        
         database?.add(modifyRecords)
-
+        
     }
 }
 

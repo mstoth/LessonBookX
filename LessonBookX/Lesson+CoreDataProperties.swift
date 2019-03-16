@@ -23,5 +23,6 @@ extension Lesson {
     @NSManaged public var comment: String?
     @NSManaged public var duration: Float
     @NSManaged public var student: Student?
+    @NSManaged public var recordName: String?
 
 }

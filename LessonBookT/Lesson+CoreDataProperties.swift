@@ -24,6 +24,7 @@ extension Lesson {
     @NSManaged public var comment: String?
     @NSManaged public var place: String?
     @NSManaged public var student: Student?
+    @NSManaged public var recordName: String? 
 
 }
 

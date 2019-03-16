@@ -24,7 +24,7 @@ public class Student: NSManagedObject, CloudKitManagedObject {
     @NSManaged public var recordID: Data?
     
     
-    var recordType: String = "Student"
+    var recordType: String? = "Student"
     //var lastUpdate: Data?
     
     func managedObjectToRecord() -> CKRecord {

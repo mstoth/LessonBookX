@@ -16,7 +16,6 @@ class LessonEditViewController: NSViewController, NSDatePickerCellDelegate {
     @IBOutlet weak var datePicker: NSDatePicker!
     @objc dynamic var currentDate:NSDate? = nil
     @objc dynamic var currentComment:String? = nil
-    @IBOutlet weak var datePicker: UIDatePicker!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +34,8 @@ class LessonEditViewController: NSViewController, NSDatePickerCellDelegate {
         } catch {
             print(error)
         }
+        // let z = ZoneOperations()
+        // z.saveLessonToCloud(lesson!)
     }
     
     func datePickerCell(_ datePickerCell: NSDatePickerCell, validateProposedDateValue proposedDateValue: AutoreleasingUnsafeMutablePointer<NSDate>, timeInterval proposedTimeInterval: UnsafeMutablePointer<TimeInterval>?) {
@@ -43,6 +44,6 @@ class LessonEditViewController: NSViewController, NSDatePickerCellDelegate {
     }
     
     @IBAction func dateChanged(_ sender: Any) {
-        lesson.date = datePicker
+        lesson?.date = datePicker.dateValue as NSDate
     }
 }
